@@ -18,7 +18,7 @@ class EnrollmentTest {
 
 	@Test
 	void test() {
-		assertEquals(" ", " ");
+		assertEquals("", "");
 	}
 
 }
