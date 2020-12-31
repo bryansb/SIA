@@ -36,5 +36,41 @@ public class Enrollment implements Serializable {
 	public Enrollment() {
 		super();
 	}
-   
+
+	public Enrollment(Date date) {
+		super();
+		this.date = date;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public List<Grade> getGradeList() {
+		return gradeList;
+	}
+
+	public void setGradeList(List<Grade> gradeList) {
+		this.gradeList = gradeList;
+	}
+
+	public BillHead getBillHead() {
+		return billHead;
+	}
+
+	public void setBillHead(BillHead billHead) {
+		this.billHead = billHead;
+	}
 }

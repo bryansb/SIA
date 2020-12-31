@@ -37,5 +37,44 @@ public class Grade implements Serializable {
 	public Grade() {
 		super();
 	}
-   
+
+	public Grade(String description, double grade, Enrollment enrollment, Group group) {
+		super();
+		this.description = description;
+		this.grade = grade;
+		this.enrollment = enrollment;
+		this.group = group;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+
+	public Enrollment getEnrollment() {
+		return enrollment;
+	}
+
+	public void setEnrollment(Enrollment enrollment) {
+		this.enrollment = enrollment;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
 }

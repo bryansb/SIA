@@ -23,19 +23,62 @@ public class Inscription implements Serializable {
 	@Column(name = "ins_id")
 	private int id;
 	
-	@Column(name = "ins_date")
+	@Column(name = "ins_date", nullable = false)
 	private Date date;
 	
-	@JoinColumn
+	@JoinColumn(nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Student student;
 	
-	@JoinColumn
+	@JoinColumn(nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Career career;
 	
 	public Inscription() {
 		super();
 	}
-   
+
+	public Inscription(Date date, Student student, Career career) {
+		super();
+		this.date = date;
+		this.student = student;
+		this.career = career;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public Career getCareer() {
+		return career;
+	}
+
+	public void setCareer(Career career) {
+		this.career = career;
+	}
+
+	@Override
+	public String toString() {
+		return "Inscription [id=" + id + ", date=" + date + ", student=" + student + ", career=" + career + "]";
+	}
 }
