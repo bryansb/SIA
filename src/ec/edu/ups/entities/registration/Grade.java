@@ -1,7 +1,9 @@
-package ec.edu.ups.entities;
+package ec.edu.ups.entities.registration;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import ec.edu.ups.entities.offer.Group;
 
 /**
  * Entity implementation class for Entity: Grade
@@ -23,6 +25,14 @@ public class Grade implements Serializable {
 	
 	@Column(name = "gra_grade")
 	private double grade;
+	
+	@JoinColumn
+	@ManyToOne
+	private Enrollment enrollment;
+	
+	@JoinColumn
+	@ManyToOne
+	private Group group;
 	
 	public Grade() {
 		super();

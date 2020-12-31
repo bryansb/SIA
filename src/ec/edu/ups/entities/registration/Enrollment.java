@@ -1,9 +1,12 @@
-package ec.edu.ups.entities;
+package ec.edu.ups.entities.registration;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
+
+import ec.edu.ups.entities.accounting.BillHead;
 
 /**
  * Entity implementation class for Entity: Enrollment
@@ -22,6 +25,13 @@ public class Enrollment implements Serializable {
 	
 	@Column(name = "enr_date")
 	private Date date;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollment")
+	private List<Grade> gradeList;
+	
+	@JoinColumn
+	@OneToOne
+	private BillHead billHead;
 	
 	public Enrollment() {
 		super();
