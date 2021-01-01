@@ -72,7 +72,7 @@ public class InscriptionController extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	protected String createInscription(HttpServletRequest request) {
+	public String createInscription(HttpServletRequest request) {
 		int studentId;
 		int careerId;
 		Student student;
@@ -93,7 +93,7 @@ public class InscriptionController extends HttpServlet {
 		return "Error";
 	}
 	
-	protected Inscription readInscription(HttpServletRequest request) {
+	public Inscription readInscription(HttpServletRequest request) {
 		Inscription inscription;
 		int inscriptionId;
 		try {

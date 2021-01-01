@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
+import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.accounting.BillHead;
 import ec.edu.ups.entities.registration.Enrollment;
 import ec.edu.ups.entities.registration.Inscription;
@@ -23,7 +24,7 @@ public class EnrollmentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private EnrollmentDAO enrollmentDAO;
-	private InscriptionController inscriptionController;
+	private InscriptionDAO inscriptionDAO;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -31,7 +32,7 @@ public class EnrollmentController extends HttpServlet {
     public EnrollmentController() {
         super();
         enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
-        inscriptionController = new InscriptionController();
+        inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
     }
 
 	/**
@@ -46,6 +47,9 @@ public class EnrollmentController extends HttpServlet {
 			switch (option) {
 			case "create":
 				output = createEnrollment(request);
+				break;
+			case "read":
+				request.setAttribute("enrollment", readEnrollment(request));
 				break;
 			default:
 				break;
@@ -65,16 +69,18 @@ public class EnrollmentController extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private String createEnrollment(HttpServletRequest request) {
+	public String createEnrollment(HttpServletRequest request) {
+		int inscriptionId;
 		Inscription inscription;
 		Enrollment enrollment;
 		BillHead billHead;
-		
 		try {
-			inscription = inscriptionController.readInscription(request);
+			inscriptionId = Integer.parseInt(request.getParameter("ins_id"));
+			inscription = inscriptionDAO.read(inscriptionId);
 			if (inscription == null) {
-				return "Error";
+//				return "Error";
 			}
+			/* BillHeadController and GradeController */
 			billHead = new BillHead();
 			enrollment = new Enrollment(new Date());
 			enrollment.setInscription(inscription);
@@ -89,4 +95,28 @@ public class EnrollmentController extends HttpServlet {
 		return "Error";
 	}
 	
+	public Enrollment readEnrollment(HttpServletRequest request) {
+		Enrollment enrollment;
+		int enrollmentId;
+		try {
+			enrollmentId = Integer.parseInt(request.getParameter("enr_id"));
+			System.out.println(enrollmentId);
+			enrollment = enrollmentDAO.read(enrollmentId);
+		} catch (Exception e) {
+			enrollment = null;
+		}
+		return enrollment;
+	}
+	
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		Enrollment enrollment;
+		this.doGet(request, response);
+		enrollment = readEnrollment(request);
+		if (enrollment == null) {
+			response.getWriter().append("Error");
+		} else {
+			response.getWriter().append("Success");
+		}
+	}
 }
