@@ -26,6 +26,10 @@ public class Inscription implements Serializable {
 	@Column(name = "ins_date", nullable = false)
 	private Date date;
 	
+	@Column(name = "ins_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@JoinColumn(nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Student student;
@@ -61,6 +65,14 @@ public class Inscription implements Serializable {
 		this.date = date;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Student getStudent() {
 		return student;
 	}
@@ -79,6 +91,7 @@ public class Inscription implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Inscription [id=" + id + ", date=" + date + ", student=" + student + ", career=" + career + "]";
+		return "Inscription [id=" + id + ", date=" + date + ", deleted=" + deleted + ", student=" + student
+				+ ", career=" + career + "]";
 	}
 }

@@ -26,6 +26,10 @@ public class Enrollment implements Serializable {
 	@Column(name = "enr_date")
 	private Date date;
 	
+	@Column(name = "enr_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollment")
 	private List<Grade> gradeList;
 	

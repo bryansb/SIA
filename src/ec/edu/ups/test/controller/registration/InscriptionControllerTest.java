@@ -36,6 +36,7 @@ class InscriptionControllerTest {
 		when(request.getParameter("option")).thenReturn("create");
         when(request.getParameter("stu_id")).thenReturn("1");
         when(request.getParameter("car_id")).thenReturn("1");
+        when(request.getParameter("ins_id")).thenReturn("0");
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -43,10 +44,11 @@ class InscriptionControllerTest {
         
         inscriptionController.doTest(request, response);
         
-        verify(request, atLeast(1)).getParameter("option");
+        verify(request, atLeast(1)).getParameter("ins_id");
         writer.flush();
-        System.out.println(" >> Response: " + stringWriter.toString());
-		assertEquals("Success", stringWriter.toString());
+        output = stringWriter.toString();
+        System.out.println(" >> Response: " + output);
+		assertEquals("Success", output);
 		
 		
 	}

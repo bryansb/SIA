@@ -26,6 +26,10 @@ public class Grade implements Serializable {
 	@Column(name = "gra_grade")
 	private double grade;
 	
+	@Column(name = "gra_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@JoinColumn
 	@ManyToOne
 	private Enrollment enrollment;
