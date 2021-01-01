@@ -49,8 +49,6 @@ class InscriptionControllerTest {
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
 		assertEquals("Success", output);
-		
-		
 	}
 
 }
