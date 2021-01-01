@@ -36,7 +36,7 @@ class InscriptionControllerTest {
 		when(request.getParameter("option")).thenReturn("create");
         when(request.getParameter("stu_id")).thenReturn("1");
         when(request.getParameter("car_id")).thenReturn("1");
-        when(request.getParameter("ins_id")).thenReturn("0");
+        when(request.getParameter("ins_id")).thenReturn("1");
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

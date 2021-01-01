@@ -34,6 +34,10 @@ public class Enrollment implements Serializable {
 	private List<Grade> gradeList;
 	
 	@JoinColumn
+	@ManyToOne
+	private Inscription inscription;
+	
+	@JoinColumn
 	@OneToOne
 	private BillHead billHead;
 	
@@ -46,6 +50,13 @@ public class Enrollment implements Serializable {
 		this.date = date;
 	}
 
+	public Enrollment(Date date, Inscription inscription, BillHead billHead) {
+		super();
+		this.date = date;
+		this.inscription = inscription;
+		this.billHead = billHead;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -62,6 +73,14 @@ public class Enrollment implements Serializable {
 		this.date = date;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public List<Grade> getGradeList() {
 		return gradeList;
 	}
@@ -70,11 +89,25 @@ public class Enrollment implements Serializable {
 		this.gradeList = gradeList;
 	}
 
+	public Inscription getInscription() {
+		return inscription;
+	}
+
+	public void setInscription(Inscription inscription) {
+		this.inscription = inscription;
+	}
+
 	public BillHead getBillHead() {
 		return billHead;
 	}
 
 	public void setBillHead(BillHead billHead) {
 		this.billHead = billHead;
+	}
+
+	@Override
+	public String toString() {
+		return "Enrollment [id=" + id + ", date=" + date + ", deleted=" + deleted + ", gradeList=" + gradeList
+				+ ", inscription=" + inscription + ", billHead=" + billHead + "]";
 	}
 }

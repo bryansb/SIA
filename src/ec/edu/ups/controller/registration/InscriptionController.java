@@ -51,6 +51,9 @@ public class InscriptionController extends HttpServlet {
 			case "create":
 				output = createInscription(request);
 				break;
+			case "read":
+				request.setAttribute("inscription", readInscription(request));
+				break;
 			default:
 				break;
 			}
@@ -60,7 +63,16 @@ public class InscriptionController extends HttpServlet {
 		request.setAttribute("output", output);
 	}
 	
-	private String createInscription(HttpServletRequest request) {
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+	
+	protected String createInscription(HttpServletRequest request) {
 		int studentId;
 		int careerId;
 		Student student;
@@ -75,11 +87,13 @@ public class InscriptionController extends HttpServlet {
 			inscriptionDAO.create(inscription);
 			return "Success";
 		} catch (Exception e) {
-			return "Error";
+			System.out.println(">>> Error >> Servlet:InscriptionController:"
+					+ "createInscription: > " + e.getMessage());
 		}
+		return "Error";
 	}
 	
-	private Inscription readInscription(HttpServletRequest request) {
+	protected Inscription readInscription(HttpServletRequest request) {
 		Inscription inscription;
 		int inscriptionId;
 		try {
