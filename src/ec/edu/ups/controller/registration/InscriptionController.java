@@ -33,7 +33,7 @@ public class InscriptionController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String option;
 		String output = "";
@@ -50,6 +50,7 @@ public class InscriptionController extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
+		response.getWriter().append(output);
 	}
 	
 	private String createInscription(HttpServletRequest request) {
@@ -67,6 +68,11 @@ public class InscriptionController extends HttpServlet {
 		} catch (Exception e) {
 			return "Error";
 		}
+	}
+	
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		this.doGet(request, response);
 	}
 	
 }

@@ -41,14 +41,14 @@ class InscriptionControllerTest {
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
         
-        inscriptionController.doGet(request, response);
+        inscriptionController.doTest(request, response);
         
         verify(request, atLeast(1)).getParameter("option");
         writer.flush();
-        
+        System.out.println(" >> Response: " + stringWriter.toString());
 		assertEquals("Success", stringWriter.toString());
 		
-		System.out.println("Response: " + stringWriter.toString());
+		
 	}
 
 }
