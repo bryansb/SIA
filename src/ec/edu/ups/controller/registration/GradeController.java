@@ -64,7 +64,6 @@ public class GradeController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
@@ -72,20 +71,26 @@ public class GradeController extends HttpServlet {
 	private String createGrade(HttpServletRequest request) {
 		int enrollmentId;
 		int groupId;
+		String description;
+		double gradeValue;
 		Enrollment enrollment;
 		Group group;
 		Grade grade;
 		try {
 			enrollmentId = Integer.parseInt(request.getParameter("enr_id"));
 			groupId = Integer.parseInt(request.getParameter("gro_id"));
+			description = request.getParameter("gra_description");
+			gradeValue = Double.parseDouble(request.getParameter("gra_grade"));
 			enrollment = enrollmentDAO.read(enrollmentId);
 			group = groupDAO.read(groupId);
-			grade = new Grade();
+			grade = new Grade(description, gradeValue, enrollment, group);
+			gradeDAO.create(grade);
+			return "Success";
 		} catch (Exception e) {
 			System.out.println(">>> Error >> Servlet:GradeController:"
 					+ "createGrade: > " + e.getMessage());
 		}
-		return null;
+		return "Error";
 	}
 	
 	public Grade readGrade(HttpServletRequest request) {
