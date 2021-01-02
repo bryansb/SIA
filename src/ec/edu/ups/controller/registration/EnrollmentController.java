@@ -100,7 +100,6 @@ public class EnrollmentController extends HttpServlet {
 		int enrollmentId;
 		try {
 			enrollmentId = Integer.parseInt(request.getParameter("enr_id"));
-			System.out.println(enrollmentId);
 			enrollment = enrollmentDAO.read(enrollmentId);
 		} catch (Exception e) {
 			enrollment = null;

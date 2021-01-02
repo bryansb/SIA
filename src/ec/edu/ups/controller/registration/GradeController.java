@@ -49,7 +49,10 @@ public class GradeController extends HttpServlet {
 				output = createGrade(request);
 				break;
 			case "read":
-				request.setAttribute("inscription", readGrade(request));
+				request.setAttribute("grade", readGrade(request));
+				break;
+			case "update":
+				updateGrade(request);
 				break;
 			default:
 				break;
@@ -68,7 +71,7 @@ public class GradeController extends HttpServlet {
 	}
 	
 
-	private String createGrade(HttpServletRequest request) {
+	public String createGrade(HttpServletRequest request) {
 		int enrollmentId;
 		int groupId;
 		String description;
@@ -88,7 +91,7 @@ public class GradeController extends HttpServlet {
 			return "Success";
 		} catch (Exception e) {
 			System.out.println(">>> Error >> Servlet:GradeController:"
-					+ "createGrade: > " + e.getMessage());
+					+ "createGrade: > " + e);
 		}
 		return "Error";
 	}
@@ -103,6 +106,37 @@ public class GradeController extends HttpServlet {
 			grade = null;
 		}
 		return grade;
+	}
+	
+	public String updateGrade(HttpServletRequest request) {
+		String description;
+		double gradeValue;
+		Grade grade;
+		try {
+			description = request.getParameter("gra_description");
+			gradeValue = Double.parseDouble(request.getParameter("gra_grade"));
+			grade = readGrade(request);
+			grade.setDescription(description);
+			grade.setGrade(gradeValue);
+			gradeDAO.update(grade);
+			return "Success";
+		} catch (Exception e) {
+			System.out.println(">>> Error >> Servlet:GradeController:"
+					+ "updateGrade: > " + e);
+		}
+		return "Error";
+	}
+	
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		Grade grade;
+		this.doGet(request, response);
+		grade = readGrade(request);
+		if (grade == null) {
+			response.getWriter().append("Error");
+		} else {
+			response.getWriter().append("Success " + grade.getGrade());
+		}
 	}
 
 }
