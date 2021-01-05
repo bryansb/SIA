@@ -48,5 +48,88 @@ public class Group implements Serializable {
 	public Group() {
 		super();
 	}
+
+	public Group(String academicPeriod, String physicalSpace, int quota, List<Schedule> scheduleList, Subject subject,
+			List<Grade> gradeList, List<Teacher> teacherList) {
+		super();
+		this.academicPeriod = academicPeriod;
+		this.physicalSpace = physicalSpace;
+		this.quota = quota;
+		this.scheduleList = scheduleList;
+		this.subject = subject;
+		this.gradeList = gradeList;
+		this.teacherList = teacherList;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getAcademicPeriod() {
+		return academicPeriod;
+	}
+
+	public void setAcademicPeriod(String academicPeriod) {
+		this.academicPeriod = academicPeriod;
+	}
+
+	public String getPhysicalSpace() {
+		return physicalSpace;
+	}
+
+	public void setPhysicalSpace(String physicalSpace) {
+		this.physicalSpace = physicalSpace;
+	}
+
+	public int getQuota() {
+		return quota;
+	}
+
+	public void setQuota(int quota) {
+		this.quota = quota;
+	}
+
+	public List<Schedule> getScheduleList() {
+		return scheduleList;
+	}
+
+	public void setScheduleList(List<Schedule> scheduleList) {
+		this.scheduleList = scheduleList;
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+
+	public List<Grade> getGradeList() {
+		return gradeList;
+	}
+
+	public void setGradeList(List<Grade> gradeList) {
+		this.gradeList = gradeList;
+	}
+
+	public List<Teacher> getTeacherList() {
+		return teacherList;
+	}
+
+	public void setTeacherList(List<Teacher> teacherList) {
+		this.teacherList = teacherList;
+	}
+
+	@Override
+	public String toString() {
+		return "Group [id=" + id + ", academicPeriod=" + academicPeriod + ", physicalSpace=" + physicalSpace
+				+ ", quota=" + quota + ", scheduleList=" + scheduleList + ", subject=" + subject + ", gradeList="
+				+ gradeList + ", teacherList=" + teacherList + "]";
+	}
    
 }
