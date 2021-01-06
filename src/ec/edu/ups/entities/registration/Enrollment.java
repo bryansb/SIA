@@ -38,7 +38,7 @@ public class Enrollment implements Serializable {
 	private Inscription inscription;
 	
 	@JoinColumn
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private BillHead billHead;
 	
 	public Enrollment() {

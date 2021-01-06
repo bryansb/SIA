@@ -79,8 +79,8 @@ public class InscriptionController extends HttpServlet {
 		Career career;
 		Inscription inscription;
 		try {
-			studentId = Integer.parseInt(request.getParameter("stu_id"));
-			careerId = Integer.parseInt(request.getParameter("car_id"));
+			studentId = Integer.parseInt(request.getParameter("studentId"));
+			careerId = Integer.parseInt(request.getParameter("careerId"));
 			student = studentDAO.read(studentId);
 			career = careerDAO.read(careerId);
 			inscription = new Inscription(new Date(), student, career);
@@ -94,10 +94,10 @@ public class InscriptionController extends HttpServlet {
 	}
 	
 	public Inscription readInscription(HttpServletRequest request) {
-		Inscription inscription;
 		int inscriptionId;
+		Inscription inscription;
 		try {
-			inscriptionId = Integer.parseInt(request.getParameter("ins_id"));
+			inscriptionId = Integer.parseInt(request.getParameter("inscriptionId"));
 			inscription = inscriptionDAO.read(inscriptionId);
 		} catch (Exception e) {
 			inscription = null;

@@ -80,10 +80,10 @@ public class GradeController extends HttpServlet {
 		Group group;
 		Grade grade;
 		try {
-			enrollmentId = Integer.parseInt(request.getParameter("enr_id"));
-			groupId = Integer.parseInt(request.getParameter("gro_id"));
-			description = request.getParameter("gra_description");
-			gradeValue = Double.parseDouble(request.getParameter("gra_grade"));
+			enrollmentId = Integer.parseInt(request.getParameter("enrollmentId"));
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			description = request.getParameter("description");
+			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
 			enrollment = enrollmentDAO.read(enrollmentId);
 			group = groupDAO.read(groupId);
 			grade = new Grade(description, gradeValue, enrollment, group);
@@ -100,7 +100,7 @@ public class GradeController extends HttpServlet {
 		int gradeId;
 		Grade grade;
 		try {
-			gradeId = Integer.parseInt(request.getParameter("gra_id"));
+			gradeId = Integer.parseInt(request.getParameter("gradeId"));
 			grade = gradeDAO.read(gradeId);
 		} catch (Exception e) {
 			grade = null;
@@ -114,7 +114,7 @@ public class GradeController extends HttpServlet {
 		Grade grade;
 		try {
 			description = request.getParameter("gra_description");
-			gradeValue = Double.parseDouble(request.getParameter("gra_grade"));
+			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
 			grade = readGrade(request);
 			grade.setDescription(description);
 			grade.setGrade(gradeValue);

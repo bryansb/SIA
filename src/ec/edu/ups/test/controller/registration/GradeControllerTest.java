@@ -32,8 +32,8 @@ class GradeControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		gradeController = new GradeController();
-		request = mock(HttpServletRequest.class);       
-        response = mock(HttpServletResponse.class); 
+		request = mock(HttpServletRequest.class);     
+        response = mock(HttpServletResponse.class);
 	}
 
 	@Test
@@ -42,11 +42,11 @@ class GradeControllerTest {
 		String output;
 		
 		when(request.getParameter("option")).thenReturn("create");
-        when(request.getParameter("enr_id")).thenReturn("1");
-        when(request.getParameter("gro_id")).thenReturn("1");
-        when(request.getParameter("gra_description")).thenReturn("Test JUnit");
-        when(request.getParameter("gra_grade")).thenReturn("90.0");
-        when(request.getParameter("gra_id")).thenReturn("1");
+        when(request.getParameter("enrollmentId")).thenReturn("1");
+        when(request.getParameter("groupId")).thenReturn("1");
+        when(request.getParameter("description")).thenReturn("Test JUnit");
+        when(request.getParameter("gradeValue")).thenReturn("90.0");
+        when(request.getParameter("gradeId")).thenReturn("1");
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -54,7 +54,7 @@ class GradeControllerTest {
         
         gradeController.doTest(request, response);
         
-        verify(request, atLeast(1)).getParameter("enr_id");
+        verify(request, atLeast(1)).getParameter("gradeId");
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
@@ -67,9 +67,9 @@ class GradeControllerTest {
 		String output;
 		
 		when(request.getParameter("option")).thenReturn("update");
-		when(request.getParameter("gra_description")).thenReturn("Test JUnit");
-        when(request.getParameter("gra_grade")).thenReturn("95.0");
-        when(request.getParameter("gra_id")).thenReturn("1");
+		when(request.getParameter("description")).thenReturn("Test JUnit");
+        when(request.getParameter("gradeValue")).thenReturn("95.0");
+        when(request.getParameter("gradeId")).thenReturn("1");
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -77,7 +77,7 @@ class GradeControllerTest {
         
         gradeController.doTest(request, response);
         
-        verify(request, atLeast(1)).getParameter("gra_id");
+        verify(request, atLeast(1)).getParameter("gradeId");
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);

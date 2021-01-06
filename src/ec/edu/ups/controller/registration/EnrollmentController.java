@@ -75,10 +75,10 @@ public class EnrollmentController extends HttpServlet {
 		Enrollment enrollment;
 		BillHead billHead;
 		try {
-			inscriptionId = Integer.parseInt(request.getParameter("ins_id"));
+			inscriptionId = Integer.parseInt(request.getParameter("inscriptionId"));
 			inscription = inscriptionDAO.read(inscriptionId);
 			if (inscription == null) {
-//				return "Error";
+				throw new NullPointerException();
 			}
 			/* BillHeadController and GradeController */
 			billHead = new BillHead();
@@ -99,7 +99,7 @@ public class EnrollmentController extends HttpServlet {
 		Enrollment enrollment;
 		int enrollmentId;
 		try {
-			enrollmentId = Integer.parseInt(request.getParameter("enr_id"));
+			enrollmentId = Integer.parseInt(request.getParameter("enrollmentId"));
 			enrollment = enrollmentDAO.read(enrollmentId);
 		} catch (Exception e) {
 			enrollment = null;

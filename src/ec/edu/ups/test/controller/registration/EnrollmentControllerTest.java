@@ -18,16 +18,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ec.edu.ups.controller.registration.EnrollmentController;
+import ec.edu.ups.controller.registration.InscriptionController;
 
 class EnrollmentControllerTest {
 
 	private EnrollmentController enrollmentController;
+	private InscriptionController inscriptionController;
 	private HttpServletRequest request;
     private HttpServletResponse response;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		enrollmentController = new EnrollmentController();
+		inscriptionController = new InscriptionController();
 		request = mock(HttpServletRequest.class);       
         response = mock(HttpServletResponse.class); 
 	}
@@ -35,9 +38,10 @@ class EnrollmentControllerTest {
 	@Test
 	void test() throws ServletException, IOException {
 		String output;
+		createInscription();
 		when(request.getParameter("option")).thenReturn("create");
-		when(request.getParameter("ins_id")).thenReturn("1");
-		when(request.getParameter("enr_id")).thenReturn("1");
+		when(request.getParameter("inscriptionId")).thenReturn("1");
+		when(request.getParameter("enrollmentId")).thenReturn("1");
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -45,7 +49,28 @@ class EnrollmentControllerTest {
         
         enrollmentController.doTest(request, response);
         
-        verify(request, atLeast(1)).getParameter("ins_id");
+        verify(request, atLeast(1)).getParameter("inscriptionId");
+        writer.flush();
+        output = stringWriter.toString();
+        System.out.println(" >> Response: " + output);
+		assertEquals("Success", output);
+	}
+	
+	void createInscription() throws ServletException, IOException {
+		String output;
+		
+		when(request.getParameter("option")).thenReturn("create");
+        when(request.getParameter("studentId")).thenReturn("1");
+        when(request.getParameter("careerId")).thenReturn("1");
+        when(request.getParameter("inscriptionId")).thenReturn("1");
+		
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        
+        inscriptionController.doTest(request, response);
+        
+        verify(request, atLeast(1)).getParameter("inscriptionId");
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
