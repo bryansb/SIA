@@ -32,7 +32,6 @@ class InscriptionControllerTest {
 	@Test
 	void test() throws ServletException, IOException {
 		String output;
-		
 		when(request.getParameter("option")).thenReturn("create");
         when(request.getParameter("studentId")).thenReturn("1");
         when(request.getParameter("careerId")).thenReturn("1");
