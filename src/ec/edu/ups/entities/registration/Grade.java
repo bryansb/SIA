@@ -24,7 +24,7 @@ public class Grade implements Serializable {
 	private String description;
 	
 	@Column(name = "gra_grade")
-	private double grade;
+	private double gradeValue;
 	
 	@Column(name = "gra_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
@@ -42,10 +42,10 @@ public class Grade implements Serializable {
 		super();
 	}
 
-	public Grade(String description, double grade, Group group) {
+	public Grade(String description, double gradeValue, Group group) {
 		super();
 		this.description = description;
-		this.grade = grade;
+		this.gradeValue = gradeValue;
 		this.group = group;
 	}
 
@@ -56,13 +56,21 @@ public class Grade implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public double getGrade() {
-		return grade;
+	
+	public double getGradeValue() {
+		return gradeValue;
 	}
 
-	public void setGrade(double grade) {
-		this.grade = grade;
+	public void setGradeValue(double gradeValue) {
+		this.gradeValue = gradeValue;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Enrollment getEnrollment() {

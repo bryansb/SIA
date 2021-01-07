@@ -2,7 +2,8 @@ package ec.edu.ups.entities.accounting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -27,25 +28,25 @@ public class BillHead implements Serializable {
 	@Column(name = "hea_id")
 	private int id;
 
-	@Column(name = "hea_subtotal")
+	@Column(name = "hea_subtotal", columnDefinition = "DECIMAL(6, 2)")
 	private double subtotal;
 
-	@Column(name = "hea_taxes")
+	@Column(name = "hea_taxes", columnDefinition = "DECIMAL(6, 2)")
 	private double taxes;
 
-	@Column(name = "hea_vat")
+	@Column(name = "hea_vat", columnDefinition = "DECIMAL(6, 2)")
 	private double vat;
 
-	@Column(name = "hea_total")
+	@Column(name = "hea_total", columnDefinition = "DECIMAL(8, 2)")
 	private double total;
 
 	@Column(name = "hea_date")
-	private Date date;
+	private Calendar date;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "billHead")
 	private List<BillDetail> billDetailList;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "billHead")
+	@OneToOne(mappedBy = "billHead")
 	private Enrollment enrollment;
 
 	@Transient
@@ -53,7 +54,8 @@ public class BillHead implements Serializable {
 	
 	public BillHead() {
 		super();
-		parameterDAO = DAOFactory.getFactory().getParameterDAO();
+		this.date = GregorianCalendar.getInstance();
+		this.parameterDAO = DAOFactory.getFactory().getParameterDAO();
 	}
 
 	public void createBillDetail(String description, int quantity, double unitPrice) {
@@ -61,24 +63,25 @@ public class BillHead implements Serializable {
 			this.billDetailList = new ArrayList<BillDetail>();
 		}
 		BillDetail billDetail = new BillDetail(description, quantity, unitPrice);
+		billDetail.setBillHead(this);
 		this.billDetailList.add(billDetail);
 	}
 	
 	public boolean calculateTotal() {
-		Parameter iva;
+		Parameter vat;
 		Parameter basicTax;
 		if (this.billDetailList == null) {
 			return false;
 		}
 		try {
-			iva = parameterDAO.findByKey("IVA");
+			vat = parameterDAO.findByKey("IVA");
 			basicTax = parameterDAO.findByKey("BASIC_TAX");
 			for (BillDetail billDetail : this.billDetailList) {
 				billDetail.calculateTotal();
 				this.subtotal += billDetail.getTotal();
 			}
-			this.taxes = this.subtotal * iva.getDoubleValue();
-			this.vat = this.subtotal * basicTax.getDoubleValue();
+			this.taxes = this.subtotal * basicTax.getDoubleValue();
+			this.vat = this.subtotal * vat.getDoubleValue();
 			this.total = this.subtotal + this.taxes + this.vat;
 			return true;
 		} catch (Exception e) {
@@ -126,11 +129,11 @@ public class BillHead implements Serializable {
 		this.total = total;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 

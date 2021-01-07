@@ -1,12 +1,14 @@
 package ec.edu.ups.entities.registration;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.*;
 
 import ec.edu.ups.entities.accounting.BillHead;
+import ec.edu.ups.entities.offer.Group;
 
 /**
  * Entity implementation class for Entity: Enrollment
@@ -24,7 +26,7 @@ public class Enrollment implements Serializable {
 	private int id;
 	
 	@Column(name = "enr_date")
-	private Date date;
+	private Calendar date;
 	
 	@Column(name = "enr_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
@@ -45,16 +47,25 @@ public class Enrollment implements Serializable {
 		super();
 	}
 
-	public Enrollment(Date date) {
+	public Enrollment(Calendar date) {
 		super();
 		this.date = date;
 	}
 
-	public Enrollment(Date date, Inscription inscription, BillHead billHead) {
+	public Enrollment(Calendar date, Inscription inscription, BillHead billHead) {
 		super();
 		this.date = date;
 		this.inscription = inscription;
 		this.billHead = billHead;
+	}
+	
+	public void createGrade(String description, double gradeValue, Group group) {
+		if (gradeList == null) {
+			gradeList = new ArrayList<Grade>();
+		}
+		Grade grade = new Grade(description, gradeValue, group);
+		grade.setEnrollment(this);
+		this.gradeList.add(grade);
 	}
 	
 	public int getId() {
@@ -65,11 +76,11 @@ public class Enrollment implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 

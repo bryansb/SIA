@@ -24,14 +24,14 @@ public class BillDetail implements Serializable {
 	@Column(name = "det_quantity")
 	private int quantity;
 	
-	@Column(name = "det_unit_price")
+	@Column(name = "det_unit_price", columnDefinition = "DECIMAL(6, 2)")
 	private double unitPrice;
 	
-	@Column(name = "det_total")
+	@Column(name = "det_total", columnDefinition = "DECIMAL(6, 2)")
 	private double total;
 	
 	@JoinColumn(nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private BillHead billHead;
 	
 	public BillDetail() {

@@ -87,7 +87,7 @@ public class GradeController extends HttpServlet {
 			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
 			grade = readGrade(request);
 			grade.setDescription(description);
-			grade.setGrade(gradeValue);
+			grade.setGradeValue(gradeValue);
 			gradeDAO.update(grade);
 			return "Success";
 		} catch (Exception e) {
@@ -97,16 +97,14 @@ public class GradeController extends HttpServlet {
 		return "Error";
 	}
 	
-	public List<Grade> createGradeListByGroupIdList(List<Integer> groupIdList) {
-		Grade grade;
+	public List<Group> getGroupListByIdList(List<Integer> idList) {
 		Group group;
-		List<Grade> gradeList = new ArrayList<Grade>();
-		for (Integer groupId : groupIdList) {
+		List<Group> groupList = new ArrayList<Group>();
+		for (Integer groupId : idList) {
 			group = groupDAO.read(groupId);
-			grade = new Grade("", 0.0, group);
-			gradeList.add(grade);
+			groupList.add(group);
 		}
-		return gradeList;
+		return groupList;
 	}
 	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
@@ -117,7 +115,7 @@ public class GradeController extends HttpServlet {
 		if (grade == null) {
 			response.getWriter().append("Error");
 		} else {
-			response.getWriter().append("Success " + grade.getGrade());
+			response.getWriter().append("Success " + grade.getGradeValue());
 		}
 	}
 
