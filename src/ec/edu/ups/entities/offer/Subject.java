@@ -45,5 +45,86 @@ public class Subject implements Serializable {
 	public Subject() {
 		super();
 	}
+
+	public Subject(String name, int credits, double cost, int hours, int level, Career career, List<Group> groupList) {
+		super();
+		this.name = name;
+		this.credits = credits;
+		this.cost = cost;
+		this.hours = hours;
+		this.level = level;
+		this.career = career;
+		this.groupList = groupList;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getCredits() {
+		return credits;
+	}
+
+	public void setCredits(int credits) {
+		this.credits = credits;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public int getHours() {
+		return hours;
+	}
+
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public Career getCareer() {
+		return career;
+	}
+
+	public void setCareer(Career career) {
+		this.career = career;
+	}
+
+	public List<Group> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<Group> groupList) {
+		this.groupList = groupList;
+	}
+
+	@Override
+	public String toString() {
+		return "Subject [id=" + id + ", name=" + name + ", credits=" + credits + ", cost=" + cost + ", hours=" + hours
+				+ ", level=" + level + ", career=" + career + ", groupList=" + groupList + "]";
+	}
    
 }
