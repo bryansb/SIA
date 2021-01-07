@@ -1,7 +1,6 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,11 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.offer.CareerDAO;
-import ec.edu.ups.dao.offer.SubjectDAO;
-import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.offer.Career;
-import ec.edu.ups.entities.offer.Subject;
-import ec.edu.ups.entities.registration.Inscription;
 
 /**
  * Servlet implementation class CareerController
@@ -25,8 +20,6 @@ public class CareerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private CareerDAO careerDAO;
-	private SubjectDAO subjectDAO;
-	private InscriptionDAO inscriptionDAO;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,9 +27,6 @@ public class CareerController extends HttpServlet {
     public CareerController() {
         super();
         careerDAO =  DAOFactory.getFactory().getCareerDAO();
-        subjectDAO =  DAOFactory.getFactory().getSubjectDAO();
-        inscriptionDAO =  DAOFactory.getFactory().getInscriptionDAO();
-        
     }
 
 	/**
@@ -77,20 +67,12 @@ public class CareerController extends HttpServlet {
 		
 		String name;
 		int time;
-		int subjectId;
-		int inscriptionId;
-		List<Subject> subjectList;
-		List<Inscription> inscriptionList;
 		Career career;
 		
 		try {
-			name = request.getParameter("car_name");
-			time = Integer.parseInt(request.getParameter("car_time"));
-			subjectId = Integer.parseInt(request.getParameter("sub_id"));
-			subjectList = subjectDAO.find("", subjectId, 0);
-			inscriptionId = Integer.parseInt(request.getParameter("ins_id"));
-			inscriptionList = inscriptionDAO.find("", inscriptionId, 0);
-			career = new Career(name, time, subjectList, inscriptionList);
+			name = request.getParameter("name");
+			time = Integer.parseInt(request.getParameter("time"));
+			career = new Career(name, time);
 			careerDAO.create(career);
 			return "Success";
 		} catch (Exception e) {
@@ -105,7 +87,7 @@ public class CareerController extends HttpServlet {
 		Career career;
 		int careerId;
 		try {
-			careerId = Integer.parseInt(request.getParameter("car_id"));
+			careerId = Integer.parseInt(request.getParameter("careerId"));
 			career = careerDAO.read(careerId);
 		} catch (Exception e) {
 			career = null;
@@ -120,8 +102,8 @@ public class CareerController extends HttpServlet {
 		Career career;
 		
 		try {
-			name = request.getParameter("car_name");
-			time = Integer.parseInt(request.getParameter("car_time"));
+			name = request.getParameter("name");
+			time = Integer.parseInt(request.getParameter("time"));
 			career = readCareer(request);
 			career.setName(name);
 			career.setTime(time);
