@@ -49,16 +49,11 @@ public class Group implements Serializable {
 		super();
 	}
 
-	public Group(String academicPeriod, String physicalSpace, int quota, List<Schedule> scheduleList, Subject subject,
-			List<Grade> gradeList, List<Teacher> teacherList) {
+	public Group(String academicPeriod, String physicalSpace, int quota) {
 		super();
 		this.academicPeriod = academicPeriod;
 		this.physicalSpace = physicalSpace;
 		this.quota = quota;
-		this.scheduleList = scheduleList;
-		this.subject = subject;
-		this.gradeList = gradeList;
-		this.teacherList = teacherList;
 	}
 
 	public int getId() {
