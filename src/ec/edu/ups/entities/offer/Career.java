@@ -38,12 +38,10 @@ public class Career implements Serializable {
 		super();
 	}
 
-	public Career(String name, int time, List<Subject> subjectList, List<Inscription> inscriptionList) {
+	public Career(String name, int time) {
 		super();
 		this.name = name;
 		this.time = time;
-		this.subjectList = subjectList;
-		this.inscriptionList = inscriptionList;
 	}
 
 	public int getId() {
