@@ -13,7 +13,7 @@ class SubjectTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {		
-		subject = new Subject("subjectTest", 10, 1000.111, 160, 1, null, null);
+		subject = new Subject("subjectTest", 10, 1000.111, 160, 1, null);
 	}
 
 	@Test
