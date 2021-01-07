@@ -13,7 +13,7 @@ class CareerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		career = new  Career("CarrerTest", 1, null, null);
+		career = new  Career("CarrerTest", 1);
 	}
 
 	@Test
