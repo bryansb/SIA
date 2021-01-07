@@ -31,7 +31,7 @@ public class Grade implements Serializable {
 	private boolean deleted;
 	
 	@JoinColumn
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Enrollment enrollment;
 	
 	@JoinColumn
@@ -42,11 +42,10 @@ public class Grade implements Serializable {
 		super();
 	}
 
-	public Grade(String description, double grade, Enrollment enrollment, Group group) {
+	public Grade(String description, double grade, Group group) {
 		super();
 		this.description = description;
 		this.grade = grade;
-		this.enrollment = enrollment;
 		this.group = group;
 	}
 

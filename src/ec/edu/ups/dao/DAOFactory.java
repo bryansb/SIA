@@ -17,6 +17,7 @@ import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
 import ec.edu.ups.dao.registration.GradeDAO;
 import ec.edu.ups.dao.registration.InscriptionDAO;
+import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.jpa.JPADAOFactory;
 
 public abstract class DAOFactory {
@@ -60,5 +61,7 @@ public abstract class DAOFactory {
 	public abstract GradeDAO getGradeDAO();
 	
 	public abstract InscriptionDAO getInscriptionDAO();
+	
+	public abstract ParameterDAO getParameterDAO();
 	
 }

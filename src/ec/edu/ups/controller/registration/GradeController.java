@@ -1,6 +1,9 @@
 package ec.edu.ups.controller.registration;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,10 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.offer.GroupDAO;
-import ec.edu.ups.dao.registration.EnrollmentDAO;
 import ec.edu.ups.dao.registration.GradeDAO;
 import ec.edu.ups.entities.offer.Group;
-import ec.edu.ups.entities.registration.Enrollment;
 import ec.edu.ups.entities.registration.Grade;
 
 /**
@@ -23,7 +24,6 @@ public class GradeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private GradeDAO gradeDAO;
-	private EnrollmentDAO enrollmentDAO;
 	private GroupDAO groupDAO;
        
     /**
@@ -32,7 +32,6 @@ public class GradeController extends HttpServlet {
     public GradeController() {
         super();
         gradeDAO = DAOFactory.getFactory().getGradeDAO();
-        enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
         groupDAO = DAOFactory.getFactory().getGroupDAO();
     }
 
@@ -45,9 +44,6 @@ public class GradeController extends HttpServlet {
 		try {
 			option = request.getParameter("option");
 			switch (option) {
-			case "create":
-				output = createGrade(request);
-				break;
 			case "read":
 				request.setAttribute("grade", readGrade(request));
 				break;
@@ -68,32 +64,6 @@ public class GradeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-	}
-	
-
-	public String createGrade(HttpServletRequest request) {
-		int enrollmentId;
-		int groupId;
-		String description;
-		double gradeValue;
-		Enrollment enrollment;
-		Group group;
-		Grade grade;
-		try {
-			enrollmentId = Integer.parseInt(request.getParameter("enrollmentId"));
-			groupId = Integer.parseInt(request.getParameter("groupId"));
-			description = request.getParameter("description");
-			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
-			enrollment = enrollmentDAO.read(enrollmentId);
-			group = groupDAO.read(groupId);
-			grade = new Grade(description, gradeValue, enrollment, group);
-			gradeDAO.create(grade);
-			return "Success";
-		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:GradeController:"
-					+ "createGrade: > " + e);
-		}
-		return "Error";
 	}
 	
 	public Grade readGrade(HttpServletRequest request) {
@@ -125,6 +95,18 @@ public class GradeController extends HttpServlet {
 					+ "updateGrade: > " + e);
 		}
 		return "Error";
+	}
+	
+	public List<Grade> createGradeListByGroupIdList(List<Integer> groupIdList) {
+		Grade grade;
+		Group group;
+		List<Grade> gradeList = new ArrayList<Grade>();
+		for (Integer groupId : groupIdList) {
+			group = groupDAO.read(groupId);
+			grade = new Grade("", 0.0, group);
+			gradeList.add(grade);
+		}
+		return gradeList;
 	}
 	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 

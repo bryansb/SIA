@@ -31,11 +31,76 @@ public class BillDetail implements Serializable {
 	private double total;
 	
 	@JoinColumn(nullable = false)
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private BillHead billHead;
 	
 	public BillDetail() {
 		super();
 	}
-   
+
+	public BillDetail(String description, int quantity, double unitPrice) {
+		super();
+		this.description = description;
+		this.quantity = quantity;
+		this.unitPrice = unitPrice;
+		calculateTotal();
+	}
+
+	public void calculateTotal() {
+		this.total = this.quantity * this.unitPrice;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public BillHead getBillHead() {
+		return billHead;
+	}
+
+	public void setBillHead(BillHead billHead) {
+		this.billHead = billHead;
+	}
+
+	@Override
+	public String toString() {
+		return "BillDetail [id=" + id + ", description=" + description + ", quantity=" + quantity + ", unitPrice="
+				+ unitPrice + ", total=" + total + ", billHead=" + billHead + "]";
+	}
 }
