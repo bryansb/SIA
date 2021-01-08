@@ -18,6 +18,7 @@ import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
 import ec.edu.ups.dao.registration.GradeDAO;
 import ec.edu.ups.dao.registration.InscriptionDAO;
+import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.jpa.accounting.JPAAccountDAO;
 import ec.edu.ups.jpa.accounting.JPAAccountTypeDAO;
 import ec.edu.ups.jpa.accounting.JPAAmountDAO;
@@ -35,6 +36,7 @@ import ec.edu.ups.jpa.offer.JPASubjectDAO;
 import ec.edu.ups.jpa.registration.JPAEnrollmentDAO;
 import ec.edu.ups.jpa.registration.JPAGradeDAO;
 import ec.edu.ups.jpa.registration.JPAInscriptionDAO;
+import ec.edu.ups.jpa.utils.JPAParameterDAO;
 
 public class JPADAOFactory extends DAOFactory{
 
@@ -121,6 +123,11 @@ public class JPADAOFactory extends DAOFactory{
 	@Override
 	public InscriptionDAO getInscriptionDAO() {
 		return new JPAInscriptionDAO();
+	}
+
+	@Override
+	public ParameterDAO getParameterDAO() {
+		return new JPAParameterDAO();
 	}
 	
 }

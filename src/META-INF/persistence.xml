@@ -19,6 +19,7 @@
 		<class>ec.edu.ups.entities.accounting.Account</class>
 		<class>ec.edu.ups.entities.accounting.AccountType</class>
 		<class>ec.edu.ups.entities.accounting.Amount</class>
+		<class>ec.edu.ups.entities.utils.Parameter</class>
 		<properties>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.target-database" value="MySQL"/>			

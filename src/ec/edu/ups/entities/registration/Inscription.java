@@ -2,6 +2,7 @@ package ec.edu.ups.entities.registration;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -26,11 +27,18 @@ public class Inscription implements Serializable {
 	@Column(name = "ins_date", nullable = false)
 	private Date date;
 	
-	@JoinColumn(nullable = false)
+	@Column(name = "ins_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "inscription")
+	private List<Enrollment> enrollmentList;
+	
+	@JoinColumn
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Student student;
 	
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Career career;
 	
@@ -61,6 +69,22 @@ public class Inscription implements Serializable {
 		this.date = date;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public List<Enrollment> getEnrollmentList() {
+		return enrollmentList;
+	}
+
+	public void setEnrollmentList(List<Enrollment> enrollmentList) {
+		this.enrollmentList = enrollmentList;
+	}
+
 	public Student getStudent() {
 		return student;
 	}
@@ -79,6 +103,7 @@ public class Inscription implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Inscription [id=" + id + ", date=" + date + ", student=" + student + ", career=" + career + "]";
+		return "Inscription [id=" + id + ", date=" + date + ", deleted=" + deleted + ", enrollmentList="
+				+ enrollmentList + ", student=" + student + ", career=" + career + "]";
 	}
 }

@@ -1,7 +1,7 @@
 package ec.edu.ups.entities.accounting;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import javax.persistence.*;
 
@@ -21,7 +21,7 @@ public class Amount implements Serializable {
 	private int id;
 	
 	@Column(name = "amo_date")
-	private GregorianCalendar date;
+	private Calendar date;
 	
 	@Column(name = "amo_description")
 	private String description;
@@ -43,5 +43,74 @@ public class Amount implements Serializable {
 	public Amount() {
 		super();
 	}
-   
+
+	public Amount(String description, double unitPrice, double total, Account account) {
+		super();
+		this.description = description;
+		this.unitPrice = unitPrice;
+		this.total = total;
+		this.account = account;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Calendar getDate() {
+		return date;
+	}
+
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public double getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	@Override
+	public String toString() {
+		return "Amount [id=" + id + ", date=" + date + ", description=" + description + ", unitPrice=" + unitPrice
+				+ ", total=" + total + ", type=" + type + ", account=" + account + "]";
+	}
 }
