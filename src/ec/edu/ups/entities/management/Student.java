@@ -19,10 +19,10 @@ public class Student extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "usu_birthdate")
+	@Column(name = "use_birthdate")
 	private Date birthdate;
 	
-	@Column(name = "usu_gender")
+	@Column(name = "use_gender")
 	private char gender;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "student", 
@@ -32,5 +32,42 @@ public class Student extends User implements Serializable {
 	public Student() {
 		super();
 	}
+
+	public Student(Date birthdate, char gender, List<Inscription> inscriptionList) {
+		super();
+		this.birthdate = birthdate;
+		this.gender = gender;
+		this.inscriptionList = inscriptionList;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public char getGender() {
+		return gender;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+
+	public List<Inscription> getInscriptionList() {
+		return inscriptionList;
+	}
+
+	public void setInscriptionList(List<Inscription> inscriptionList) {
+		this.inscriptionList = inscriptionList;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [birthdate=" + birthdate + ", gender=" + gender + ", inscriptionList=" + inscriptionList + "]";
+	}
    
+	
 }
