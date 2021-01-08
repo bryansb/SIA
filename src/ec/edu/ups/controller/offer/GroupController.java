@@ -1,7 +1,6 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,9 +14,7 @@ import ec.edu.ups.dao.offer.GroupDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.offer.Group;
-import ec.edu.ups.entities.offer.Schedule;
 import ec.edu.ups.entities.offer.Subject;
-import ec.edu.ups.entities.registration.Grade;
 
 /**
  * Servlet implementation class GroupController
@@ -83,12 +80,12 @@ public class GroupController extends HttpServlet {
 		Group group;
 		
 		try {
-			academicPeriod = request.getParameter("gro_academic_period");
-			physicalSpace = request.getParameter("gro_physical_space");
-			quota = Integer.parseInt(request.getParameter("gro_quota"));
+			academicPeriod = request.getParameter("academicPeriod");
+			physicalSpace = request.getParameter("physicalSpace");
+			quota = Integer.parseInt(request.getParameter("quota"));
 			group = new Group(academicPeriod, physicalSpace, quota);
 			
-			subjectId = Integer.parseInt(request.getParameter("sub_id"));
+			subjectId = Integer.parseInt(request.getParameter("subjectId"));
 			subject = subjectDAO.read(subjectId);
 			group.setSubject(subject);
 			
@@ -110,7 +107,7 @@ public class GroupController extends HttpServlet {
 		Group group;
 		int groupId;
 		try {
-			groupId = Integer.parseInt(request.getParameter("gro_id"));
+			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
 		} catch (Exception e) {
 			group = null;
@@ -125,9 +122,9 @@ public class GroupController extends HttpServlet {
 		Group group;
 		
 		try {
-			academicPeriod = request.getParameter("gro_academic_period");
-			physicalSpace = request.getParameter("gro_physical_space");
-			quota = Integer.parseInt(request.getParameter("gro_quota"));
+			academicPeriod = request.getParameter("academicPeriod");
+			physicalSpace = request.getParameter("physicalSpace");
+			quota = Integer.parseInt(request.getParameter("quota"));
 			group = readGroup(request);
 			group.setAcademicPeriod(academicPeriod);
 			group.setPhysicalSpace(physicalSpace);
@@ -162,8 +159,8 @@ public class GroupController extends HttpServlet {
 		try {
 			
 			days = request.getParameterValues("day");
-			startTimes = request.getParameterValues("startTimes");
-			endTimes = request.getParameterValues("endTimes");
+			startTimes = request.getParameterValues("startTime");
+			endTimes = request.getParameterValues("endTime");
 			
 			//Falta metodo validar tamaño de los 3 return tamaño
 			parameterSize = days.length;
@@ -173,7 +170,7 @@ public class GroupController extends HttpServlet {
 			}
 			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 	}
@@ -191,7 +188,7 @@ public class GroupController extends HttpServlet {
 				group.addTeacher(teacher);
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 	}
