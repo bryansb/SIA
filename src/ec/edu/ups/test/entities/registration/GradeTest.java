@@ -16,7 +16,7 @@ class GradeTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		this.group = null;
-		grade = new Grade("", 90.0, group);
+		grade = new Grade("", 90.0, group, null);
 	}
 
 	@Test

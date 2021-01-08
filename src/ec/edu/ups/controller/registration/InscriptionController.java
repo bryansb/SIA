@@ -1,7 +1,7 @@
 package ec.edu.ups.controller.registration;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,15 +63,6 @@ public class InscriptionController extends HttpServlet {
 		request.setAttribute("output", output);
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-	
 	public String createInscription(HttpServletRequest request) {
 		int studentId;
 		int careerId;
@@ -83,7 +74,7 @@ public class InscriptionController extends HttpServlet {
 			careerId = Integer.parseInt(request.getParameter("careerId"));
 			student = studentDAO.read(studentId);
 			career = careerDAO.read(careerId);
-			inscription = new Inscription(new Date(), student, career);
+			inscription = new Inscription(new GregorianCalendar(), student, career);
 			inscriptionDAO.create(inscription);
 			return "Success";
 		} catch (Exception e) {

@@ -42,11 +42,20 @@ public class Grade implements Serializable {
 		super();
 	}
 
-	public Grade(String description, double gradeValue, Group group) {
+	public Grade(String description, double gradeValue, Group group, Enrollment enrollment) {
 		super();
 		this.description = description;
 		this.gradeValue = gradeValue;
 		this.group = group;
+		this.enrollment = enrollment;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
