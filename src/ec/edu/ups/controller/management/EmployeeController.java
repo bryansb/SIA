@@ -57,21 +57,22 @@ public class EmployeeController extends HttpServlet {
 			employee.setPhone(request.getParameter("use_phone"));
 			employee.setType(request.getParameter("use_type").charAt(0));
 			employee.setSalary(Double.parseDouble(request.getParameter("use_salary")));
+			employeeDAO.update(employee);
 			return "Success";
 		} catch (Exception e) {
 			return "Error";
 		}
 	}
 
-	private String readEmployee(HttpServletRequest request) {
+	private Employee readEmployee(HttpServletRequest request) {
 		int employeeId;
 		Employee employee;
 		try {
 			employeeId = Integer.parseInt(request.getParameter("use_id"));
 			employee = employeeDAO.read(employeeId);
-			return "Success";
+			return employee;
 		} catch (Exception e) {
-			return "Error";
+			return null;
 		}
 	}
 
@@ -100,7 +101,7 @@ public class EmployeeController extends HttpServlet {
 				output = updateEmployee(request);
 				break;
 			case "read":
-				output = readEmployee(request);
+				request.setAttribute("employee", readEmployee(request));
 				break;
 			case "delete":
 				output = deleteEmployee(request);
@@ -116,7 +117,14 @@ public class EmployeeController extends HttpServlet {
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Employee employee;
 		this.doGet(request, response);
+		employee = readEmployee(request);
+		if(employee == null) {
+			response.getWriter().append("Error");
+		}else {
+			response.getWriter().append("Success");
+		}
 	}
 
 }

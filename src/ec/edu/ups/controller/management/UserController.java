@@ -56,21 +56,22 @@ public class UserController extends HttpServlet {
 			user.setPassword(request.getParameter("use_password"));
 			user.setPhone(request.getParameter("use_phone"));
 			user.setType(request.getParameter("use_type").charAt(0));
+			userDAO.update(user);
 			return "Success";
 		} catch (Exception e) {
 			return "Error";
 		}
 	}
 
-	private String readUser(HttpServletRequest request) {
+	private User readUser(HttpServletRequest request) {
 		int userId;
 		User user;
 		try {
 			userId = Integer.parseInt(request.getParameter("use_id"));
 			user = userDAO.read(userId);
-			return "Success";
+			return user;
 		} catch (Exception e) {
-			return "Error";
+			return null;
 		}
 	}
 
@@ -99,7 +100,7 @@ public class UserController extends HttpServlet {
 				output = updateUser(request);
 				break;
 			case "read":
-				output = readUser(request);
+				request.setAttribute("user", readUser(request));
 				break;
 			case "delete":
 				output = deleteUser(request);
@@ -115,6 +116,13 @@ public class UserController extends HttpServlet {
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user;
 		this.doGet(request, response);
+		user = readUser(request);
+		if(user == null) {
+			response.getWriter().append("Error");
+		}else {
+			response.getWriter().append("Success");
+		}
 	}
 }

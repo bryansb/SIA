@@ -61,21 +61,22 @@ public class StudentController extends HttpServlet {
 			student.setType(request.getParameter("use_type").charAt(0));
 			student.setBirthdate(birthdate.parse(request.getParameter("use_birthdate")));
 			student.setGender(request.getParameter("use_gender").charAt(0));
+			studentDAO.update(student);
 			return "Success";
 		} catch (Exception e) {
 			return "Error";
 		}
 	}
 
-	private String readStudent(HttpServletRequest request) {
+	private Student readStudent(HttpServletRequest request) {
 		int studentId;
 		Student student;
 		try {
 			studentId = Integer.parseInt(request.getParameter("use_id"));
 			student = studentDAO.read(studentId);
-			return "Success";
+			return student;
 		} catch (Exception e) {
-			return "Error";
+			return null;
 		}
 	}
 
@@ -104,7 +105,7 @@ public class StudentController extends HttpServlet {
 				output = updateStudent(request);
 				break;
 			case "read":
-				output = readStudent(request);
+				request.setAttribute("student", readStudent(request));
 				break;
 			case "delete":
 				output = deleteStudent(request);
@@ -120,6 +121,13 @@ public class StudentController extends HttpServlet {
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Student student;
 		this.doGet(request, response);
+		student = readStudent(request);
+		if (student == null) {
+			response.getWriter().append("Error");
+		}else {
+			response.getWriter().append("Success");
+		}
 	}
 }
