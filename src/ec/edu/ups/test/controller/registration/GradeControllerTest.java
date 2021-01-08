@@ -6,11 +6,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,6 +31,7 @@ class GradeControllerTest {
 	private HttpServletRequest request;
     private HttpServletResponse response;
     private GradeDAO gradeDAO;
+    private int gradeId;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -42,8 +42,10 @@ class GradeControllerTest {
 	}
 	
 	void createGrade() throws Exception {
-		Grade grade = new Grade("TEST", 0.0, null);
+		Grade grade = new Grade("TEST", 0.0, null, null);
 		gradeDAO.create(grade);
+		List<Grade> gradeList = gradeDAO.find(null, 0, 0);
+		gradeId = gradeList.get(gradeList.size() - 1).getId();
 	}
 	
 	@Test
@@ -54,7 +56,7 @@ class GradeControllerTest {
 		when(request.getParameter("option")).thenReturn("update");
 		when(request.getParameter("description")).thenReturn("Test JUnit");
         when(request.getParameter("gradeValue")).thenReturn("95.0");
-        when(request.getParameter("gradeId")).thenReturn("1");
+        when(request.getParameter("gradeId")).thenReturn("" + gradeId);
 		
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

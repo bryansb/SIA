@@ -2,7 +2,7 @@ package ec.edu.ups.test.entities.registration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +19,12 @@ class InscriptionTest {
 	void setUp() throws Exception {
 		Student student = new Student();
 		Career career = new Career();
-		this.inscription = new Inscription(new Date(), student, career);
+		this.inscription = new Inscription(new GregorianCalendar(), student, career);
 	}
 
 	@Test
 	void test() {
-		this.inscription.setDate(new Date());
+		this.inscription.setDate(new GregorianCalendar());
 		assertFalse(inscription.getDate().toString().isEmpty());
 	}
 

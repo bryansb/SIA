@@ -81,8 +81,7 @@ public class Enrollment implements Serializable {
 		if (gradeList == null) {
 			gradeList = new ArrayList<Grade>();
 		}
-		Grade grade = new Grade(description, gradeValue, group);
-		grade.setEnrollment(this);
+		Grade grade = new Grade(description, gradeValue, group, this);
 		this.gradeList.add(grade);
 	}
 	

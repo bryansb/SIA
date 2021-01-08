@@ -1,7 +1,7 @@
 package ec.edu.ups.entities.registration;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -25,7 +25,7 @@ public class Inscription implements Serializable {
 	private int id;
 	
 	@Column(name = "ins_date", nullable = false)
-	private Date date;
+	private Calendar date;
 	
 	@Column(name = "ins_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
@@ -46,7 +46,7 @@ public class Inscription implements Serializable {
 		super();
 	}
 
-	public Inscription(Date date, Student student, Career career) {
+	public Inscription(Calendar date, Student student, Career career) {
 		super();
 		this.date = date;
 		this.student = student;
@@ -61,11 +61,11 @@ public class Inscription implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 
