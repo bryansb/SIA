@@ -21,6 +21,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import ec.edu.ups.controller.registration.GradeController;
+import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.registration.GradeDAO;
+import ec.edu.ups.entities.registration.Grade;
 
 @TestMethodOrder(OrderAnnotation.class)
 class GradeControllerTest {
@@ -28,44 +31,26 @@ class GradeControllerTest {
 	private GradeController gradeController;
 	private HttpServletRequest request;
     private HttpServletResponse response;
+    private GradeDAO gradeDAO;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		gradeController = new GradeController();
-		request = mock(HttpServletRequest.class);     
-        response = mock(HttpServletResponse.class);
+		this.gradeController = new GradeController();
+		this.gradeDAO = DAOFactory.getFactory().getGradeDAO();
+		this.request = mock(HttpServletRequest.class);     
+		this.response = mock(HttpServletResponse.class);
 	}
-
-	@Test
-	@Order(1)
-	void test() throws ServletException, IOException {
-		String output;
-		
-		when(request.getParameter("option")).thenReturn("create");
-        when(request.getParameter("enrollmentId")).thenReturn("1");
-        when(request.getParameter("groupId")).thenReturn("1");
-        when(request.getParameter("description")).thenReturn("Test JUnit");
-        when(request.getParameter("gradeValue")).thenReturn("90.0");
-        when(request.getParameter("gradeId")).thenReturn("1");
-		
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(writer);
-        
-        gradeController.doTest(request, response);
-        
-        verify(request, atLeast(1)).getParameter("gradeId");
-        writer.flush();
-        output = stringWriter.toString();
-        System.out.println(" >> Response: " + output);
-        assertTrue(output.contains("Success"));
+	
+	void createGrade() throws Exception {
+		Grade grade = new Grade("TEST", 0.0, null);
+		gradeDAO.create(grade);
 	}
 	
 	@Test
-	@Order(2)
-	void updateTest() throws ServletException, IOException {
+	@Order(1)
+	void updateTest() throws Exception {
 		String output;
-		
+		createGrade();
 		when(request.getParameter("option")).thenReturn("update");
 		when(request.getParameter("description")).thenReturn("Test JUnit");
         when(request.getParameter("gradeValue")).thenReturn("95.0");

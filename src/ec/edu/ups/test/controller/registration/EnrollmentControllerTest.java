@@ -21,7 +21,9 @@ import ec.edu.ups.controller.registration.EnrollmentController;
 import ec.edu.ups.controller.registration.InscriptionController;
 import ec.edu.ups.controller.utils.ParameterBasicCreation;
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.accounting.AccountDAO;
 import ec.edu.ups.dao.offer.GroupDAO;
+import ec.edu.ups.entities.accounting.Account;
 import ec.edu.ups.entities.offer.Group;
 
 class EnrollmentControllerTest {
@@ -29,6 +31,7 @@ class EnrollmentControllerTest {
 	private EnrollmentController enrollmentController;
 	private InscriptionController inscriptionController;
 	private ParameterBasicCreation parameterBasicCreation;
+	private AccountDAO accountDAO;
 	private GroupDAO groupDAO;
 	private HttpServletRequest request;
     private HttpServletResponse response;
@@ -38,6 +41,7 @@ class EnrollmentControllerTest {
 		enrollmentController = new EnrollmentController();
 		inscriptionController = new InscriptionController();
 		parameterBasicCreation = new ParameterBasicCreation();
+		accountDAO = DAOFactory.getFactory().getAccountDAO();
 		groupDAO = DAOFactory.getFactory().getGroupDAO();
 		request = mock(HttpServletRequest.class);       
         response = mock(HttpServletResponse.class);
@@ -50,6 +54,7 @@ class EnrollmentControllerTest {
 		String[] groupIds = {"1", "2", "3"};
 		createInscription();
 		createGroup();
+		createAccount();
 		request = mock(HttpServletRequest.class);       
         response = mock(HttpServletResponse.class);
 		when(request.getParameter("option")).thenReturn("create");
@@ -103,4 +108,16 @@ class EnrollmentControllerTest {
 		}
 	}
 
+	void createAccount() {
+		String name = "CAJA CONTABLE";
+		Account account = new Account();
+		account.setName(name);
+		account.setBalance(0.0);
+		try {
+			accountDAO.create(account);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

@@ -7,6 +7,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import ec.edu.ups.controller.accounting.AmountController;
+import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.accounting.AccountDAO;
+import ec.edu.ups.entities.accounting.Account;
 import ec.edu.ups.entities.accounting.BillHead;
 import ec.edu.ups.entities.offer.Group;
 
@@ -43,20 +47,34 @@ public class Enrollment implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	private BillHead billHead;
 	
+	@Transient
+	private AccountDAO accountDAO;
+	
+	@Transient
+	private AmountController amountController;
+	
 	public Enrollment() {
 		super();
+		init();
 	}
 
 	public Enrollment(Calendar date) {
 		super();
 		this.date = date;
+		init();
 	}
-
+	
 	public Enrollment(Calendar date, Inscription inscription, BillHead billHead) {
 		super();
 		this.date = date;
 		this.inscription = inscription;
 		this.billHead = billHead;
+		init();
+	}
+	
+	private void init() {
+		accountDAO = DAOFactory.getFactory().getAccountDAO();
+		amountController = new AmountController();
 	}
 	
 	public void createGrade(String description, double gradeValue, Group group) {
@@ -66,6 +84,13 @@ public class Enrollment implements Serializable {
 		Grade grade = new Grade(description, gradeValue, group);
 		grade.setEnrollment(this);
 		this.gradeList.add(grade);
+	}
+	
+	@PostPersist
+	private void createIncomeAmount() {
+		Account account = this.accountDAO.findByName("CAJA CONTABLE");
+		this.amountController.createIncomeAmount("", this.billHead.getSubtotal(), 
+				this.billHead.getTotal(), account);
 	}
 	
 	public int getId() {

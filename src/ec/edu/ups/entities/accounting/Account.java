@@ -20,6 +20,9 @@ public class Account implements Serializable {
 	@Column(name = "acc_id")
 	private int id;
 	
+	@Column(name = "acc_name")
+	private String name;
+	
 	@Column(name = "acc_balance")
 	private double balance;
 	
@@ -33,6 +36,52 @@ public class Account implements Serializable {
 	
 	public Account() {
 		super();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public List<Amount> getAmountList() {
+		return amountList;
+	}
+
+	public void setAmountList(List<Amount> amountList) {
+		this.amountList = amountList;
+	}
+
+	public AccountType getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(AccountType accountType) {
+		this.accountType = accountType;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", name=" + name + ", balance=" + balance + ", amountList=" + amountList
+				+ ", accountType=" + accountType + "]";
 	}
    
 }

@@ -30,5 +30,34 @@ public class AccountType implements Serializable {
 	public AccountType() {
 		super();
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Account> getAccountList() {
+		return accountList;
+	}
+
+	public void setAccountList(List<Account> accountList) {
+		this.accountList = accountList;
+	}
+
+	@Override
+	public String toString() {
+		return "AccountType [id=" + id + ", name=" + name + ", accountList=" + accountList + "]";
+	}
    
 }
