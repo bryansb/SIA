@@ -25,7 +25,6 @@ public class UserController extends HttpServlet {
 	}
 
 	private String createUser(HttpServletRequest request) {
-		char type;
 		User user;
 		try {
 			user = new User();
@@ -76,11 +75,10 @@ public class UserController extends HttpServlet {
 
 	private String deleteUser(HttpServletRequest request) {
 		int userId;
-		User user;
 		try {
 			userId = Integer.parseInt(request.getParameter("use_id"));
 			userDAO.deleteByID(userId);
-			return "success";
+			return "Success";
 		}catch(Exception e) {
 			return "Error";
 		}		
