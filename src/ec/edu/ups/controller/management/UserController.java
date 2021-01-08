@@ -75,17 +75,6 @@ public class UserController extends HttpServlet {
 		}
 	}
 
-	private String deleteUser(HttpServletRequest request) {
-		int userId;
-		try {
-			userId = Integer.parseInt(request.getParameter("use_id"));
-			userDAO.deleteByID(userId);
-			return "Success";
-		}catch(Exception e) {
-			return "Error";
-		}		
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String option;
@@ -109,7 +98,6 @@ public class UserController extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
-		response.getWriter().append(output);
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,7 +1,6 @@
 package ec.edu.ups.entities.management;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ public class Student extends User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "use_birthdate")
-	private Date birthdate;
+	private String birthdate;
 	
 	@Column(name = "use_gender")
 	private char gender;
@@ -33,18 +32,17 @@ public class Student extends User implements Serializable {
 		super();
 	}
 
-	public Student(Date birthdate, char gender, List<Inscription> inscriptionList) {
+	public Student(String birthdate, char gender) {
 		super();
 		this.birthdate = birthdate;
 		this.gender = gender;
-		this.inscriptionList = inscriptionList;
 	}
 
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 
@@ -56,17 +54,9 @@ public class Student extends User implements Serializable {
 		this.gender = gender;
 	}
 
-	public List<Inscription> getInscriptionList() {
-		return inscriptionList;
-	}
-
-	public void setInscriptionList(List<Inscription> inscriptionList) {
-		this.inscriptionList = inscriptionList;
-	}
-
 	@Override
 	public String toString() {
-		return "Student [birthdate=" + birthdate + ", gender=" + gender + ", inscriptionList=" + inscriptionList + "]";
+		return "Student [birthdate=" + birthdate + ", gender=" + gender + "]";
 	}
    
 	

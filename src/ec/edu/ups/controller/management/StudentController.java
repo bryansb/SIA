@@ -1,7 +1,7 @@
 package ec.edu.ups.controller.management;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,23 +11,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.StudentDAO;
+import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.management.Student;
+import ec.edu.ups.entities.registration.Inscription;
 
 @WebServlet("/StudentController")
 public class StudentController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private StudentDAO studentDAO;
+	private InscriptionDAO inscriptionDAO;
+	
 	public StudentController() {
 		super();
 		studentDAO = DAOFactory.getFactory().getStudentDAO();
+		inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
 	}
 	private String createStudent(HttpServletRequest request) {
 		Student student;
-		SimpleDateFormat birthdate;
 		try {
 			student = new Student();
-			birthdate = new SimpleDateFormat("dd/MM/yyyy");
 			student.setAddress(request.getParameter("use_address"));
 			student.setDni(request.getParameter("use_dni"));
 			student.setEmail(request.getParameter("use_email"));
@@ -35,11 +38,13 @@ public class StudentController extends HttpServlet {
 			student.setPassword(request.getParameter("use_password"));
 			student.setPhone(request.getParameter("use_phone"));
 			student.setType(request.getParameter("use_type").charAt(0));
-			student.setBirthdate(birthdate.parse(request.getParameter("use_birthdate")));
+			student.setBirthdate(request.getParameter("use_birthdate"));
 			student.setGender(request.getParameter("use_gender").charAt(0));
+			System.out.println(student);
 			studentDAO.create(student);
 			return "Success";
 		}catch(Exception e) {
+			e.printStackTrace();
 			return "Error";
 		}
 	}
@@ -47,9 +52,7 @@ public class StudentController extends HttpServlet {
 	private String updateStudent(HttpServletRequest request) {
 		int studentId;
 		Student student;
-		SimpleDateFormat birthdate;
 		try {
-			birthdate = new SimpleDateFormat("dd/MM/yyyy");
 			studentId = Integer.parseInt(request.getParameter("use_id"));
 			student = studentDAO.read(studentId);
 			student.setAddress(request.getParameter("use_address"));
@@ -59,7 +62,7 @@ public class StudentController extends HttpServlet {
 			student.setPassword(request.getParameter("use_password"));
 			student.setPhone(request.getParameter("use_phone"));
 			student.setType(request.getParameter("use_type").charAt(0));
-			student.setBirthdate(birthdate.parse(request.getParameter("use_birthdate")));
+			student.setBirthdate(request.getParameter("use_birthdate"));
 			student.setGender(request.getParameter("use_gender").charAt(0));
 			studentDAO.update(student);
 			return "Success";
@@ -103,7 +106,6 @@ public class StudentController extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
-		response.getWriter().append(output);
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

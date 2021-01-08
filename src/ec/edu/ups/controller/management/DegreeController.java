@@ -99,7 +99,6 @@ public class DegreeController extends HttpServlet{
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
-		response.getWriter().append(output);
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
