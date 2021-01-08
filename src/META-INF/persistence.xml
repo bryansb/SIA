@@ -2,23 +2,23 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="SIA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>ec.edu.ups.entities.accounting.Account</class>
+		<class>ec.edu.ups.entities.accounting.AccountType</class>
+		<class>ec.edu.ups.entities.accounting.Amount</class>
+		<class>ec.edu.ups.entities.accounting.BillDetail</class>
+		<class>ec.edu.ups.entities.accounting.BillHead</class>
 		<class>ec.edu.ups.entities.management.Degree</class>
 		<class>ec.edu.ups.entities.management.Employee</class>
 		<class>ec.edu.ups.entities.management.Student</class>
 		<class>ec.edu.ups.entities.management.Teacher</class>
 		<class>ec.edu.ups.entities.management.User</class>
+		<class>ec.edu.ups.entities.offer.Career</class>
+		<class>ec.edu.ups.entities.offer.Group</class>
+		<class>ec.edu.ups.entities.offer.Schedule</class>
+		<class>ec.edu.ups.entities.offer.Subject</class>
 		<class>ec.edu.ups.entities.registration.Enrollment</class>
 		<class>ec.edu.ups.entities.registration.Grade</class>
 		<class>ec.edu.ups.entities.registration.Inscription</class>
-		<class>ec.edu.ups.entities.offer.Group</class>
-		<class>ec.edu.ups.entities.offer.Subject</class>
-		<class>ec.edu.ups.entities.offer.Career</class>
-		<class>ec.edu.ups.entities.offer.Schedule</class>
-		<class>ec.edu.ups.entities.accounting.BillHead</class>
-		<class>ec.edu.ups.entities.accounting.BillDetail</class>
-		<class>ec.edu.ups.entities.accounting.Account</class>
-		<class>ec.edu.ups.entities.accounting.AccountType</class>
-		<class>ec.edu.ups.entities.accounting.Amount</class>
 		<properties>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.target-database" value="MySQL"/>			
