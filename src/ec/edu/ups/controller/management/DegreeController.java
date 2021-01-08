@@ -88,9 +88,7 @@ public class DegreeController extends HttpServlet{
 		}
 	}
 	
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String option;
 		String output = "";
 		try {
@@ -128,4 +126,5 @@ public class DegreeController extends HttpServlet{
 			response.getWriter().append("Success");
 		}
 	}
+	
 }
