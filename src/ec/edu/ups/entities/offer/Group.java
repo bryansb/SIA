@@ -1,6 +1,7 @@
 package ec.edu.ups.entities.offer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -49,16 +50,31 @@ public class Group implements Serializable {
 		super();
 	}
 
-	public Group(String academicPeriod, String physicalSpace, int quota, List<Schedule> scheduleList, Subject subject,
-			List<Grade> gradeList, List<Teacher> teacherList) {
+	public Group(String academicPeriod, String physicalSpace, int quota) {
 		super();
 		this.academicPeriod = academicPeriod;
 		this.physicalSpace = physicalSpace;
 		this.quota = quota;
-		this.scheduleList = scheduleList;
-		this.subject = subject;
-		this.gradeList = gradeList;
-		this.teacherList = teacherList;
+	}
+	
+	public void createSchedule(String day, String startTime, String endTime, Group group) {
+		Schedule schedule;
+		
+		if (this.scheduleList == null) {
+			this.scheduleList = new ArrayList<Schedule>();
+		}
+		
+		schedule = new Schedule(day, startTime, endTime, group);
+		scheduleList.add(schedule);
+	}
+	
+	public void addTeacher(Teacher teacher) {
+
+		if (this.teacherList == null) {
+			this.teacherList = new ArrayList<Teacher>();
+		}
+		
+		teacherList.add(teacher);
 	}
 
 	public int getId() {

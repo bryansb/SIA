@@ -46,7 +46,7 @@ public class Subject implements Serializable {
 		super();
 	}
 
-	public Subject(String name, int credits, double cost, int hours, int level, Career career, List<Group> groupList) {
+	public Subject(String name, int credits, double cost, int hours, int level, Career career) {
 		super();
 		this.name = name;
 		this.credits = credits;
@@ -54,7 +54,6 @@ public class Subject implements Serializable {
 		this.hours = hours;
 		this.level = level;
 		this.career = career;
-		this.groupList = groupList;
 	}
 
 	public int getId() {

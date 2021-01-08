@@ -1,7 +1,6 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.TeacherDAO;
 import ec.edu.ups.dao.offer.GroupDAO;
-import ec.edu.ups.dao.offer.ScheduleDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
-import ec.edu.ups.dao.registration.GradeDAO;
 import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.offer.Group;
-import ec.edu.ups.entities.offer.Schedule;
 import ec.edu.ups.entities.offer.Subject;
-import ec.edu.ups.entities.registration.Grade;
 
 /**
  * Servlet implementation class GroupController
@@ -29,9 +24,7 @@ public class GroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private GroupDAO groupDAO;
-	private ScheduleDAO scheduleDAO;
 	private SubjectDAO subjectDAO;
-	private GradeDAO gradeDAO;
 	private TeacherDAO teacherDAO;
        
     /**
@@ -40,9 +33,7 @@ public class GroupController extends HttpServlet {
     public GroupController() {
         super();
         groupDAO = DAOFactory.getFactory().getGroupDAO();
-        scheduleDAO = DAOFactory.getFactory().getScheduleDAO();
         subjectDAO = DAOFactory.getFactory().getSubjectDAO();
-        gradeDAO = DAOFactory.getFactory().getGradeDAO();
         teacherDAO = DAOFactory.getFactory().getTeacherDAO();
     }
 
@@ -84,30 +75,25 @@ public class GroupController extends HttpServlet {
 		String academicPeriod;
 		String physicalSpace;
 		int quota;
-		int scheduleId;
 		int subjectId;
-		int gradeId;
-		int teacherId;
-		List<Schedule> scheduleList;
 		Subject subject;
-		List<Grade> gradeList;
-		List<Teacher> teacherList;
 		Group group;
 		
 		try {
-			academicPeriod = request.getParameter("gro_academic_period");
-			physicalSpace = request.getParameter("gro_physical_space");
-			quota = Integer.parseInt(request.getParameter("gro_quota"));
-			scheduleId = Integer.parseInt(request.getParameter("sch_id"));
-			scheduleList = scheduleDAO.find("", scheduleId, 0);
-			subjectId = Integer.parseInt(request.getParameter("sub_id"));
+			academicPeriod = request.getParameter("academicPeriod");
+			physicalSpace = request.getParameter("physicalSpace");
+			quota = Integer.parseInt(request.getParameter("quota"));
+			group = new Group(academicPeriod, physicalSpace, quota);
+			
+			subjectId = Integer.parseInt(request.getParameter("subjectId"));
 			subject = subjectDAO.read(subjectId);
-			gradeId = Integer.parseInt(request.getParameter("gra_id"));
-			gradeList = gradeDAO.find("", gradeId, 0);
-			teacherId = Integer.parseInt(request.getParameter("tea_id"));
-			teacherList = teacherDAO.find("", teacherId, 0);
-			group = new Group(academicPeriod, physicalSpace, quota, scheduleList, subject, gradeList, teacherList);
+			group.setSubject(subject);
+			
+			createSchedule(request, group);
+			addTeacher(request, group);
+			
 			groupDAO.create(group);
+			
 			return "Success";
 		} catch (Exception e) {
 			System.out.println(">>> Error >> Servlet:GroupController:"
@@ -121,7 +107,7 @@ public class GroupController extends HttpServlet {
 		Group group;
 		int groupId;
 		try {
-			groupId = Integer.parseInt(request.getParameter("gro_id"));
+			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
 		} catch (Exception e) {
 			group = null;
@@ -136,9 +122,9 @@ public class GroupController extends HttpServlet {
 		Group group;
 		
 		try {
-			academicPeriod = request.getParameter("gro_academic_period");
-			physicalSpace = request.getParameter("gro_physical_space");
-			quota = Integer.parseInt(request.getParameter("gro_quota"));
+			academicPeriod = request.getParameter("academicPeriod");
+			physicalSpace = request.getParameter("physicalSpace");
+			quota = Integer.parseInt(request.getParameter("quota"));
 			group = readGroup(request);
 			group.setAcademicPeriod(academicPeriod);
 			group.setPhysicalSpace(physicalSpace);
@@ -162,6 +148,49 @@ public class GroupController extends HttpServlet {
 		} else {
 			response.getWriter().append("Success");
 		}
+	}
+	
+	public void createSchedule(HttpServletRequest request, Group group) {
+		String[] days;
+		String[] startTimes;
+		String[] endTimes;
+		int parameterSize;
+		
+		try {
+			
+			days = request.getParameterValues("day");
+			startTimes = request.getParameterValues("startTime");
+			endTimes = request.getParameterValues("endTime");
+			
+			//Falta metodo validar tamaño de los 3 return tamaño
+			parameterSize = days.length;
+			
+			for (int i = 0; i < parameterSize; i++) {
+				group.createSchedule(days[i], startTimes[i], endTimes[i], group);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void addTeacher(HttpServletRequest request, Group group) {
+		String[] teacherIds;
+		Teacher teacher;
+		
+		try {
+			
+			teacherIds = request.getParameterValues("teacherId");
+			
+			for (String teacherId : teacherIds) {
+				teacher = teacherDAO.read(Integer.parseInt(teacherId));
+				group.addTeacher(teacher);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }
