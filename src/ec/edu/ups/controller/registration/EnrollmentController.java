@@ -120,7 +120,9 @@ public class EnrollmentController extends HttpServlet {
 	private BillHead getBillHead(List<Grade> gradeList) {
 		BillHead billHead = new BillHead();
 		for (Grade grade : gradeList) {
-			billHead.createBillDetail("", 100, 0.4);
+			billHead.createBillDetail(grade.getGroup().getAcademicPeriod() + " group Id " 
+					+ grade.getGroup().getId(), grade.getGroup().getSubject().getCredits(), 
+					grade.getGroup().getSubject().getCost());
 		}
 		if (!billHead.calculateTotal()) {
 			return null;

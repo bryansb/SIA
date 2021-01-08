@@ -23,8 +23,10 @@ import ec.edu.ups.controller.utils.ParameterBasicCreation;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.accounting.AccountDAO;
 import ec.edu.ups.dao.offer.GroupDAO;
+import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.entities.accounting.Account;
 import ec.edu.ups.entities.offer.Group;
+import ec.edu.ups.entities.offer.Subject;
 
 class EnrollmentControllerTest {
 
@@ -33,6 +35,7 @@ class EnrollmentControllerTest {
 	private ParameterBasicCreation parameterBasicCreation;
 	private AccountDAO accountDAO;
 	private GroupDAO groupDAO;
+	private SubjectDAO subjectDAO;
 	private HttpServletRequest request;
     private HttpServletResponse response;
 	
@@ -43,6 +46,7 @@ class EnrollmentControllerTest {
 		parameterBasicCreation = new ParameterBasicCreation();
 		accountDAO = DAOFactory.getFactory().getAccountDAO();
 		groupDAO = DAOFactory.getFactory().getGroupDAO();
+		subjectDAO = DAOFactory.getFactory().getSubjectDAO();
 		request = mock(HttpServletRequest.class);       
         response = mock(HttpServletResponse.class);
         parameterBasicCreation.init();
@@ -101,6 +105,12 @@ class EnrollmentControllerTest {
 		for (int i = 0; i < 3; i++) {
 			group = new Group();
 			try {
+				Subject subject = new Subject();
+				subject.setCost(1.0);
+				subject.setCredits(150);
+				group.setSubject(subject);
+				subjectDAO.create(subject);
+				subject = subjectDAO.read(i + 1);
 				groupDAO.create(group);
 			} catch (Exception e) {
 				e.printStackTrace();
