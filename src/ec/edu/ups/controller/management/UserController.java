@@ -102,9 +102,6 @@ public class UserController extends HttpServlet {
 			case "read":
 				request.setAttribute("user", readUser(request));
 				break;
-			case "delete":
-				output = deleteUser(request);
-				break;
 			default:
 				break;
 			}

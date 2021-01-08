@@ -39,6 +39,7 @@ public class EmployeeController extends HttpServlet {
 			employeeDAO.create(employee);
 			return "Success";
 		}catch(Exception e) {
+			e.printStackTrace();
 			return "Error";
 		}
 	}
@@ -76,17 +77,6 @@ public class EmployeeController extends HttpServlet {
 		}
 	}
 
-	private String deleteEmployee(HttpServletRequest request) {
-		int employeeId;
-		try {
-			employeeId = Integer.parseInt(request.getParameter("use_id"));
-			employeeDAO.deleteByID(employeeId);
-			return "Success";
-		}catch(Exception e) {
-			return "Error";
-		}		
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String option;
@@ -103,9 +93,6 @@ public class EmployeeController extends HttpServlet {
 			case "read":
 				request.setAttribute("employee", readEmployee(request));
 				break;
-			case "delete":
-				output = deleteEmployee(request);
-				break;
 			default:
 				break;
 			}
@@ -113,7 +100,6 @@ public class EmployeeController extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
-		response.getWriter().append(output);
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -126,5 +112,4 @@ public class EmployeeController extends HttpServlet {
 			response.getWriter().append("Success");
 		}
 	}
-
 }

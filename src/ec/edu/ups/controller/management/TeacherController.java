@@ -105,17 +105,6 @@ public class TeacherController extends HttpServlet {
 		}
 	}
 
-	private String deleteTeacher(HttpServletRequest request) {
-		int teacherId;
-		try {
-			teacherId = Integer.parseInt(request.getParameter("use_id"));
-			teacherDAO.deleteByID(teacherId);
-			return "Success";
-		}catch(Exception e) {
-			return "Error";
-		}		
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String option;
@@ -131,9 +120,6 @@ public class TeacherController extends HttpServlet {
 				break;
 			case "read":
 				request.setAttribute("teacher", readTeacher(request));
-				break;
-			case "delete":
-				output = deleteTeacher(request);
 				break;
 			default:
 				break;

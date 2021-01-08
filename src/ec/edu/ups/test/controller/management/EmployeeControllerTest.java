@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ec.edu.ups.controller.management.UserController;
+import ec.edu.ups.controller.management.EmployeeController;
 
-class UserControllerTest {
+class EmployeeControllerTest {
 	
-	private UserController userController;
+	private EmployeeController employeeController;
 	private HttpServletRequest request;
     private HttpServletResponse response;
     
     @BeforeEach
     void setUp() throws Exception {
-    	userController = new UserController();
+    	employeeController = new EmployeeController();
     	request = mock(HttpServletRequest.class);
     	response = mock(HttpServletResponse.class);
     }
@@ -33,6 +33,7 @@ class UserControllerTest {
     void test() throws ServletException, IOException {
     	
     	when(request.getParameter("option")).thenReturn("create");
+    	when(request.getParameter("use_id")).thenReturn("1");
     	when(request.getParameter("use_address")).thenReturn("Euclides");
     	when(request.getParameter("use_dni")).thenReturn("0105100606");
     	when(request.getParameter("use_email")).thenReturn("calvarezz@est.ups.edu.ec");
@@ -40,18 +41,21 @@ class UserControllerTest {
     	when(request.getParameter("use_password")).thenReturn("1234");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
     	when(request.getParameter("use_type")).thenReturn("e");
+    	when(request.getParameter("use_salary")).thenReturn("245.50");
     	
     	StringWriter stringWriter = new StringWriter();
     	PrintWriter writer = new PrintWriter(stringWriter);
     	when(response.getWriter()).thenReturn(writer);
     	
-    	userController.doTest(request, response);
+    	employeeController.doTest(request, response);
     	
     	verify(request, atLeast(1)).getParameter("option");
     	writer.flush();
     	System.out.println(" >> Response: "+stringWriter.toString());
     	assertEquals("Success", stringWriter.toString());
     }
+    
+    @Test
     void test2() throws ServletException, IOException {
     	when(request.getParameter("option")).thenReturn("update");
     	when(request.getParameter("use_id")).thenReturn("1");
@@ -62,12 +66,13 @@ class UserControllerTest {
     	when(request.getParameter("use_password")).thenReturn("1234");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
     	when(request.getParameter("use_type")).thenReturn("e");
+    	when(request.getParameter("use_salary")).thenReturn("245.50");
     	
     	StringWriter stringWriter = new StringWriter();
     	PrintWriter writer = new PrintWriter(stringWriter);
     	when(response.getWriter()).thenReturn(writer);
     	
-    	userController.doTest(request, response);
+    	employeeController.doTest(request, response);
     	
     	verify(request, atLeast(1)).getParameter("option");
     	writer.flush();
@@ -84,29 +89,12 @@ class UserControllerTest {
     	PrintWriter writer = new PrintWriter(stringWriter);
     	when(response.getWriter()).thenReturn(writer);
     	
-    	userController.doTest(request, response);
+    	employeeController.doTest(request, response);
     	
     	verify(request, atLeast(1)).getParameter("option");
     	writer.flush();
     	System.out.println(" >> Response: "+stringWriter.toString());
     	assertEquals("Success", stringWriter.toString());
     }
-    
-    @Test
-    void test4() throws ServletException, IOException {
-    	
-    	when(request.getParameter("option")).thenReturn("delete");
-    	when(request.getParameter("use_id")).thenReturn("1");
-    	
-    	StringWriter stringWriter = new StringWriter();
-    	PrintWriter writer = new PrintWriter(stringWriter);
-    	when(response.getWriter()).thenReturn(writer);
-    	
-    	userController.doTest(request, response);
-    	
-    	verify(request, atLeast(1)).getParameter("option");
-    	writer.flush();
-    	System.out.println(" >> Response: "+stringWriter.toString());
-    	assertEquals("Success", stringWriter.toString());
-    }
+ 
 }

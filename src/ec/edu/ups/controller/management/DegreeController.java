@@ -77,17 +77,6 @@ public class DegreeController extends HttpServlet{
 		}
 	}
 	
-	private String deleteDegree(HttpServletRequest request) {
-		int degreeId;
-		try {
-			degreeId = Integer.parseInt(request.getParameter("deg_id"));
-			degreeDAO.deleteByID(degreeId);
-			return "Success";
-		}catch(Exception e) {
-			return "Error";
-		}
-	}
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String option;
 		String output = "";
@@ -102,9 +91,6 @@ public class DegreeController extends HttpServlet{
 				break;
 			case "read":
 				request.setAttribute("degree", readDegree(request));
-				break;
-			case "delete":
-				output = deleteDegree(request);
 				break;
 			default:
 				break;
