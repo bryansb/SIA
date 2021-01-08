@@ -33,5 +33,26 @@ public class Teacher extends Employee implements Serializable {
 	public Teacher() {
 		super();
 	}
+
+	public List<Degree> getDegreeList() {
+		return degreeList;
+	}
+
+	public void setDegreeList(List<Degree> degreeList) {
+		this.degreeList = degreeList;
+	}
+
+	public List<Group> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<Group> groupList) {
+		this.groupList = groupList;
+	}
+
+	@Override
+	public String toString() {
+		return "Teacher [degreeList=" + degreeList + ", groupList=" + groupList + "]";
+	}
    
 }
