@@ -75,13 +75,22 @@ class GroupControllerTest {
 	}
 	
 	void createSubject() {
-		subjectDAO.create(new Subject());
+		Subject subject = new Subject();
+		try {
+			subjectDAO.create(subject);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	void createTeacher() {
-		teacherDAO.create(new Teacher());
-		teacherDAO.create(new Teacher());
-		teacherDAO.create(new Teacher());
+		try {
+			teacherDAO.create(new Teacher());
+			teacherDAO.create(new Teacher());
+			teacherDAO.create(new Teacher());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
