@@ -27,5 +27,4 @@ public class AmountController {
 			System.out.println(">>> Error >> AmountController:createIncomeAmount > " + e);
 		}
 	}
-	
 }
