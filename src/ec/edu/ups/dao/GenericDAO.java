@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface GenericDAO<T, ID> {
 
-	public void create(T entity);
+	public void create(T entity) throws Exception;
 		
 	public T read(ID id);
 	

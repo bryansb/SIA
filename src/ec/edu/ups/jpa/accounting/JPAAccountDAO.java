@@ -10,4 +10,18 @@ public class JPAAccountDAO extends JPAGenericDAO<Account, Integer>  implements A
 		super(Account.class);
 	}
 
+	@Override
+	public Account findByName(String name) {
+		Account account;
+		try {
+			String[][] attributes = {{"name"}};
+			String[] values = {"equal&" + name};
+			account = super.findByPath(attributes, values, null, 0, 1, false).get(0);
+		} catch (Exception e) {
+			System.out.println(">>> Error >> JPAAccountDAO:findByName > " + e);
+			account = null;
+		}
+		return account;
+	}
+
 }

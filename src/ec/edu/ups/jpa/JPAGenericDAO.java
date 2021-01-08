@@ -26,7 +26,7 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID>{
 	}
 	
 	@Override
-	public void create(T entity) {
+	public void create(T entity) throws Exception {
 		em.getTransaction().begin();
 		try {
 			em.persist(entity);
@@ -36,6 +36,7 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID>{
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
+			throw new Exception(e.getMessage());
 		}
 	}
 

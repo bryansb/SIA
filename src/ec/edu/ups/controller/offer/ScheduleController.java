@@ -77,10 +77,10 @@ public class ScheduleController extends HttpServlet {
 		Schedule schedule;
 		
 		try {
-			day = request.getParameter("sch_day");
-			startTime = request.getParameter("sch_start_time");
-			endTime = request.getParameter("sch_end_time");
-			groupId = Integer.parseInt(request.getParameter("gro_id"));
+			day = request.getParameter("day");
+			startTime = request.getParameter("startTime");
+			endTime = request.getParameter("endTime");
+			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
 			schedule = new Schedule(day, startTime, endTime, group);
 			scheduleDAO.create(schedule);
@@ -97,7 +97,7 @@ public class ScheduleController extends HttpServlet {
 		Schedule schedule;
 		int scheduleId;
 		try {
-			scheduleId = Integer.parseInt(request.getParameter("sch_id"));
+			scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
 			schedule = scheduleDAO.read(scheduleId);
 		} catch (Exception e) {
 			schedule = null;
@@ -112,9 +112,9 @@ public class ScheduleController extends HttpServlet {
 		Schedule schedule;
 		
 		try {
-			day = request.getParameter("sch_day");
-			startTime = request.getParameter("sch_start_time");
-			endTime = request.getParameter("sch_end_time");
+			day = request.getParameter("day");
+			startTime = request.getParameter("startTime");
+			endTime = request.getParameter("endTime");
 			schedule = readSchedule(request);
 			schedule.setDay(day);
 			schedule.setStartTime(startTime);

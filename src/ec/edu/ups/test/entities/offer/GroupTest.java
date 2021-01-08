@@ -13,7 +13,7 @@ class GroupTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		group = new Group("academicPeriodTest", "physicalSpaceTest", 1, null, null, null, null);
+		group = new Group("academicPeriodTest", "physicalSpaceTest", 1);
 	}
 
 	@Test

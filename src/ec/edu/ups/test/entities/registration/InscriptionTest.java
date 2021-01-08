@@ -24,7 +24,8 @@ class InscriptionTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		this.inscription.setDate(new Date());
+		assertFalse(inscription.getDate().toString().isEmpty());
 	}
 
 }

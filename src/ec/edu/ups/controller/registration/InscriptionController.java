@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.management.StudentDAO;
+import ec.edu.ups.dao.offer.CareerDAO;
 import ec.edu.ups.dao.registration.InscriptionDAO;
+import ec.edu.ups.entities.management.Student;
+import ec.edu.ups.entities.offer.Career;
 import ec.edu.ups.entities.registration.Inscription;
 
 /**
@@ -21,6 +25,8 @@ public class InscriptionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private InscriptionDAO inscriptionDAO;
+	private StudentDAO studentDAO;
+	private CareerDAO careerDAO;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,13 +34,15 @@ public class InscriptionController extends HttpServlet {
     public InscriptionController() {
         super();
         inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
+        studentDAO = DAOFactory.getFactory().getStudentDAO();
+        careerDAO = DAOFactory.getFactory().getCareerDAO();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		String option;
 		String output = "";
 		try {
@@ -43,6 +51,9 @@ public class InscriptionController extends HttpServlet {
 			case "create":
 				output = createInscription(request);
 				break;
+			case "read":
+				request.setAttribute("inscription", readInscription(request));
+				break;
 			default:
 				break;
 			}
@@ -50,29 +61,60 @@ public class InscriptionController extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", output);
-		response.getWriter().append(output);
 	}
 	
-	private String createInscription(HttpServletRequest request) {
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+	
+	public String createInscription(HttpServletRequest request) {
 		int studentId;
 		int careerId;
+		Student student;
+		Career career;
 		Inscription inscription;
-		
 		try {
-			studentId = Integer.parseInt(request.getParameter("stu_id"));
-			careerId = Integer.parseInt(request.getParameter("car_id"));
-			inscription = new Inscription();
-			inscription.setDate(new Date());
+			studentId = Integer.parseInt(request.getParameter("studentId"));
+			careerId = Integer.parseInt(request.getParameter("careerId"));
+			student = studentDAO.read(studentId);
+			career = careerDAO.read(careerId);
+			inscription = new Inscription(new Date(), student, career);
 			inscriptionDAO.create(inscription);
 			return "Success";
 		} catch (Exception e) {
-			return "Error";
+			System.out.println(">>> Error >> Servlet:InscriptionController:"
+					+ "createInscription: > " + e.getMessage());
 		}
+		return "Error";
+	}
+	
+	public Inscription readInscription(HttpServletRequest request) {
+		int inscriptionId;
+		Inscription inscription;
+		try {
+			inscriptionId = Integer.parseInt(request.getParameter("inscriptionId"));
+			inscription = inscriptionDAO.read(inscriptionId);
+		} catch (Exception e) {
+			inscription = null;
+		}
+		return inscription;
 	}
 	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		Inscription inscription;
 		this.doGet(request, response);
+		inscription = readInscription(request);
+		if (inscription == null) {
+			response.getWriter().append("Error");
+		} else {
+			response.getWriter().append("Success");
+		}
 	}
 	
 }
