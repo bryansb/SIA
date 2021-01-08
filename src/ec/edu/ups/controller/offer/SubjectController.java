@@ -1,7 +1,6 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.offer.CareerDAO;
-import ec.edu.ups.dao.offer.GroupDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.entities.offer.Career;
-import ec.edu.ups.entities.offer.Group;
 import ec.edu.ups.entities.offer.Subject;
 
 /**
@@ -26,7 +23,6 @@ public class SubjectController extends HttpServlet {
 	
 	private SubjectDAO subjectDAO;
 	private CareerDAO careerDAO;
-	private GroupDAO groupDAO;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,7 +30,7 @@ public class SubjectController extends HttpServlet {
     public SubjectController() {
         super();
         subjectDAO = DAOFactory.getFactory().getSubjectDAO();
-        groupDAO = DAOFactory.getFactory().getGroupDAO();
+        careerDAO = DAOFactory.getFactory().getCareerDAO();
     }
 
 	/**
@@ -80,21 +76,17 @@ public class SubjectController extends HttpServlet {
 		int level;
 		int careerId;
 		Career career;
-		int groupId;
-		List<Group> groupList;
 		Subject subject;
 		
 		try {
-			name = request.getParameter("sub_name");
-			credits = Integer.parseInt(request.getParameter("sub_credits"));
-			cost = Double.parseDouble(request.getParameter("sub_cost"));
-			hours = Integer.parseInt(request.getParameter("sub_hours"));
-			level = Integer.parseInt(request.getParameter("sub_level"));
-			careerId = Integer.parseInt(request.getParameter("car_id"));
+			name = request.getParameter("name");
+			credits = Integer.parseInt(request.getParameter("credits"));
+			cost = Double.parseDouble(request.getParameter("cost"));
+			hours = Integer.parseInt(request.getParameter("hours"));
+			level = Integer.parseInt(request.getParameter("level"));
+			careerId = Integer.parseInt(request.getParameter("careerId"));
 			career = careerDAO.read(careerId);
-			groupId = Integer.parseInt(request.getParameter("gro_id"));
-			groupList = groupDAO.find("", groupId, 0);
-			subject = new Subject(name, credits, cost, hours, level, career, groupList);
+			subject = new Subject(name, credits, cost, hours, level, career);
 			subjectDAO.create(subject);
 			return "Success";
 		} catch (Exception e) {
@@ -108,7 +100,7 @@ public class SubjectController extends HttpServlet {
 		Subject subject;
 		int subjectId;
 		try {
-			subjectId = Integer.parseInt(request.getParameter("sub_id"));
+			subjectId = Integer.parseInt(request.getParameter("subjectId"));
 			subject = subjectDAO.read(subjectId);
 		} catch (Exception e) {
 			subject = null;
@@ -126,11 +118,11 @@ public class SubjectController extends HttpServlet {
 		Subject subject;
 		
 		try {
-			name = request.getParameter("sub_name");
-			credits = Integer.parseInt(request.getParameter("sub_credits"));
-			cost = Double.parseDouble(request.getParameter("sub_cost"));
-			hours = Integer.parseInt(request.getParameter("sub_hours"));
-			level = Integer.parseInt(request.getParameter("sub_level"));
+			name = request.getParameter("name");
+			credits = Integer.parseInt(request.getParameter("credits"));
+			cost = Double.parseDouble(request.getParameter("cost"));
+			hours = Integer.parseInt(request.getParameter("hours"));
+			level = Integer.parseInt(request.getParameter("level"));
 			subject = readSubject(request);
 			subject.setName(name);
 			subject.setCredits(credits);
