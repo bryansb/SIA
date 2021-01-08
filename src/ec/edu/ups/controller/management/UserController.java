@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.UserDAO;
+import ec.edu.ups.entities.management.Employee;
 import ec.edu.ups.entities.management.User;
 
 @WebServlet("/UserController")
@@ -27,7 +28,7 @@ public class UserController extends HttpServlet {
 	private String createUser(HttpServletRequest request) {
 		User user;
 		try {
-			user = new User();
+			user = new Employee();
 			user.setAddress(request.getParameter("use_address"));
 			user.setDni(request.getParameter("use_dni"));
 			user.setEmail(request.getParameter("use_email"));
