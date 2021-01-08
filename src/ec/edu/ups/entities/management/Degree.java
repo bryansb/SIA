@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Table(name = "DEGREES")
 public class Degree implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,14 +34,12 @@ public class Degree implements Serializable {
 		super();
 	}
 
-	
 	public Degree(int id, String name, List<Teacher> teacherList) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.teacherList = teacherList;
 	}
-
 
 	public int getId() {
 		return id;
