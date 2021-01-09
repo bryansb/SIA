@@ -3,7 +3,6 @@ package ec.edu.ups.entities.accounting;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -54,7 +53,6 @@ public class BillHead implements Serializable {
 	
 	public BillHead() {
 		super();
-		this.date = GregorianCalendar.getInstance();
 		this.parameterDAO = DAOFactory.getFactory().getParameterDAO();
 	}
 
@@ -68,20 +66,20 @@ public class BillHead implements Serializable {
 	}
 	
 	public boolean calculateTotal() {
-		Parameter vat;
+		Parameter vatValue;
 		Parameter basicTax;
 		if (this.billDetailList == null) {
 			return false;
 		}
 		try {
-			vat = parameterDAO.findByKey("IVA");
+			vatValue = parameterDAO.findByKey("IVA");
 			basicTax = parameterDAO.findByKey("BASIC_TAX");
 			for (BillDetail billDetail : this.billDetailList) {
 				billDetail.calculateTotal();
 				this.subtotal += billDetail.getTotal();
 			}
 			this.taxes = this.subtotal * basicTax.getDoubleValue();
-			this.vat = this.subtotal * vat.getDoubleValue();
+			this.vat = this.subtotal * vatValue.getDoubleValue();
 			this.total = this.subtotal + this.taxes + this.vat;
 			return true;
 		} catch (Exception e) {

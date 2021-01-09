@@ -56,7 +56,7 @@ class InscriptionControllerTest {
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
-		assertEquals("Success", output);
+        assertTrue(output.contains("Success"));
 	}
 	
 	void createStudent() throws Exception {

@@ -2,6 +2,8 @@ package ec.edu.ups.controller.registration;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,11 +24,14 @@ import ec.edu.ups.entities.registration.Inscription;
  */
 @WebServlet("/InscriptionController")
 public class InscriptionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 	
+	private static final long serialVersionUID = 1L;
+	private static final String ERROR_ROOT = ">>> Error >> InscriptionController";
 	private InscriptionDAO inscriptionDAO;
 	private StudentDAO studentDAO;
 	private CareerDAO careerDAO;
+	private String output;
+	private Logger logger;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,6 +41,7 @@ public class InscriptionController extends HttpServlet {
         inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
         studentDAO = DAOFactory.getFactory().getStudentDAO();
         careerDAO = DAOFactory.getFactory().getCareerDAO();
+        output = "";
     }
 
 	/**
@@ -44,7 +50,7 @@ public class InscriptionController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
-		String output = "";
+		
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -58,7 +64,8 @@ public class InscriptionController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -69,6 +76,7 @@ public class InscriptionController extends HttpServlet {
 		Student student;
 		Career career;
 		Inscription inscription;
+		
 		try {
 			studentId = Integer.parseInt(request.getParameter("studentId"));
 			careerId = Integer.parseInt(request.getParameter("careerId"));
@@ -78,8 +86,8 @@ public class InscriptionController extends HttpServlet {
 			inscriptionDAO.create(inscription);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:InscriptionController:"
-					+ "createInscription: > " + e.getMessage());
+			String message = ERROR_ROOT + ":createInscription > " + e.toString();
+			this.logger.log(Level.INFO, message);
 		}
 		return "Error";
 	}
@@ -87,10 +95,13 @@ public class InscriptionController extends HttpServlet {
 	public Inscription readInscription(HttpServletRequest request) {
 		int inscriptionId;
 		Inscription inscription;
+		
 		try {
 			inscriptionId = Integer.parseInt(request.getParameter("inscriptionId"));
 			inscription = inscriptionDAO.read(inscriptionId);
 		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "No se encuentra la inscripción";
 			inscription = null;
 		}
 		return inscription;
@@ -99,12 +110,13 @@ public class InscriptionController extends HttpServlet {
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		Inscription inscription;
+		
 		this.doGet(request, response);
 		inscription = readInscription(request);
 		if (inscription == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(output);
 		} else {
-			response.getWriter().append("Success");
+			response.getWriter().append(output);
 		}
 	}
 	

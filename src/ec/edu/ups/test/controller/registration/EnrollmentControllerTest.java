@@ -76,7 +76,7 @@ class EnrollmentControllerTest {
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
-		assertEquals("Success", output);
+		assertTrue(output.contains("Success"));
 	}
 	
 	void createInscription() throws ServletException, IOException {
@@ -97,7 +97,7 @@ class EnrollmentControllerTest {
         writer.flush();
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
-		assertEquals("Success", output);
+        assertTrue(output.contains("Success"));
 	}
 	
 	void createGroup() throws ServletException, IOException {

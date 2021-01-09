@@ -39,9 +39,8 @@ public class Parameter implements Serializable {
 		this.description = description;
 	}
 
-	public double getDoubleValue() throws Exception {
-		double value = Double.parseDouble(this.value);
-		return value;
+	public double getDoubleValue() throws NumberFormatException {
+		return Double.parseDouble(this.value);
 	}
 
 	public int getId() {

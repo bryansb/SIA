@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,20 +26,24 @@ import ec.edu.ups.entities.registration.Inscription;
  */
 @WebServlet("/EnrollmentController")
 public class EnrollmentController extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-    
+	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
 	private EnrollmentDAO enrollmentDAO;
 	private InscriptionController inscriptionController;
 	private GradeController gradeController;
+	private String output;
+	private Logger logger;
+	
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EnrollmentController() {
         super();
-        enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
-        inscriptionController = new InscriptionController();
-        gradeController = new GradeController();
+        this.enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
+        this.inscriptionController = new InscriptionController();
+        this.gradeController = new GradeController();
     }
 
 	/**
@@ -46,12 +52,12 @@ public class EnrollmentController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
-		String output = "";
+		
 		try {
 			option = request.getParameter("option");
 			switch (option) {
 			case "create":
-				output = createEnrollment(request);
+				this.output = createEnrollment(request);
 				break;
 			case "read":
 				request.setAttribute("enrollment", readEnrollment(request));
@@ -60,15 +66,18 @@ public class EnrollmentController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
-		request.setAttribute("output", output);
+		request.setCharacterEncoding("UTF-8");
+		request.setAttribute("output", this.output);
 	}
 
 	public String createEnrollment(HttpServletRequest request) {
 		Inscription inscription;
 		Enrollment enrollment;
 		BillHead billHead;
+		
 		try {
 			enrollment = new Enrollment(new GregorianCalendar());
 			inscription = inscriptionController.readInscription(request);
@@ -82,18 +91,19 @@ public class EnrollmentController extends HttpServlet {
 			}
 			enrollment.setInscription(inscription);
 			enrollment.setBillHead(billHead);
-			enrollmentDAO.create(enrollment);
+			this.enrollmentDAO.create(enrollment);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:EnrollmentController:"
-					+ "createEnrollment: > " + e);
+			String message = ERROR_ROOT + ":createEnrollment > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage(); 
 		}
-		return "Error";
 	}
 	
 	public Enrollment readEnrollment(HttpServletRequest request) {
 		Enrollment enrollment;
 		int enrollmentId;
+		
 		try {
 			enrollmentId = Integer.parseInt(request.getParameter("enrollmentId"));
 			enrollment = enrollmentDAO.read(enrollmentId);
@@ -105,6 +115,7 @@ public class EnrollmentController extends HttpServlet {
 	
 	private void  setGradeList(HttpServletRequest request, Enrollment enrollment) {
 		List<Integer> groupIdList;
+		
 		try {
 			groupIdList = getGroupIdListByRequest(request);
 			List<Group> groupList = gradeController.getGroupListByIdList(groupIdList);
@@ -112,7 +123,7 @@ public class EnrollmentController extends HttpServlet {
 				enrollment.createGrade("", 0.0, group);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 		
 	}
@@ -127,10 +138,12 @@ public class EnrollmentController extends HttpServlet {
 		if (!billHead.calculateTotal()) {
 			return null;
 		}
+		billHead.setDate(new GregorianCalendar());
 		return billHead;
 	}
 	
-	private List<Integer> getGroupIdListByRequest(HttpServletRequest request) throws Exception {
+	private List<Integer> getGroupIdListByRequest(HttpServletRequest request) 
+			throws NumberFormatException {
 		List<Integer> groupIdList = new ArrayList<Integer>();
 		String[] groupIds = request.getParameterValues("groupId");
 		for (String groupId : groupIds) {
@@ -145,9 +158,9 @@ public class EnrollmentController extends HttpServlet {
 		this.doGet(request, response);
 		enrollment = readEnrollment(request);
 		if (enrollment == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(this.output);
 		} else {
-			response.getWriter().append("Success");
+			response.getWriter().append(this.output);
 		}
 	}
 }
