@@ -19,6 +19,7 @@
 		<class>ec.edu.ups.entities.registration.Enrollment</class>
 		<class>ec.edu.ups.entities.registration.Grade</class>
 		<class>ec.edu.ups.entities.registration.Inscription</class>
+		<class>ec.edu.ups.entities.utils.Parameter</class>
 		<properties>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.target-database" value="MySQL"/>			
