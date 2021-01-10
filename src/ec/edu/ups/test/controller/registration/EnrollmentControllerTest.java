@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +41,11 @@ class EnrollmentControllerTest {
 	private SubjectDAO subjectDAO;
 	private HttpServletRequest request;
     private HttpServletResponse response;
+    private String[] groupIds;
+    private Logger logger;
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		enrollmentController = new EnrollmentController();
 		inscriptionController = new InscriptionController();
 		parameterBasicCreation = new ParameterBasicCreation();
@@ -49,58 +54,68 @@ class EnrollmentControllerTest {
 		subjectDAO = DAOFactory.getFactory().getSubjectDAO();
 		request = mock(HttpServletRequest.class);       
         response = mock(HttpServletResponse.class);
-        parameterBasicCreation.init();
 	}
 
 	@Test
-	void test() throws ServletException, IOException {
+	void test() {
 		String output;
-		String[] groupIds = {"1", "2", "3"};
 		createInscription();
 		createGroup();
 		createAccount();
-		request = mock(HttpServletRequest.class);       
-        response = mock(HttpServletResponse.class);
-		when(request.getParameter("option")).thenReturn("create");
-		when(request.getParameter("inscriptionId")).thenReturn("1");
-		when(request.getParameter("enrollmentId")).thenReturn("1");
-		when(request.getParameterValues("groupId")).thenReturn(groupIds);
-		
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(writer);
+		createGroupIds();
+		try {
+			parameterBasicCreation.init();
+			request = mock(HttpServletRequest.class);       
+	        response = mock(HttpServletResponse.class);
+			when(request.getParameter("option")).thenReturn("create");
+			when(request.getParameter("inscriptionId")).thenReturn("1");
+			when(request.getParameter("enrollmentId")).thenReturn("1");
+			when(request.getParameterValues("groupId")).thenReturn(groupIds);
+			
+	        StringWriter stringWriter = new StringWriter();
+	        PrintWriter writer = new PrintWriter(stringWriter);
         
-        enrollmentController.doTest(request, response);
-        
-        verify(request, atLeast(1)).getParameter("inscriptionId");
-        writer.flush();
-        output = stringWriter.toString();
-        System.out.println(" >> Response: " + output);
-		assertTrue(output.contains("Success"));
+			when(response.getWriter()).thenReturn(writer);
+			enrollmentController.doTest(request, response);
+			verify(request, atLeast(1)).getParameter("inscriptionId");
+	        writer.flush();
+	        output = stringWriter.toString();
+	        System.out.println(" >> Response: " + output);
+			assertTrue(output.contains("Success"));
+		} catch (IOException e) {
+			this.logger.log(Level.INFO, e.toString());
+		} catch (ServletException e) {
+			this.logger.log(Level.INFO, e.toString());
+		}
 	}
 	
-	void createInscription() throws ServletException, IOException {
+	void createInscription() {
 		String output;
-		
-		when(request.getParameter("option")).thenReturn("create");
-        when(request.getParameter("studentId")).thenReturn("1");
-        when(request.getParameter("careerId")).thenReturn("1");
-        when(request.getParameter("inscriptionId")).thenReturn("1");
-		
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(writer);
-        
-        inscriptionController.doTest(request, response);
-        
-        verify(request, atLeast(1)).getParameter("inscriptionId");
-        writer.flush();
-        output = stringWriter.toString();
-        System.out.println(" >> Response: " + output);
-        assertTrue(output.contains("Success"));
+		try {
+			when(request.getParameter("option")).thenReturn("create");
+	        when(request.getParameter("studentId")).thenReturn("1");
+	        when(request.getParameter("careerId")).thenReturn("1");
+	        when(request.getParameter("inscriptionId")).thenReturn("1");
+			
+	        StringWriter stringWriter = new StringWriter();
+	        PrintWriter writer = new PrintWriter(stringWriter);
+	        when(response.getWriter()).thenReturn(writer);
+	        
+	        inscriptionController.doTest(request, response);
+	        
+	        verify(request, atLeast(1)).getParameter("inscriptionId");
+	        writer.flush();
+	        output = stringWriter.toString();
+	        System.out.println(" >> Response: " + output);
+	        assertTrue(output.contains("Success"));
+		} catch (IOException e) {
+			this.logger.log(Level.INFO, e.toString());
+		} catch (ServletException e) {
+			this.logger.log(Level.INFO, e.toString());
+		}
 	}
 	
-	void createGroup() throws ServletException, IOException {
+	void createGroup() {
 		Group group;
 		for (int i = 0; i < 3; i++) {
 			group = new Group();
@@ -113,7 +128,7 @@ class EnrollmentControllerTest {
 				subject = subjectDAO.read(i + 1);
 				groupDAO.create(group);
 			} catch (Exception e) {
-				e.printStackTrace();
+				this.logger.log(Level.INFO, e.toString());
 			}
 		}
 	}
@@ -126,7 +141,21 @@ class EnrollmentControllerTest {
 		try {
 			accountDAO.create(account);
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.toString());
+		}
+	}
+	
+	void createGroupIds() {
+		List<Group> groupList;
+		try {
+			groupList = groupDAO.find(null, 0, 0);
+			groupList = groupList.subList(groupList.size() - 3, groupList.size() - 1);
+			groupIds = new String[groupList.size()];
+			for (int i = 0; i < groupList.size(); i++) {
+				groupIds[i] = groupList.get(i).getId() + "";
+			}
+		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.toString());
 		}
 	}
 	
