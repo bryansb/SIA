@@ -2,6 +2,8 @@ package ec.edu.ups.controller.management;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +22,8 @@ public class DegreeController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 
+	private static String ERROR_ROOT = ">>> Error >> GroupController:";
+	private Logger logger;
 	private DegreeDAO degreeDAO;
 	private TeacherDAO teacherDAO;
 	
@@ -42,7 +46,9 @@ public class DegreeController extends HttpServlet{
 			degreeDAO.create(degree);
 			return "Success";
 		}catch(Exception e) {
-			return "Error";
+			String message = ERROR_ROOT + ":createDegree > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
 		}
 	}
 	
@@ -61,7 +67,9 @@ public class DegreeController extends HttpServlet{
 			degreeDAO.update(degree);
 			return "Success";
 		}catch(Exception e) {
-			return "Error";
+			String message = ERROR_ROOT + ":updateDegree > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
 		}
 	}
 	
@@ -96,7 +104,7 @@ public class DegreeController extends HttpServlet{
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 		request.setAttribute("output", output);
 	}

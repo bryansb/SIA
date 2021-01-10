@@ -1,6 +1,8 @@
 package ec.edu.ups.controller.management;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +17,11 @@ import ec.edu.ups.entities.management.Employee;
 @WebServlet("/EmployeeController")
 public class EmployeeController extends HttpServlet {
 
+	
 	private static final long serialVersionUID = 1L;
 	
+	private static String ERROR_ROOT = ">>> Error >> GroupController:";
+	private Logger logger;
 	private EmployeeDAO employeeDAO;
 
 	public EmployeeController() {
@@ -40,7 +45,9 @@ public class EmployeeController extends HttpServlet {
 			return "Success";
 		}catch(Exception e) {
 			e.printStackTrace();
-			return "Error";
+			String message = ERROR_ROOT + ":createEmployee > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
 		}
 	}
 	
@@ -61,7 +68,9 @@ public class EmployeeController extends HttpServlet {
 			employeeDAO.update(employee);
 			return "Success";
 		} catch (Exception e) {
-			return "Error";
+			String message = ERROR_ROOT + ":updateEmployee > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
 		}
 	}
 
@@ -97,7 +106,7 @@ public class EmployeeController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 		request.setAttribute("output", output);
 	}

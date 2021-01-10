@@ -1,6 +1,7 @@
 package ec.edu.ups.entities.management;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -55,4 +56,10 @@ public class Teacher extends Employee implements Serializable {
 		return "Teacher [degreeList=" + degreeList + ", groupList=" + groupList + "]";
 	}
    
+	public void addDegree(Degree degree) {
+		if(this.degreeList == null) {
+			this.degreeList = new ArrayList<>();
+		}
+		degreeList.add(degree);
+	}
 }
