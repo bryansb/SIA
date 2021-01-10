@@ -1,6 +1,8 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,9 @@ import ec.edu.ups.entities.offer.Subject;
 @WebServlet("/GroupController")
 public class GroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String ERROR_ROOT = ">>> Error >> GroupController:";
+	private Logger logger;
+	private String output;
 	
 	private GroupDAO groupDAO;
 	private SubjectDAO subjectDAO;
@@ -42,7 +47,6 @@ public class GroupController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option;
-		String output = "";
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -59,7 +63,8 @@ public class GroupController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -68,7 +73,7 @@ public class GroupController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+
 	}
 	
 	public String createGroup(HttpServletRequest request) {
@@ -96,11 +101,10 @@ public class GroupController extends HttpServlet {
 			
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:GroupController:"
-					+ "createGroup: > " + e);
-		}
-		
-		return "Error";
+			String message = ERROR_ROOT + ":createGroup > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
+		}		
 	}
 	
 	public Group readGroup(HttpServletRequest request) {
@@ -129,14 +133,13 @@ public class GroupController extends HttpServlet {
 			group.setAcademicPeriod(academicPeriod);
 			group.setPhysicalSpace(physicalSpace);
 			group.setQuota(quota);
-			groupDAO.create(group);
+			groupDAO.update(group);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:GroupController:"
-					+ "updateGroup: > " + e);
+			String message = ERROR_ROOT + ":updateGroup > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
 		}
-		
-		return "Error";
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -144,9 +147,9 @@ public class GroupController extends HttpServlet {
 		this.doGet(request, response);
 		group = readGroup(request);
 		if (group == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(this.output);
 		} else {
-			response.getWriter().append("Success");
+			response.getWriter().append(this.output);
 		}
 	}
 	
@@ -162,15 +165,15 @@ public class GroupController extends HttpServlet {
 			startTimes = request.getParameterValues("startTime");
 			endTimes = request.getParameterValues("endTime");
 			
-			//Falta metodo validar tamaño de los 3 return tamaño
-			parameterSize = days.length;
-			
-			for (int i = 0; i < parameterSize; i++) {
-				group.createSchedule(days[i], startTimes[i], endTimes[i], group);
+			if (days.length == startTimes.length && days.length == endTimes.length) {
+				parameterSize = days.length;
+				
+				for (int i = 0; i < parameterSize; i++) {
+					group.createSchedule(days[i], startTimes[i], endTimes[i], group);
+				}
 			}
-			
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 		
 	}
@@ -188,7 +191,7 @@ public class GroupController extends HttpServlet {
 				group.addTeacher(teacher);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 		
 	}

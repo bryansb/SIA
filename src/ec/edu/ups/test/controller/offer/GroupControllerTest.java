@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.offer.Subject;
 
 class GroupControllerTest {
-	
+	private Logger logger;
 	private GroupController groupController;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -72,6 +74,7 @@ class GroupControllerTest {
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
 		assertEquals("Success", output);
+		updateTest();
 	}
 	
 	void createSubject() {
@@ -79,7 +82,7 @@ class GroupControllerTest {
 		try {
 			subjectDAO.create(subject);
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 	}
 	
@@ -89,8 +92,31 @@ class GroupControllerTest {
 			teacherDAO.create(new Teacher());
 			teacherDAO.create(new Teacher());
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
+	}
+	
+	void updateTest() throws ServletException, IOException {
+		String output;
+		
+		when(request.getParameter("option")).thenReturn("update");
+		when(request.getParameter("academicPeriod")).thenReturn("academicPeriodTest1");
+		when(request.getParameter("physicalSpace")).thenReturn("physicalSpaceTest1");
+		when(request.getParameter("quota")).thenReturn("2");
+		
+        when(request.getParameter("groupId")).thenReturn("1");
+		
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        
+        groupController.doTest(request, response);
+        
+        verify(request, atLeast(1)).getParameter("groupId");
+        writer.flush();
+        output = stringWriter.toString();
+        System.out.println(" >> Response: " + output);
+		assertEquals("Success", output);
 	}
 
 }

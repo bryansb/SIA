@@ -61,7 +61,7 @@ public class Group implements Serializable {
 		Schedule schedule;
 		
 		if (this.scheduleList == null) {
-			this.scheduleList = new ArrayList<Schedule>();
+			this.scheduleList = new ArrayList<>();
 		}
 		
 		schedule = new Schedule(day, startTime, endTime, group);
@@ -71,7 +71,7 @@ public class Group implements Serializable {
 	public void addTeacher(Teacher teacher) {
 
 		if (this.teacherList == null) {
-			this.teacherList = new ArrayList<Teacher>();
+			this.teacherList = new ArrayList<>();
 		}
 		
 		teacherList.add(teacher);
