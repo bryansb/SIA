@@ -3,6 +3,8 @@ package ec.edu.ups.controller.registration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +23,13 @@ import ec.edu.ups.entities.registration.Grade;
  */
 @WebServlet("/GradeController")
 public class GradeController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 	
+	private static final long serialVersionUID = 1L;
+	private static final String ERROR_ROOT = ">>> Error >> GradeController";
 	private GradeDAO gradeDAO;
 	private GroupDAO groupDAO;
+	private String output;
+	private Logger logger;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,6 +38,7 @@ public class GradeController extends HttpServlet {
         super();
         gradeDAO = DAOFactory.getFactory().getGradeDAO();
         groupDAO = DAOFactory.getFactory().getGroupDAO();
+        output = "";
     }
 
 	/**
@@ -40,7 +46,7 @@ public class GradeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option;
-		String output = "";
+		
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -48,13 +54,14 @@ public class GradeController extends HttpServlet {
 				request.setAttribute("grade", readGrade(request));
 				break;
 			case "update":
-				updateGrade(request);
+				output = updateGrade(request);
 				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -69,11 +76,15 @@ public class GradeController extends HttpServlet {
 	public Grade readGrade(HttpServletRequest request) {
 		int gradeId;
 		Grade grade;
+		
 		try {
 			gradeId = Integer.parseInt(request.getParameter("gradeId"));
 			grade = gradeDAO.read(gradeId);
 		} catch (Exception e) {
 			grade = null;
+			String message = ERROR_ROOT + ":readGrade > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			output = "Error"; 
 		}
 		return grade;
 	}
@@ -82,6 +93,7 @@ public class GradeController extends HttpServlet {
 		String description;
 		double gradeValue;
 		Grade grade;
+		
 		try {
 			description = request.getParameter("gra_description");
 			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
@@ -91,14 +103,15 @@ public class GradeController extends HttpServlet {
 			gradeDAO.update(grade);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:GradeController:"
-					+ "updateGrade: > " + e);
+			String message = ERROR_ROOT + ":updateGrade > " + e.toString();
+			this.logger.log(Level.INFO, message);
 		}
 		return "Error";
 	}
 	
 	public List<Group> getGroupListByIdList(List<Integer> idList) {
 		Group group;
+		
 		List<Group> groupList = new ArrayList<Group>();
 		for (Integer groupId : idList) {
 			group = groupDAO.read(groupId);
@@ -110,12 +123,13 @@ public class GradeController extends HttpServlet {
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		Grade grade;
+		
 		this.doGet(request, response);
 		grade = readGrade(request);
 		if (grade == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(output);
 		} else {
-			response.getWriter().append("Success " + grade.getGradeValue());
+			response.getWriter().append(output + grade.getGradeValue());
 		}
 	}
 
