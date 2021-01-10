@@ -1,6 +1,8 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +22,9 @@ import ec.edu.ups.entities.offer.Schedule;
 @WebServlet("/ScheduleController")
 public class ScheduleController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String ERROR_ROOT = ">>> Error >> ScheduleController:";
+	private Logger logger;
+	private String output;
 	
 	private ScheduleDAO scheduleDAO;
 	private GroupDAO groupDAO;
@@ -38,7 +43,6 @@ public class ScheduleController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option;
-		String output = "";
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -55,7 +59,8 @@ public class ScheduleController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -64,7 +69,7 @@ public class ScheduleController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
 	}
 	
 	public String createSchedule(HttpServletRequest request) {
@@ -86,11 +91,10 @@ public class ScheduleController extends HttpServlet {
 			scheduleDAO.create(schedule);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:ScheduleController:"
-					+ "createSchedule: > " + e);
+			String message = ERROR_ROOT + ":createSchedule > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
 		}
-		
-		return "Error";
 	}
 	
 	public Schedule readSchedule(HttpServletRequest request) {
@@ -122,11 +126,10 @@ public class ScheduleController extends HttpServlet {
 			scheduleDAO.update(schedule);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:ScheduleController:"
-					+ "updateSchedule: > " + e);
+			String message = ERROR_ROOT + ":updateSchedule > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
 		}
-		
-		return "Error";
 	}
 
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -134,9 +137,9 @@ public class ScheduleController extends HttpServlet {
 		this.doGet(request, response);
 		schedule = readSchedule(request);
 		if (schedule == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(this.output);
 		} else {
-			response.getWriter().append("Success");
+			response.getWriter().append(this.output);
 		}
 	}
 	
