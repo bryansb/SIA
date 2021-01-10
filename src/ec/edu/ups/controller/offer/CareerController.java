@@ -1,6 +1,8 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,9 @@ import ec.edu.ups.entities.offer.Career;
 @WebServlet("/CareerController")
 public class CareerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String ERROR_ROOT = ">>> Error >> CareerController:";
+	private Logger logger;
+	private String output;
 	
 	private CareerDAO careerDAO;
        
@@ -34,7 +39,7 @@ public class CareerController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option;
-		String output = "";
+
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -51,7 +56,8 @@ public class CareerController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
+			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -60,7 +66,7 @@ public class CareerController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
 	}
 	
 	public String createCareer(HttpServletRequest request) {
@@ -76,11 +82,10 @@ public class CareerController extends HttpServlet {
 			careerDAO.create(career);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:CareerController:"
-					+ "createCareer: > " + e);
-		}
-		
-		return "Error";
+			String message = ERROR_ROOT + ":createCareer > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
+		}		
 	}
 	
 	public Career readCareer(HttpServletRequest request) {
@@ -110,11 +115,10 @@ public class CareerController extends HttpServlet {
 			careerDAO.update(career);
 			return "Success";
 		} catch (Exception e) {
-			System.out.println(">>> Error >> Servlet:CareerController:"
-					+ "updateCareer: > " + e);
-		}
-		
-		return "Error";
+			String message = ERROR_ROOT + ":updateCareer > " + e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error " + e.getMessage();
+		}		
 	}
 	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,9 +126,9 @@ public class CareerController extends HttpServlet {
 		this.doGet(request, response);
 		career = readCareer(request);
 		if (career == null) {
-			response.getWriter().append("Error");
+			response.getWriter().append(this.output);
 		} else {
-			response.getWriter().append("Success");
+			response.getWriter().append(this.output);
 		}
 	}
 
