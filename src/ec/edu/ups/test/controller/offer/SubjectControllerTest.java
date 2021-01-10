@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,7 @@ import ec.edu.ups.dao.offer.CareerDAO;
 import ec.edu.ups.entities.offer.Career;
 
 class SubjectControllerTest {
-	
+	private Logger logger;
 	private SubjectController subjectController;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -61,6 +63,7 @@ class SubjectControllerTest {
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
 		assertEquals("Success", output);
+		updateTest();
 	}
 
 	void createCareer() {
@@ -70,8 +73,33 @@ class SubjectControllerTest {
 		try {
 			careerDAO.create(career);
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.logger.log(Level.INFO, e.getMessage());
 		}
+	}
+	
+	void updateTest() throws ServletException, IOException {
+		String output;
+		
+		when(request.getParameter("option")).thenReturn("update");
+		when(request.getParameter("name")).thenReturn("nameTest1");
+		when(request.getParameter("credits")).thenReturn("5");
+		when(request.getParameter("cost")).thenReturn("1601");
+		when(request.getParameter("hours")).thenReturn("161");
+		when(request.getParameter("level")).thenReturn("2");
+        
+        when(request.getParameter("subjectId")).thenReturn("1");
+		
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        
+        subjectController.doTest(request, response);
+        
+        verify(request, atLeast(1)).getParameter("subjectId");
+        writer.flush();
+        output = stringWriter.toString();
+        System.out.println(" >> Response: " + output);
+		assertEquals("Success", output);
 	}
 
 }

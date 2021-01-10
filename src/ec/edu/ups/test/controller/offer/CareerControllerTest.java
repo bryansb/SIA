@@ -50,6 +50,29 @@ class CareerControllerTest {
         output = stringWriter.toString();
         System.out.println(" >> Response: " + output);
 		assertEquals("Success", output);
+		updateTest();
+	}
+	
+	void updateTest() throws ServletException, IOException {
+		String output;
+		
+		when(request.getParameter("option")).thenReturn("update");
+		when(request.getParameter("name")).thenReturn("carTest1");
+		when(request.getParameter("time")).thenReturn("150");
+        
+        when(request.getParameter("careerId")).thenReturn("1");
+		
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        
+        careerController.doTest(request, response);
+        
+        verify(request, atLeast(1)).getParameter("careerId");
+        writer.flush();
+        output = stringWriter.toString();
+        System.out.println(" >> Response: " + output);
+		assertEquals("Success", output);
 	}
 
 }
