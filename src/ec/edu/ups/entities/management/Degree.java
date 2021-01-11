@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Table(name = "DEGREES")
 public class Degree implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -26,13 +25,49 @@ public class Degree implements Serializable {
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "REL_TEA_DEG", 
+			name = "rel_tea_deg", 
 			joinColumns = @JoinColumn(name = "deg_id", nullable = false),
 			inverseJoinColumns = @JoinColumn(name = "tea_id", nullable = false))
 	private List<Teacher> teacherList;
 	
 	public Degree() {
 		super();
+	}
+
+	public Degree(int id, String name, List<Teacher> teacherList) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.teacherList = teacherList;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Teacher> getTeacherList() {
+		return teacherList;
+	}
+
+	public void setTeacherList(List<Teacher> teacherList) {
+		this.teacherList = teacherList;
+	}
+
+	@Override
+	public String toString() {
+		return "Degree [id=" + id + ", name=" + name + ", teacherList=" + teacherList + "]";
 	}
    
 }

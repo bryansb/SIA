@@ -43,5 +43,87 @@ public abstract class User implements Serializable {
 	public User() {
 		super();
 	}
-   
+
+	public User(int id, String fullName, String email, String password, String dni, String phone, String address,
+			char type) {
+		super();
+		this.id = id;
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
+		this.dni = dni;
+		this.phone = phone;
+		this.address = address;
+		this.type = type;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ", dni="
+				+ dni + ", phone=" + phone + ", address=" + address + ", type=" + type + "]";
+	}
 }

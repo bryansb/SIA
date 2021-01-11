@@ -12,7 +12,7 @@ import ec.edu.ups.entities.offer.Career;
 import ec.edu.ups.entities.registration.Inscription;
 
 class InscriptionTest {
-
+/*
 	private Inscription inscription;
 	
 	@BeforeEach
@@ -27,5 +27,5 @@ class InscriptionTest {
 		this.inscription.setDate(new GregorianCalendar());
 		assertFalse(inscription.getDate().toString().isEmpty());
 	}
-
+*/
 }
