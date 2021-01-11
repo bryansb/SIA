@@ -45,7 +45,6 @@ public class StudentController extends HttpServlet {
 			student.setType(request.getParameter("use_type").charAt(0));
 			student.setBirthdate(request.getParameter("use_birthdate"));
 			student.setGender(request.getParameter("use_gender").charAt(0));
-			System.out.println(student);
 			studentDAO.create(student);
 			return "Success";
 		}catch(Exception e) {

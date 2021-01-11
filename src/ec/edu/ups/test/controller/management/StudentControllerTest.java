@@ -40,7 +40,7 @@ public class StudentControllerTest {
     	when(request.getParameter("use_dni")).thenReturn("0105100606");
     	when(request.getParameter("use_email")).thenReturn("calvarezz@est.ups.edu.ec");
     	when(request.getParameter("use_full_name")).thenReturn("Carlos Alvarez");
-    	when(request.getParameter("use_password")).thenReturn("1234");
+    	when(request.getParameter("use_password")).thenReturn("12345");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
     	when(request.getParameter("use_type")).thenReturn("S");
     	when(request.getParameter("use_birthdate")).thenReturn("4/10/1997");
@@ -66,7 +66,7 @@ public class StudentControllerTest {
     	when(request.getParameter("use_dni")).thenReturn("0105100606");
     	when(request.getParameter("use_email")).thenReturn("calvarezz@est.ups.edu.ec");
     	when(request.getParameter("use_full_name")).thenReturn("Carlos Alvarez");
-    	when(request.getParameter("use_password")).thenReturn("1234");
+    	when(request.getParameter("use_password")).thenReturn("12345");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
     	when(request.getParameter("use_type")).thenReturn("S");
     	when(request.getParameter("use_birthdate")).thenReturn("04/10/1997");
