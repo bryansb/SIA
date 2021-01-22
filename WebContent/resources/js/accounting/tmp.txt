@@ -1,0 +1,1 @@
+/* Este archivo es temporal, solo para uso estructural. */

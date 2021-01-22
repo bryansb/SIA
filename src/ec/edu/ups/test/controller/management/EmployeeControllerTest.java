@@ -40,7 +40,7 @@ class EmployeeControllerTest {
     	when(request.getParameter("use_full_name")).thenReturn("Carlos Alvarez");
     	when(request.getParameter("use_password")).thenReturn("1234");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
-    	when(request.getParameter("use_type")).thenReturn("e");
+    	when(request.getParameter("use_type")).thenReturn("D");
     	when(request.getParameter("use_salary")).thenReturn("245.50");
     	
     	StringWriter stringWriter = new StringWriter();
@@ -65,7 +65,7 @@ class EmployeeControllerTest {
     	when(request.getParameter("use_full_name")).thenReturn("Carlos Alvarez");
     	when(request.getParameter("use_password")).thenReturn("1234");
     	when(request.getParameter("use_phone")).thenReturn("0983232969");
-    	when(request.getParameter("use_type")).thenReturn("e");
+    	when(request.getParameter("use_type")).thenReturn("S");
     	when(request.getParameter("use_salary")).thenReturn("245.50");
     	
     	StringWriter stringWriter = new StringWriter();
