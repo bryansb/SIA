@@ -12,11 +12,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.offer.CareerDAO;
+import ec.edu.ups.dao.offer.GroupDAO;
+import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
+import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.accounting.BillHead;
+import ec.edu.ups.entities.offer.Career;
 import ec.edu.ups.entities.offer.Group;
+import ec.edu.ups.entities.offer.Subject;
 import ec.edu.ups.entities.registration.Enrollment;
 import ec.edu.ups.entities.registration.Grade;
 import ec.edu.ups.entities.registration.Inscription;
@@ -29,12 +36,22 @@ public class EnrollmentController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
+	private static final String URL = "/JSP/private/registration/student/studentEnrollment.jsp";
 	private EnrollmentDAO enrollmentDAO;
+	private CareerDAO careerDAO;
+	private SubjectDAO subjectDAO;
+	private GroupDAO groupDAO;
+	private InscriptionDAO inscriptionDAO;
 	private InscriptionController inscriptionController;
 	private GradeController gradeController;
 	private String output;
+	private int level;
 	private Logger logger;
 	
+	private HttpSession session;
+	
+	private Inscription inscription;
+	private List<Subject> subjectList;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,6 +59,9 @@ public class EnrollmentController extends HttpServlet {
     public EnrollmentController() {
         super();
         this.enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
+        this.subjectDAO = DAOFactory.getFactory().getSubjectDAO();
+        this.groupDAO = DAOFactory.getFactory().getGroupDAO();
+        this.inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
         this.inscriptionController = new InscriptionController();
         this.gradeController = new GradeController();
     }
@@ -52,7 +72,7 @@ public class EnrollmentController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
-		
+		session = request.getSession(false);
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -62,15 +82,87 @@ public class EnrollmentController extends HttpServlet {
 			case "read":
 				request.setAttribute("enrollment", readEnrollment(request));
 				break;
+			case "enrollment":
+				studentEnrollment(request, response);
+				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
-			this.output = "Error al buscar una opción";
+			this.output = "Error al buscar una opciÃ³n";
 		}
 		request.setCharacterEncoding("UTF-8");
 		request.setAttribute("output", this.output);
+	}
+
+	private void studentEnrollment(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			level = 0;
+			setLevelValues(request);
+			getServletContext().getRequestDispatcher(URL).forward(request, response);
+		} catch (ServletException e) {
+			this.logger.log(Level.WARNING, e.getMessage());
+		} catch (IOException e) {
+			this.logger.log(Level.WARNING, e.getMessage());
+		}
+	}
+
+	private void setLevelValues(HttpServletRequest request) {
+		switch (level) {
+		case 0:
+			setInscriptionToRequest(request);
+			setSubjectListToRequest(request);
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+			
+			break;
+		default:
+			break;
+		}
+		request.setAttribute("level", level);
+	}
+
+	private void setInscriptionToRequest(HttpServletRequest request) {
+		int studentId = 1;
+		if(session != null) {
+			inscription = (Inscription) session.getAttribute("inscription");
+			if (inscription == null) {
+				inscription = inscriptionDAO.getInscriptionByStudentId(studentId);
+				session.setAttribute("inscription", inscription);
+			}
+		}
+		request.setAttribute("inscription", inscription);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setSubjectListToRequest(HttpServletRequest request) {
+		try {
+			if (session != null) {
+				subjectList = (List<Subject>) session.getAttribute("subjectList");
+				if (subjectList == null) {
+					String[][] attributes = {{"career", "id"}};
+					String[] values = {"equal&" + inscription.getCareer().getId()};
+					String[] order = {"name"};
+					subjectList = subjectDAO.findByPath(attributes, values, order, 
+							0, 0, true, true);
+					session.setAttribute("subjectList", subjectList);
+				}
+			}
+			request.setAttribute("subjectList", subjectList);
+		} catch (Exception e) {
+			String message = ERROR_ROOT + ":setSubjectListToRequest > " + e.toString();
+			this.logger.log(Level.INFO, message);
+		}
 	}
 
 	public String createEnrollment(HttpServletRequest request) {
@@ -84,7 +176,7 @@ public class EnrollmentController extends HttpServlet {
 			setGradeList(request, enrollment);
 			billHead = getBillHead(enrollment.getGradeList());
 			if (inscription == null) {
-				throw new NullPointerException("No existe inscripción");
+				throw new NullPointerException("No existe inscripciÃ³n");
 			}
 			if (billHead == null) {
 				throw new NullPointerException("No se pudo concretar el Detalle");

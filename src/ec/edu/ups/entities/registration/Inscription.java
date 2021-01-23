@@ -27,6 +27,10 @@ public class Inscription implements Serializable {
 	@Column(name = "ins_date", nullable = false)
 	private Calendar date;
 	
+	@Column(name = "ins_status", nullable = false,  
+			columnDefinition = "VARCHAR(1) DEFAULT 'A'")
+	private char status;
+	
 	@Column(name = "ins_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
@@ -67,6 +71,14 @@ public class Inscription implements Serializable {
 
 	public void setDate(Calendar date) {
 		this.date = date;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 
 	public boolean isDeleted() {
