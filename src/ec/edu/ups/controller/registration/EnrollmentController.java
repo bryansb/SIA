@@ -52,6 +52,7 @@ public class EnrollmentController extends HttpServlet {
 	
 	private Inscription inscription;
 	private List<Subject> subjectList;
+	private String[] subjectIdArray;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -72,7 +73,7 @@ public class EnrollmentController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
-		session = request.getSession(false);
+		session = request.getSession(true);
 		try {
 			option = request.getParameter("option");
 			switch (option) {
@@ -97,8 +98,10 @@ public class EnrollmentController extends HttpServlet {
 	}
 
 	private void studentEnrollment(HttpServletRequest request, HttpServletResponse response) {
+		
 		try {
-			level = 0;
+			String levelString = request.getParameter("level");
+			level = Integer.parseInt(levelString == null ? "0" : levelString);
 			setLevelValues(request);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException e) {
@@ -115,7 +118,7 @@ public class EnrollmentController extends HttpServlet {
 			setSubjectListToRequest(request);
 			break;
 		case 1:
-			
+			getSubjectId(request);
 			break;
 		case 2:
 			
@@ -127,6 +130,7 @@ public class EnrollmentController extends HttpServlet {
 			
 			break;
 		default:
+			level = 0;
 			break;
 		}
 		request.setAttribute("level", level);
@@ -135,7 +139,7 @@ public class EnrollmentController extends HttpServlet {
 	private void setInscriptionToRequest(HttpServletRequest request) {
 		int studentId = 1;
 		if(session != null) {
-			inscription = (Inscription) session.getAttribute("inscription");
+			//inscription = (Inscription) session.getAttribute("inscription");
 			if (inscription == null) {
 				inscription = inscriptionDAO.getInscriptionByStudentId(studentId);
 				session.setAttribute("inscription", inscription);
@@ -146,12 +150,15 @@ public class EnrollmentController extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	private void setSubjectListToRequest(HttpServletRequest request) {
+		subjectList = null;
+		session.setAttribute("subjectIdArray", null);
 		try {
 			if (session != null) {
-				subjectList = (List<Subject>) session.getAttribute("subjectList");
+				//subjectList = (List<Subject>) session.getAttribute("subjectList");
 				if (subjectList == null) {
-					String[][] attributes = {{"career", "id"}};
-					String[] values = {"equal&" + inscription.getCareer().getId()};
+					String[][] attributes = {{"career", "id"}, {"level"}};
+					String[] values = {"equal&" + inscription.getCareer().getId(), 
+							"equal&" + inscription.getLevel()};
 					String[] order = {"name"};
 					subjectList = subjectDAO.findByPath(attributes, values, order, 
 							0, 0, true, true);
@@ -205,7 +212,26 @@ public class EnrollmentController extends HttpServlet {
 		return enrollment;
 	}
 	
-	private void  setGradeList(HttpServletRequest request, Enrollment enrollment) {
+	private void getSubjectId(HttpServletRequest request) {
+		subjectIdArray = (String[]) session.getAttribute("subjectIdArray");
+		if (subjectIdArray == null || subjectIdArray.length == 0) {
+			subjectIdArray = request.getParameterValues("subjectId");
+			session.setAttribute("subjectIdArray", subjectIdArray);
+		}
+		if (subjectIdArray.length == 0) {
+			level = 0;
+			return;
+		}
+		subjectList = new ArrayList<>();
+		for (String subjectId : subjectIdArray) {
+			System.out.println(subjectId);
+			Subject subject = subjectDAO.read(Integer.parseInt(subjectId));
+			subjectList.add(subject);
+		}
+		request.setAttribute("subjectList", subjectList);
+	}
+	
+	private void setGradeList(HttpServletRequest request, Enrollment enrollment) {
 		List<Integer> groupIdList;
 		
 		try {

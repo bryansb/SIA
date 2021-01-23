@@ -26,12 +26,12 @@
 </head>
 <body>
 	<jsp:invoke fragment="header"/>
-	<div class="container"> 
+	<div class="container-fluid"> 
 		<div class="row" id="content">
-			<div class="col-4">
+			<div class="col-3 m-2">
 				<jsp:invoke fragment="left"/>
 			</div>
-			<div class="col-8">
+			<div class="col-8 m-2">
 				<jsp:doBody/>
 			</div>
 		</div>
