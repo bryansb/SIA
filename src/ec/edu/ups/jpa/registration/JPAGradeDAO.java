@@ -17,7 +17,8 @@ public class JPAGradeDAO extends JPAGenericDAO<Grade, Integer> implements GradeD
 		List<Grade> gradeList;
 		String[][] attributes = {{"enrollment"}, {"id"}};
 		String[] values = {"equal&" + enrollmentId};
-		gradeList = super.findByPath(attributes, values, "id", 0, 0, false);
+		String[] order = {"id"};
+		gradeList = super.findByPath(attributes, values, order, 0, 0, true, true);
 		return gradeList;
 	}
 

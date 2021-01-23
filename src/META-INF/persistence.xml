@@ -21,7 +21,7 @@
 		<class>ec.edu.ups.entities.registration.Inscription</class>
 		<class>ec.edu.ups.entities.utils.Parameter</class>
 		<properties>
-			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipselink.ddl-generation" value="none" />
 			<property name="eclipselink.target-database" value="MySQL"/>			
 			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/siadb" />
 			<property name="javax.persistence.jdbc.user" value="root" />

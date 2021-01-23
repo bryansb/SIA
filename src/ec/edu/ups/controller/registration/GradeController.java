@@ -61,7 +61,7 @@ public class GradeController extends HttpServlet {
 			}
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
-			this.output = "Error al buscar una opción";
+			this.output = "Error al buscar una opciÃ³n";
 		}
 		request.setAttribute("output", output);
 	}
@@ -95,7 +95,7 @@ public class GradeController extends HttpServlet {
 		Grade grade;
 		
 		try {
-			description = request.getParameter("gra_description");
+			description = request.getParameter("description");
 			gradeValue = Double.parseDouble(request.getParameter("gradeValue"));
 			grade = readGrade(request);
 			grade.setDescription(description);
