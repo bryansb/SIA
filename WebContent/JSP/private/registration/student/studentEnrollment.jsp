@@ -8,7 +8,7 @@
 		<script src="/SIA/resources/css/jquery.dataTables.min.css"></script>
 	</jsp:attribute>
 	<jsp:attribute name="js">
-		<script src="/SIA/resources/js/student_enrollment.js"></script>
+		<script src="/SIA/resources/js/registration/student_enrollment.js"></script>
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">

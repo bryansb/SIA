@@ -247,4 +247,50 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID>{
 		return sig;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<T> findByPath(String[][] attributes, String[] values, String order, int index, int size,
+			boolean isDistinct) {
+		em.clear();
+		// Se crea un criterio de consulta
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(this.persistentClass);
+		
+		// FROM
+		Root<T> root = criteriaQuery.from(this.persistentClass);
+		
+		// SELECT
+		criteriaQuery.select(root);
+		
+		// Predicados, combinados con AND
+		Predicate predicate = criteriaBuilder.conjunction();
+		for (int i = 0; i < attributes.length; i++) {
+			Path path = root.get(attributes[i][0]);
+			for (int j = 1; j < attributes[i].length; j++) {
+				path = path.get(attributes[i][j]);
+			}
+			predicate = criteriaBuilder.and(predicate, getSig(criteriaBuilder, path.as(String.class), values[i]));
+		}
+		
+		// WHERE 
+		criteriaQuery.where(predicate);
+		
+		// ORDER
+		if (order != null) criteriaQuery.orderBy(criteriaBuilder.asc(root.get(order)));
+		
+		criteriaQuery.distinct(isDistinct);
+		
+		// Resultado
+		if (index >= 0 && size > 0) {
+			TypedQuery<T> tq = em.createQuery(criteriaQuery);
+			tq.setFirstResult(index);
+			tq.setMaxResults(size);
+			return (List<T>) tq.getResultList();
+		} else {
+			// Se realiza la Query
+			Query query = em.createQuery(criteriaQuery);
+			return (List<T>) query.getResultList();
+		}
+	}
+	
 }
