@@ -5,14 +5,14 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <div class="col-12">
-	<form class="mx-2 my-auto d-inline w-50" style="min-width: 100px" action="/SIA/CareerController" method="get">
+	<form class="mx-2 my-auto d-inline w-50" style="min-width: 100px" action="/SIA/CareerController" method="post">
    		<div class="input-group">
    			<input type="hidden" value="search" name="option"/>
        		<input id="search-career" name="careerName" class="form-control my-search-input" type="search" placeholder="Buscar Carrera" aria-label="Search"/>
         	<input type="submit" value=""/>
        	</div>
     </form>
-	<H2>Lista de Carreras</H2>
+	<H2>Carrera</H2>
 	<div id="tableCareer">
 		<TABLE class="table table-striped">
 			<THEAD>

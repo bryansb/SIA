@@ -81,6 +81,7 @@ public class CareerController extends HttpServlet {
 		String option;
 
 		try {
+			request.setAttribute("careers", listCareer(request));
 			RequestDispatcher view;
 			option = request.getParameter("option");
 			switch (option) {
@@ -92,7 +93,7 @@ public class CareerController extends HttpServlet {
 				request.setAttribute("career", readCareer(request));
 				break;
 			case "search":
-				request.setAttribute("careers", readCareer(request));
+				request.setAttribute("career", searchCareer(request));
 				break;
 			case "update":
 				updateCareer(request);
@@ -140,18 +141,28 @@ public class CareerController extends HttpServlet {
 		return career;
 	}
 	
-	public List<Career> searchCareer(HttpServletRequest request) {
+	public List<Career> listCareer(HttpServletRequest request) {
 		List<Career> careers;
-		String careerName;
 		try {
-			careerName = request.getParameter("careerName");
-			
-			String order = "car_name like " + careerName;
-			careers = careerDAO.find(order, 0, 0);
+			careers = careerDAO.find(null, 0, 0);
 		} catch (Exception e) {
 			careers = null;
 		}
 		return careers;
+	}
+	
+	public Career searchCareer(HttpServletRequest request) {
+		Career career;
+		String careerName;
+		try {
+			careerName = request.getParameter("careerName");
+			career = careerDAO.findByCareerName(careerName);
+			System.out.println(careerName + "\n" + career);
+		} catch (Exception e) {
+			career = null;
+			System.out.println("error buscar");
+		}
+		return career;
 	}
 
 	public String updateCareer(HttpServletRequest request) {

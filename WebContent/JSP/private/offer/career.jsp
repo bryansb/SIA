@@ -35,6 +35,10 @@
 	   			<div class="row justify-content-center">
 					<jsp:include page="careerPages/searchCareer.jsp"/>
 				</div>
+				
+				<div class="row justify-content-center">
+					<jsp:include page="careerPages/listCareer.jsp"/>
+				</div>
 			</div>
 		</div>
 	</jsp:body>
