@@ -26,7 +26,7 @@ public class ParameterBasicCreation extends HttpServlet {
     public void init() throws ServletException {
     	createParameter("IVA", "0.12", "IVA - Ecuador 2021");
     	createParameter("BASIC_TAX", "0.05", 
-    			"Impuesto b·sico de la instituciÛn");
+    			"Impuesto b√°sico de la instituci√≥n");
     	System.out.println("----------");
         System.out.println("---------- ParameterBasicCreation Initialized successfully ----------");
         System.out.println("----------");

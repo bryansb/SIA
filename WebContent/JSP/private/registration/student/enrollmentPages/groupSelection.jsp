@@ -21,7 +21,8 @@
 				<table class="table table-hover col-12" id="subject-list">
 					<thead class="thead-dark">
 						<tr>
-							<th>Grupo</th>
+							<th>Periodo</th>
+							<th>Espacio Físico</th>
 							<th>Cupo</th>
 							<th>Horario</th>
 						</tr>
@@ -32,12 +33,15 @@
 								<td>
 									<div class="form-check">
 										<label class="form-check-label w-100" for="${group.id}">
-										 	<input class="form-check-input" type="checkbox" name="groupId" 
-										 	value="${subject.id}" id="${group.id}" />
-										 	${group.academicPeriod} ${group.physicalSpace}
+										 	<input class="form-check-input groupId" type="radio" name="groupId-${subject.id}" 
+										 	value="${group.id}" id="${group.id}" />
+										 	${group.academicPeriod}
 										</label>
 									</div>
 							 	</td>
+							 	<td>
+							 		${group.physicalSpace}
+						 		</td>
 							 	<td>
 							 		${group.quota}
 							 	</td>
