@@ -5,4 +5,8 @@ import ec.edu.ups.entities.registration.Enrollment;
 
 public interface EnrollmentDAO extends GenericDAO<Enrollment, Integer> {
 
+	public boolean isEnrolledByInscriptionId(int inscritionId);
+	
+	public String getCurrentAcademicPeriod();
+	
 }

@@ -17,7 +17,7 @@ public class JPAParameterDAO extends JPAGenericDAO<Parameter, Integer> implement
 		List<Parameter> parameterList;
 		String[][] attributes = {{"key"}};
 		String[] values = {"equal&" + key};
-		parameterList = super.findByPath(attributes, values, null, 0, 1, false, false);
+		parameterList = super.findByPath(attributes, values, null, 0, 1, false, true);
 		try {
 			return parameterList.get(0);
 		} catch (IndexOutOfBoundsException e) {
