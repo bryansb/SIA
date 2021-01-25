@@ -100,9 +100,6 @@
 					<div class="row justify-content-center">
 						<jsp:include page="enrollmentPages/enrollmentState.jsp"/>
 					</div>
-					<div class="row justify-content-between">
-						<a href="#" class="btn btn-link"> Ver Facturas </a>
-					</div>
 				</c:when>
 				<c:otherwise>
 				</c:otherwise>

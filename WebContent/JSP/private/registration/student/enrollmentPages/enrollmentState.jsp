@@ -4,9 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="col-12">
-	<div class="row">
-		<div class="col-12 my-4">
-			<h2>Matriculación para ${inscription.career.name}</h2>
-		</div>
+	<div class="row justify-content-between">
+	<a href="#" class="btn btn-link"> Ver Facturas </a>
 	</div>
 </div>

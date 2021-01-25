@@ -195,8 +195,9 @@ public class EnrollmentController extends HttpServlet {
 	}
 	
 	private boolean setInscriptionToRequest(HttpServletRequest request) {
-		int studentId = 2;
+		int studentId = 12;
 		Inscription inscription;
+		session.setAttribute("inscription", null);
 		if(session != null) {
 			inscription = inscriptionDAO.getInscriptionByStudentId(studentId);
 			if (enrollmentDAO.isEnrolledByInscriptionId(inscription.getId())) {
