@@ -3,12 +3,29 @@ package ec.edu.ups.jpa.registration;
 import java.util.List;
 
 import ec.edu.ups.dao.registration.InscriptionDAO;
+import ec.edu.ups.entities.management.Student;
 import ec.edu.ups.entities.registration.Inscription;
 import ec.edu.ups.jpa.JPAGenericDAO;
 
 public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer> 
 	implements InscriptionDAO {
 
+	private static final String GET_STUDENT_BY_DNI_QRY = 
+			" SELECT s FROM Student s "
+			+ " WHERE s.dni LIKE :dni";
+	private static final String IS_CURRENT_INSCRITED_QRY = 
+			" SELECT i FROM Inscription i "
+			+ " WHERE i.status = 'A' "
+			+ " AND i.student.id = :studentId";
+	
+	private static final String IS_DNI_CREATED_QRY = 
+			" SELECT COUNT(s.id) FROM Student s "
+			+ " WHERE s.dni = :dni";
+	
+	private static final String IS_EMAIL_CREATED_QRY = 
+			" SELECT COUNT(s.id) FROM Student s "
+			+ " WHERE s.email = :email";
+	
 	public JPAInscriptionDAO() {
 		super(Inscription.class);
 	}
@@ -23,6 +40,48 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			return inscriptionList.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public Student getStudentByDni(String dni) {
+		return (Student) super.em.createQuery(GET_STUDENT_BY_DNI_QRY)
+				.setParameter("dni", dni).getSingleResult();
+	}
+
+	@Override
+	public Inscription getCurrentInscrited(int studentId) {
+		try {
+			Inscription inscription = (Inscription) super.em.createQuery(IS_CURRENT_INSCRITED_QRY)
+					.setParameter("studentId", studentId)
+					.getSingleResult();
+			return inscription;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean isStudentCreated(String dni) {
+		try {
+			Long count = (Long) super.em.createQuery(IS_DNI_CREATED_QRY)
+					.setParameter("dni", dni)
+					.getSingleResult();
+			return count.intValue() == 0 ? false : true;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean isEmailCreated(String email) {
+		try {
+			Long count = (Long) super.em.createQuery(IS_EMAIL_CREATED_QRY)
+					.setParameter("email", email)
+					.getSingleResult();
+			return count.intValue() == 0 ? false : true;
+		} catch (Exception e) {
+			return true;
+		}
 	}
 
 }

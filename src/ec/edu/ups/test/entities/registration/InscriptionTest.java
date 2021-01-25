@@ -18,7 +18,7 @@ class InscriptionTest {
 	void setUp() throws Exception {
 		Student student = new Student();
 		Career career = new Career();
-		this.inscription = new Inscription(new GregorianCalendar(), student, career);
+		this.inscription = new Inscription(new GregorianCalendar(), 'A', student, career);
 	}
 
 	@Test

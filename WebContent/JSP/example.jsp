@@ -10,7 +10,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
-	Página de Ejemplo
+	Record Académico
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">

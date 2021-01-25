@@ -47,7 +47,7 @@ class GradeControllerTest {
 	}
 	
 	void createGrade() {
-		Grade grade = new Grade("TEST", 0.0, null, null);
+		Grade grade = new Grade("TEST", 0.0, null, 'N', null);
 		try {
 			gradeDAO.create(grade);
 			List<Grade> gradeList = gradeDAO.find(null, 0, 0);
