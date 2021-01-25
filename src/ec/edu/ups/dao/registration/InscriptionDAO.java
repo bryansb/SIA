@@ -8,4 +8,6 @@ public interface InscriptionDAO extends GenericDAO<Inscription, Integer> {
 	public Inscription getInscriptionByStudentId(int studentId);
 	public Student getStudentByDni(String dni);
 	public Inscription getCurrentInscrited(int studentId);
+	public boolean isStudentCreated(String dni);
+	public boolean isEmailCreated(String email);
 }

@@ -18,6 +18,14 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			+ " WHERE i.status = 'A' "
 			+ " AND i.student.id = :studentId";
 	
+	private static final String IS_DNI_CREATED_QRY = 
+			" SELECT COUNT(s.id) FROM Student s "
+			+ " WHERE s.dni = :dni";
+	
+	private static final String IS_EMAIL_CREATED_QRY = 
+			" SELECT COUNT(s.id) FROM Student s "
+			+ " WHERE s.email = :email";
+	
 	public JPAInscriptionDAO() {
 		super(Inscription.class);
 	}
@@ -49,6 +57,30 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			return inscription;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	@Override
+	public boolean isStudentCreated(String dni) {
+		try {
+			Long count = (Long) super.em.createQuery(IS_DNI_CREATED_QRY)
+					.setParameter("dni", dni)
+					.getSingleResult();
+			return count.intValue() == 0 ? false : true;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean isEmailCreated(String email) {
+		try {
+			Long count = (Long) super.em.createQuery(IS_EMAIL_CREATED_QRY)
+					.setParameter("email", email)
+					.getSingleResult();
+			return count.intValue() == 0 ? false : true;
+		} catch (Exception e) {
+			return true;
 		}
 	}
 

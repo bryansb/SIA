@@ -59,8 +59,10 @@ public class InscriptionController extends HttpServlet {
 		output = "";
 		noticeClass = "none";
 		option = "none";
+		request.setCharacterEncoding("UTF-8");
 		try {
-			option = request.getParameter("option");
+			option = request.getParameter("option") == null ? 
+					"none" : request.getParameter("option");
 			switch (option) {
 			case "create":
 				createInscription(request);
@@ -73,15 +75,17 @@ public class InscriptionController extends HttpServlet {
 				createInscriptionProcess(request, response);
 				break;
 			case "createStudent":
-				studentController.createStudent(request, response, noticeClass, output);
+				studentController.createStudent(request, response);
+				output = studentController.output;
+				noticeClass = studentController.noticeClass;
+				option = "createStudentProcess";
+				redirectProcess(request, response);
 				break;
 			case "createStudentProcess":
 				redirectProcess(request, response);
 				break;
 			default:
 				option = "none";
-				noticeClass = "bt-danger";
-				output = "No se encontró una opción válida";
 				redirectProcess(request, response);
 				break;
 			}

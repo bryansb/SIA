@@ -54,7 +54,7 @@
 						</div>
 					</div>
 					<div class="row justify-content-center">
-						<div class="col-6">
+						<div class="col-8">
 							<form action="/SIA/InscriptionController" method="GET">
 								<div class="input-group mb-3">
 									<input type="hidden" name="option" value="inscribe"/>
@@ -62,7 +62,10 @@
 							  		aria-label="Cédula del Estudiante" aria-describedby="basic-addon" name="dni">
 							  	
 								  	<div class="input-group-append">
-								    	<button class="input-group-text btn btn-primary" id="basic-addon"><i class="fas fa-search"></i></button>
+								    	<button class="btn btn-primary" id="basic-addon">
+								    		<i class="fas fa-search"></i>
+								    	</button>
+								    	<button type="button" class="btn btn-success" onclick="createStudentPage();"> <i class="far fa-user"></i> Crear Estudiante </button>
 								 	</div>
 							 	
 								</div>
@@ -109,7 +112,7 @@
 						<button type="button" class="btn btn-danger"> 
 							<i class="fas fa-window-close"></i> Cancelar
 						</button>
-						<button type="button" class="btn btn-success" onclick="createInscription();"> 
+						<button type="button" class="btn btn-primary" onclick="createInscription();"> 
 							<i class="fas fa-check-square"></i> Crear
 						</button>
 					</div>
