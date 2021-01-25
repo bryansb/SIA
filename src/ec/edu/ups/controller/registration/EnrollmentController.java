@@ -33,7 +33,7 @@ public class EnrollmentController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
-	private static final String URL = "/JSP/private/registration/student/studentEnrollment.jsp";
+	private static final String URL = "/JSP/private/registration/secretary/studentInscription.jsp";
 	private EnrollmentDAO enrollmentDAO;
 	private SubjectDAO subjectDAO;
 	private InscriptionDAO inscriptionDAO;

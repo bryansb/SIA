@@ -2,6 +2,7 @@ package ec.edu.ups.controller.registration;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,12 +28,16 @@ public class InscriptionController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> InscriptionController";
+	private static final String URL = "/JSP/private/registration/secretary/studentInscription.jsp";
 	private InscriptionDAO inscriptionDAO;
 	private StudentDAO studentDAO;
 	private CareerDAO careerDAO;
-	private String output;
+	private StudentController studentController;
+	
 	private Logger logger;
-       
+	private String noticeClass;
+	private String output;
+	private String option;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,6 +46,8 @@ public class InscriptionController extends HttpServlet {
         inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
         studentDAO = DAOFactory.getFactory().getStudentDAO();
         careerDAO = DAOFactory.getFactory().getCareerDAO();
+        studentController = new StudentController();
+        noticeClass = "none";
         output = "";
     }
 
@@ -49,28 +56,105 @@ public class InscriptionController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		String option;
-		
+		output = "";
+		noticeClass = "none";
+		option = "none";
 		try {
 			option = request.getParameter("option");
 			switch (option) {
 			case "create":
-				output = createInscription(request);
+				createInscription(request);
+				redirectProcess(request, response);
 				break;
 			case "read":
 				request.setAttribute("inscription", readInscription(request));
 				break;
+			case "inscribe":
+				createInscriptionProcess(request, response);
+				break;
+			case "createStudent":
+				studentController.createStudent(request, response, noticeClass, output);
+				break;
+			case "createStudentProcess":
+				redirectProcess(request, response);
+				break;
 			default:
+				option = "none";
+				noticeClass = "bt-danger";
+				output = "No se encontr贸 una opci贸n v谩lida";
+				redirectProcess(request, response);
 				break;
 			}
+			
 		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.getMessage());
-			this.output = "Error al buscar una opci髇";
+			option = "none";
+			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
 		}
-		request.setAttribute("output", output);
+		
 	}
 	
-	public String createInscription(HttpServletRequest request) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+	
+	private void createInscriptionProcess(HttpServletRequest request, HttpServletResponse response) {
+		searchStudent(request);
+		redirectProcess(request, response);
+	}
+	
+	private void redirectProcess(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			request.setAttribute("option", option);
+			request.setAttribute("output", output);
+			request.setAttribute("noticeClass", noticeClass);
+			setCareerListToRequest(request);
+			getServletContext().getRequestDispatcher(URL).forward(request, response);
+		} catch (ServletException | IOException e) {
+			logger.log(Level.INFO, e.getMessage());
+		}
+	}
+	
+	private void searchStudent(HttpServletRequest request) {
+		Student student = null;
+		String dni = request.getParameter("dni");
+		
+		if (dni != null) {
+			student = studentController.searchStudentByDni(request, 
+					noticeClass, output);
+			if (student == null) {
+				noticeClass = "bg-danger";
+				output = "No se encontr贸 al Estudiente";
+			} else  {
+				Inscription inscription = inscriptionDAO.getCurrentInscrited(student.getId());
+				if (inscription != null) {
+					noticeClass = "bg-info";
+					output = "El Estudiante ya est谩 inscrito en la carrera de " 
+							+ inscription.getCareer().getName();
+				}
+			}
+		}
+		request.setAttribute("student", student);
+	}
+	
+	private void setCareerListToRequest(HttpServletRequest request) {
+		List<Career> careerList = careerDAO.find("name", 0, 0);
+		request.setAttribute("careerList", careerList);
+	}
+	
+	private boolean validStudent(int studentId) {
+		Inscription inscription = inscriptionDAO.getCurrentInscrited(studentId);
+		
+		if (inscription == null) {
+			return true;
+		}
+		output = "El Estudiante ya est谩 inscrito";
+		noticeClass = "bg-danger";
+		return false;
+	}
+	
+	public void createInscription(HttpServletRequest request) {
 		int studentId;
 		int careerId;
 		Student student;
@@ -79,17 +163,21 @@ public class InscriptionController extends HttpServlet {
 		
 		try {
 			studentId = Integer.parseInt(request.getParameter("studentId"));
+			if (!validStudent(studentId)) {
+				return;
+			}
 			careerId = Integer.parseInt(request.getParameter("careerId"));
 			student = studentDAO.read(studentId);
 			career = careerDAO.read(careerId);
-			inscription = new Inscription(new GregorianCalendar(), student, career);
+			inscription = new Inscription(new GregorianCalendar(), 'A', student, career);
+			
 			inscriptionDAO.create(inscription);
-			return "Success";
+			this.noticeClass = "bg-success";
+			this.output = "Inscripci贸n creada con 茅xito";
 		} catch (Exception e) {
-			String message = ERROR_ROOT + ":createInscription > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			this.noticeClass = "bg-danger";
+			this.output = "No se pudo crear la Inscripci贸n, aseg煤rese de seleccionar un Estudiante y Carrera";
 		}
-		return "Error";
 	}
 	
 	public Inscription readInscription(HttpServletRequest request) {
@@ -99,9 +187,14 @@ public class InscriptionController extends HttpServlet {
 		try {
 			inscriptionId = Integer.parseInt(request.getParameter("inscriptionId"));
 			inscription = inscriptionDAO.read(inscriptionId);
+			if (inscription == null) {
+				this.noticeClass = "bg-danger";
+				this.output = "No se encuentra la inscripci贸n";
+			}
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
-			this.output = "No se encuentra la inscripci髇";
+			this.noticeClass = "bg-danger";
+			this.output = "No se encuentra la inscripci贸n";
 			inscription = null;
 		}
 		return inscription;
