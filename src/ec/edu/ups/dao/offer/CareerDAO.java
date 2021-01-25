@@ -5,4 +5,5 @@ import ec.edu.ups.entities.offer.Career;
 
 public interface CareerDAO extends GenericDAO<Career, Integer> {
 
+	public Career findByCareerName(String name);
 }
