@@ -68,7 +68,7 @@ public class GradeRegister extends HttpServlet {
 	}
 	
 	private void setGradesToRequest(HttpServletRequest request, HttpServletResponse response) {
-		int teacherId = 11;
+		int teacherId = 2;
 		gradeList = gradeDAO.findCurrentDregreListByTeacherId(teacherId);
 		request.setAttribute("gradeList", gradeList);
 		redirectProcess(request, response);

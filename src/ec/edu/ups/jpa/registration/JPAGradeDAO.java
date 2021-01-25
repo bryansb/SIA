@@ -12,7 +12,7 @@ import ec.edu.ups.jpa.JPAGenericDAO;
 public class JPAGradeDAO extends JPAGenericDAO<Grade, Integer> implements GradeDAO {
 
 	private static final String CURRENT_DEGREE_QRY = 
-			" SELECT gr FROM Grade gr "
+			" SELECT DISTINCT gr FROM Grade gr "
 			+ "	INNER JOIN gr.group.teacherList t"
 			+ " INNER JOIN t.groupList g"
 			+ " WHERE t.id = :teacherId "
