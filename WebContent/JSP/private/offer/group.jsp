@@ -32,6 +32,8 @@
 					<jsp:include page="groupPages/createGroup.jsp"/>
 				</div>
 				
+				
+				
 	   			<div class="row justify-content-center">
 					<jsp:include page="groupPages/listGroup.jsp"/>
 				</div>

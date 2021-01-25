@@ -53,7 +53,7 @@ public class GroupController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("subjects", listSubject(request));
-		request.setAttribute("teachers", listTeacher(request));
+//		request.setAttribute("teachers", listTeacher(request));
 		request.setAttribute("groups", listGroup(request));
 		RequestDispatcher view;
 		view = request.getRequestDispatcher("/JSP/private/offer/group.jsp");
@@ -231,19 +231,27 @@ public class GroupController extends HttpServlet {
 		String[] endTimes;
 		int parameterSize;
 		
+		String day;
+		String startTime;
+		String endTime;
+		
 		try {
 			
-			days = request.getParameterValues("day");
-			startTimes = request.getParameterValues("startTime");
-			endTimes = request.getParameterValues("endTime");
+//			days = request.getParameterValues("day");
+//			startTimes = request.getParameterValues("startTime");
+//			endTimes = request.getParameterValues("endTime");
 			
-			if (days.length == startTimes.length && days.length == endTimes.length) {
-				parameterSize = days.length;
-				
-				for (int i = 0; i < parameterSize; i++) {
-					group.createSchedule(days[i], startTimes[i], endTimes[i], group);
-				}
-			}
+//			if (days.length == startTimes.length && days.length == endTimes.length) {
+//				parameterSize = days.length;
+//				
+//				for (int i = 0; i < parameterSize; i++) {
+//					group.createSchedule(days[i], startTimes[i], endTimes[i], group);
+//				}
+//			}
+			day = request.getParameter("day");
+			startTime = request.getParameter("startTime");
+			endTime = request.getParameter("endTime");
+			group.createSchedule(day, startTime, endTime, group);
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
 		}
@@ -254,14 +262,20 @@ public class GroupController extends HttpServlet {
 		String[] teacherIds;
 		Teacher teacher;
 		
+		int teacherId;
+		
 		try {
+//			teacherDAO.create(new Teacher());
+//			teacherIds = request.getParameterValues("teacherId");
+//			
+//			for (String teacherId : teacherIds) {
+//				teacher = teacherDAO.read(Integer.parseInt(teacherId));
+//				group.addTeacher(teacher);
+//			}
 			
-			teacherIds = request.getParameterValues("teacherId");
-			
-			for (String teacherId : teacherIds) {
-				teacher = teacherDAO.read(Integer.parseInt(teacherId));
-				group.addTeacher(teacher);
-			}
+			teacherId =Integer.parseInt(request.getParameter("teacherId"));
+			teacher = teacherDAO.read(teacherId);
+			group.addTeacher(teacher);
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
 		}

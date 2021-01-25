@@ -40,6 +40,10 @@ public class CareerController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("careers", listCareer(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
+		view.forward(request, response);
 //		String option;
 //
 //		try {
@@ -81,8 +85,6 @@ public class CareerController extends HttpServlet {
 		String option;
 
 		try {
-			request.setAttribute("careers", listCareer(request));
-			RequestDispatcher view;
 			option = request.getParameter("option");
 			switch (option) {
 			case "create":
@@ -101,8 +103,6 @@ public class CareerController extends HttpServlet {
 			default:
 				break;
 			}
-			view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
-			view.forward(request, response);
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
 			this.output = "Error al buscar una opción";

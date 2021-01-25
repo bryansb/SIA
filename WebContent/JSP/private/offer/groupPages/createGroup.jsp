@@ -38,27 +38,20 @@
 				</c:forEach>
 			</select>
 		</div>
-		
+		<h4>Agregar Horario</h4>
 		<div class="form-group ">
-			<label for="scheduleId">Horario:</label>
-			 <select name="teacherId" class="form-control">
-			 	<option value="NaN" selected>Seleccione</option>
-		    	<c:forEach var="teacher" items="${teachers}">
-	    			<option value="${teacher.id}">${teacher.name}</option>
-				</c:forEach>
-			</select>
-			<button>Agregar Horario</button>
+			<label for="day">Día:</label>
+			<input type="text" id="day" name="day" class="form-control" placeholder="Día" required>
+		</div>
+		<div class="form-group ">
+			<label for=startTime>Hora de Inicio:</label>
+			<input type="text" id="startTime" name="startTime" class="form-control" placeholder="Hora Inicio" required>
+		</div>
+		<div class="form-group ">
+			<label for=endTime>Hora Fin:</label>
+			<input type="text" id="endTime" name="endTime" class="form-control" placeholder="Hora Fin" required>
 		</div>
 		<input type="submit" class="btn btn-primary" value="Registrar"/>
-		<!--
-		<c:choose>
-			<c:when test="${empty career.id}">
-				<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createCareer('career-form')">
-			</c:when>
-			<c:otherwise>
-				<input type="button" id="accept"  class="btn btn-primary" value="Aceptar" onclick="updateCareer('career-form', ${currentPage})">
-			</c:otherwise>
-		</c:choose>
-		-->
+
 	</form>
 </div>
