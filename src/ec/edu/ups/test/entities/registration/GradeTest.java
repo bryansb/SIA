@@ -13,7 +13,7 @@ class GradeTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		grade = new Grade("Felicidades", 90.0, null, null);
+		grade = new Grade("Felicidades", 90.0, null, 'N', null);
 	}
 
 	@Test

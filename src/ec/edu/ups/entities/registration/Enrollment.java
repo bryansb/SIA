@@ -10,6 +10,7 @@ import javax.persistence.*;
 import ec.edu.ups.controller.accounting.AmountController;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.accounting.AccountDAO;
+import ec.edu.ups.dao.offer.GroupDAO;
 import ec.edu.ups.entities.accounting.Account;
 import ec.edu.ups.entities.accounting.BillHead;
 import ec.edu.ups.entities.offer.Group;
@@ -32,6 +33,13 @@ public class Enrollment implements Serializable {
 	@Column(name = "enr_date")
 	private Calendar date;
 	
+	@Column(name = "enr_academic_period")
+	private String academicPeriod;
+	
+	@Column(name = "enr_status", nullable = false,  
+			columnDefinition = "VARCHAR(1) DEFAULT 'C'")
+	private char status;
+	
 	@Column(name = "enr_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
@@ -51,6 +59,9 @@ public class Enrollment implements Serializable {
 	private AccountDAO accountDAO;
 	
 	@Transient
+	private GroupDAO groupDAO;
+	
+	@Transient
 	private AmountController amountController;
 	
 	public Enrollment() {
@@ -58,15 +69,19 @@ public class Enrollment implements Serializable {
 		init();
 	}
 
-	public Enrollment(Calendar date) {
+	public Enrollment(Calendar date, String academicPeriod, char status) {
 		super();
 		this.date = date;
+		this.academicPeriod = academicPeriod;
+		this.status = status;
 		init();
 	}
 	
-	public Enrollment(Calendar date, Inscription inscription, BillHead billHead) {
+	public Enrollment(Calendar date, String academicPeriod, char status, Inscription inscription, BillHead billHead) {
 		super();
 		this.date = date;
+		this.academicPeriod = academicPeriod;
+		this.status = status;
 		this.inscription = inscription;
 		this.billHead = billHead;
 		init();
@@ -74,22 +89,42 @@ public class Enrollment implements Serializable {
 	
 	private void init() {
 		accountDAO = DAOFactory.getFactory().getAccountDAO();
+		groupDAO = DAOFactory.getFactory().getGroupDAO();
 		amountController = new AmountController();
 	}
 	
-	public void createGrade(String description, double gradeValue, Group group) {
+	public void createGrade(String description, double gradeValue, char status, Group group) {
 		if (gradeList == null) {
-			gradeList = new ArrayList<Grade>();
+			gradeList = new ArrayList<>();
 		}
-		Grade grade = new Grade(description, gradeValue, group, this);
+		Grade grade = new Grade(description, gradeValue, group, status, this);
 		this.gradeList.add(grade);
+	}
+	
+	public boolean validGroupQuota() {
+		for (Grade grade : gradeList) {
+			Group group = groupDAO.read(grade.getGroup().getId());
+			if (group.getQuota() < 1) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@PostPersist
 	private void createIncomeAmount() {
 		Account account = this.accountDAO.findByName("CAJA CONTABLE");
-		this.amountController.createIncomeAmount("", this.billHead.getSubtotal(), 
+		this.amountController.createIncomeAmount("Enrollment", this.billHead.getSubtotal(), 
 				this.billHead.getTotal(), account);
+		updateGroupQuota();
+	}
+	
+	private void updateGroupQuota() {
+		for (Grade grade : gradeList) {
+			Group group = grade.getGroup();
+			group.setQuota(group.getQuota() - 1);
+			groupDAO.update(group);
+		}
 	}
 	
 	public int getId() {
@@ -106,6 +141,22 @@ public class Enrollment implements Serializable {
 
 	public void setDate(Calendar date) {
 		this.date = date;
+	}
+
+	public String getAcademicPeriod() {
+		return academicPeriod;
+	}
+
+	public void setAcademicPeriod(String academicPeriod) {
+		this.academicPeriod = academicPeriod;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 
 	public boolean isDeleted() {

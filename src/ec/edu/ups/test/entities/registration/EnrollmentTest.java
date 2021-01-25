@@ -15,7 +15,7 @@ class EnrollmentTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		enrollment = new Enrollment(new GregorianCalendar());
+		enrollment = new Enrollment(new GregorianCalendar(), "Periodo", 'C');
 	}
 
 	@Test

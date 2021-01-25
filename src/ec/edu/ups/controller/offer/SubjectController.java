@@ -1,9 +1,11 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,6 +44,39 @@ public class SubjectController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("careers", listCareer(request));
+		request.setAttribute("subjects", listSubject(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/subject.jsp");
+		view.forward(request, response);
+//		String option;
+		
+//		try {
+//			option = request.getParameter("option");
+//			switch (option) {
+//			case "create":
+//				output = createSubject(request);
+//				break;
+//			case "read":
+//				request.setAttribute("subject", readSubject(request));
+//				break;
+//			case "update":
+//				updateSubject(request);
+//				break;
+//			default:
+//				break;
+//			}
+//		} catch (Exception e) {
+//			this.logger.log(Level.INFO, e.getMessage());
+//			this.output = "Error al buscar una opción";
+//		}
+//		request.setAttribute("output", output);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		String option;
 		try {
 			option = request.getParameter("option");
@@ -64,14 +99,27 @@ public class SubjectController extends HttpServlet {
 		}
 		request.setAttribute("output", output);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	
+	public List<Career> listCareer(HttpServletRequest request) {
+		List<Career> careers;
+		try {
+			careers = careerDAO.find(null, 0, 0);
+		} catch (Exception e) {
+			careers = null;
+		}
+		return careers;
 	}
 	
+	public List<Subject> listSubject(HttpServletRequest request) {
+		List<Subject> subjects;
+		try {
+			subjects = subjectDAO.find(null, 0, 0);
+		} catch (Exception e) {
+			subjects = null;
+		}
+		return subjects;
+	}
+
 	public String createSubject(HttpServletRequest request) {
 		
 		String name;
@@ -95,7 +143,7 @@ public class SubjectController extends HttpServlet {
 			subjectDAO.create(subject);
 			return "Success";
 		} catch (Exception e) {
-			String message = ERROR_ROOT + ":createSubjecr > " + e.toString();
+			String message = ERROR_ROOT + ":createSubject > " + e.toString();
 			this.logger.log(Level.INFO, message);
 			return "Error " + e.getMessage();
 		}

@@ -7,4 +7,5 @@ import ec.edu.ups.entities.registration.Grade;
 
 public interface GradeDAO extends GenericDAO<Grade, Integer> {
 	public List<Grade> findByEnrollmentId(int enrollmentId);
+	public List<Grade> findCurrentDregreListByTeacherId(int teacherId);
 }

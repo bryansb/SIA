@@ -27,6 +27,16 @@ public class Inscription implements Serializable {
 	@Column(name = "ins_date", nullable = false)
 	private Calendar date;
 	
+	@Column(name = "ins_level", nullable = false,  
+			columnDefinition = "INT DEFAULT 1")
+	private int level;
+	
+	/* 
+	 * Default Values: 
+	 * A: Available
+	 * G: Graduate
+	 * 
+	 * */
 	@Column(name = "ins_status", nullable = false,  
 			columnDefinition = "VARCHAR(1) DEFAULT 'A'")
 	private char status;
@@ -50,9 +60,10 @@ public class Inscription implements Serializable {
 		super();
 	}
 
-	public Inscription(Calendar date, Student student, Career career) {
+	public Inscription(Calendar date, char status, Student student, Career career) {
 		super();
 		this.date = date;
+		this.status = status;
 		this.student = student;
 		this.career = career;
 	}
@@ -71,6 +82,14 @@ public class Inscription implements Serializable {
 
 	public void setDate(Calendar date) {
 		this.date = date;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public char getStatus() {

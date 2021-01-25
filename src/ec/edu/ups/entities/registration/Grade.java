@@ -26,6 +26,10 @@ public class Grade implements Serializable {
 	@Column(name = "gra_grade")
 	private double gradeValue;
 	
+	@Column(name = "gra_status", nullable = false,  
+			columnDefinition = "VARCHAR(1) DEFAULT 'N'")
+	private char status;
+	
 	@Column(name = "gra_deleted", nullable = false,  
 			columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
@@ -42,11 +46,12 @@ public class Grade implements Serializable {
 		super();
 	}
 
-	public Grade(String description, double gradeValue, Group group, Enrollment enrollment) {
+	public Grade(String description, double gradeValue, Group group, char status, Enrollment enrollment) {
 		super();
 		this.description = description;
 		this.gradeValue = gradeValue;
 		this.group = group;
+		this.status = status;
 		this.enrollment = enrollment;
 	}
 
@@ -72,6 +77,14 @@ public class Grade implements Serializable {
 
 	public void setGradeValue(double gradeValue) {
 		this.gradeValue = gradeValue;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 
 	public boolean isDeleted() {
