@@ -24,7 +24,7 @@
 							<label class="form-check-label w-100" for="${subject.id}">
 							 	<input class="form-check-input" type="checkbox" name="subjectId" 
 							 	value="${subject.id}" id="${subject.id}" />
-							 	${subject.name}
+							 	${subject.name} - nivel ${subject.level}
 							</label>
 						</div>
 					 	</td>

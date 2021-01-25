@@ -33,7 +33,7 @@ public class EnrollmentController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
-	private static final String URL = "/JSP/private/registration/secretary/studentInscription.jsp";
+	private static final String URL = "/JSP/private/registration/student/studentEnrollment.jsp";
 	private EnrollmentDAO enrollmentDAO;
 	private SubjectDAO subjectDAO;
 	private InscriptionDAO inscriptionDAO;
@@ -160,10 +160,7 @@ public class EnrollmentController extends HttpServlet {
 	private void enrollmentSummary(HttpServletRequest request) {
 		if (((Enrollment) session.getAttribute("enrollment")) == null) {
 			createEnrollment(request);
-		} else {
-			System.out.println("NO NULO");
 		}
-//		createEnrollment(request);
 	}
 	
 	private void enrollmentPrefecture() {
@@ -198,7 +195,7 @@ public class EnrollmentController extends HttpServlet {
 	}
 	
 	private boolean setInscriptionToRequest(HttpServletRequest request) {
-		int studentId = 1;
+		int studentId = 2;
 		Inscription inscription;
 		if(session != null) {
 			inscription = inscriptionDAO.getInscriptionByStudentId(studentId);

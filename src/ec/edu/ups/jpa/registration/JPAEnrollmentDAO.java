@@ -1,5 +1,7 @@
 package ec.edu.ups.jpa.registration;
 
+import java.util.List;
+
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
 import ec.edu.ups.dao.utils.ParameterDAO;
@@ -14,6 +16,12 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 			+ " WHERE (e.status = 'C' "
 			+ " AND e.academicPeriod = :academicPeriod "
 			+ " AND e.inscription.id = :inscritionId )";
+	
+	private static final String ACADEMIC_RECORD_BY_STUDENT_ID_QRY = 
+			" SELECT e FROM Enrollment e "
+			+ " WHERE e.status = 'E' "
+			+ " AND e.inscription.student.id = :studentId"
+			+ " ORDER BY e.date DESC ";
 	
 	private ParameterDAO parameterDAO;
 	
@@ -40,6 +48,14 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 	public String getCurrentAcademicPeriod() {
 		Parameter parameter = parameterDAO.findByKey("CURRENT_ACADEMIC_PERIOD");
 		return parameter.getValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Enrollment> getAcademicRecordByStudentId(int studentId) {
+		return (List<Enrollment> ) super.em.createQuery(ACADEMIC_RECORD_BY_STUDENT_ID_QRY)
+			.setParameter("studentId", studentId)
+			.getResultList();
 	}
 
 }
