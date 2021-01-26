@@ -100,6 +100,8 @@ public class GradeRegister extends HttpServlet {
 				grade.setDescription(description);
 				gradeDAO.update(grade);
 			}
+			noticeClass = "bg-success";
+			output = "Se actualizó correctamente";
 		} catch (Exception e) {
 			noticeClass = "bg-danger";
 			output = "Ingrese sólo números";
