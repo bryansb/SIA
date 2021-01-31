@@ -98,6 +98,11 @@ public class SubjectController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
+		request.setAttribute("careers", listCareer(request));
+		request.setAttribute("subjects", listSubject(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/subject.jsp");
+		view.forward(request, response);
 	}
 	
 	public List<Career> listCareer(HttpServletRequest request) {

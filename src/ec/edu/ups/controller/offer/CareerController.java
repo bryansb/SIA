@@ -108,6 +108,10 @@ public class CareerController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
+		request.setAttribute("careers", listCareer(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
+		view.forward(request, response);
 	}
 	
 	public String createCareer(HttpServletRequest request) {

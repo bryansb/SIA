@@ -14,7 +14,7 @@ public class JPACareerDAO extends JPAGenericDAO<Career, Integer> implements Care
 
 	@Override
 	public Career findByCareerName(String name) {
-		String spql = "SELECT c FROM Careers c "
+		String spql = "SELECT c FROM Career c "
 				+ "WHERE c.name LIKE '" + name + "'";
 		Query query = super.em.createQuery(spql, Career.class);
 		
