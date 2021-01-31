@@ -195,7 +195,7 @@ public class EnrollmentController extends HttpServlet {
 	}
 	
 	private boolean setInscriptionToRequest(HttpServletRequest request) {
-		int studentId = 12;
+		int studentId = 1;
 		Inscription inscription;
 		session.setAttribute("inscription", null);
 		if(session != null) {

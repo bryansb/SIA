@@ -5,10 +5,10 @@
 	<div class="row">
 		<div class="col-8">
 		    <div class="list-group" id="list-tab" role="tablist">
-		      <a class="list-group-item list-group-item-action active" 
+		      <a class="list-group-item list-group-item-action" 
 		      	 id="list-datos-list" data-toggle="list" href="#list-datos" role="tab" aria-controls="datos">Mis datos</a>
 		      <a class="list-group-item list-group-item-action" 
-		      	 id="list-asignaturas-list" data-toggle="list" href="#list-asignaturas" role="tab" aria-controls="asignaturas">Asignaturas</a>
+		      	href="/SIA/GradeRegister">Asignaturas</a>
 		    </div>
   		</div>
 	</div>
