@@ -34,6 +34,9 @@ public class Career implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "career", fetch = FetchType.LAZY)
 	private List<Inscription> inscriptionList;
 	
+	@Transient
+	private boolean editable;
+	
 	public Career() {
 		super();
 	}
@@ -82,6 +85,14 @@ public class Career implements Serializable {
 
 	public void setInscriptionList(List<Inscription> inscriptionList) {
 		this.inscriptionList = inscriptionList;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override

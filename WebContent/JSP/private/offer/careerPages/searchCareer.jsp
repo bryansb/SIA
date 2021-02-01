@@ -8,29 +8,35 @@
 	<form class="mx-2 my-auto d-inline w-50" style="min-width: 100px" action="/SIA/CareerController" method="post">
    		<div class="input-group">
    			<input type="hidden" value="search" name="option"/>
-       		<input id="search-career" name="careerName" class="form-control my-search-input" type="search" placeholder="Buscar Carrera" aria-label="Search"/>
-        	<input type="submit" value=""/>
+       		<input id="search-career" name="careerName" class="form-control my-search-input" 
+       			type="search" placeholder="Buscar Carrera" aria-label="Search"/>
+        	<button type="submit" value="" >
+        		<i class="fa fa-search"></i> 
+        	</button>
        	</div>
     </form>
-	<H2>Carrera</H2>
-	<div id="tableCareer">
-		<TABLE class="table table-striped">
-			<THEAD>
-				<TR>
-					<TH scope="col">Nombre</TH>
-					<TH scope="col">Tiempo</TH>
-					<TH scope="col"></TH>
-				</TR>
-			</THEAD>
-			<TBODY>
+	<h2>Carrera</h2>
+	<div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Nombre</th>
+					<th scope="col">Tiempo</th>
+					<th scope="col">Gestionar</th>
+				</tr>
+			</thead>
+			<tbody>
 				<c:set var="car" scope="request" value="${career}" />
-				<TR>
-					<TD>${car.name}</TD>
-					<TD>${car.time}</TD>
-					<TD>a</TD>
-				</TR>
-			</TBODY>
+				<tr>
+					<td>${car.name}</TD>
+					<td>${car.time}</TD>
+					<td>
+						<button class="btn btn-secondary">Editar</button>
+						<button class="btn btn-danger">Eliminar</button>
+					</td>
+				</tr>
+			</tbody>
 			
-		</TABLE>
+		</table>
 	</div>
 </div>
