@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <!--  Para el uso de Bootstrap -->
+    <link rel="stylesheet" href="/SIA/resources/css/bootstrap/bootstrap.min.css">
+
+    <script src="/SIA/resources/js/bootstrap/jquery-3.5.1.min.js"></script>
+    <script src="/SIA/resources/js/bootstrap/popper.min.js"></script>
+    <script src="/SIA/resources/js/bootstrap/bootstrap.min.js"></script>
+    
+    <script src="/SIA/resources/js/management/login.js"></script>
+    
+    <title>Inicio de Sesión</title>
+</head>
+<body class="my-body-login-dark">
+   <section class="container text-center col-12">
+   	<div class="row justify-content-center">
+    	<div class="my-login-form my-form-dark p-4 col-xl-3 col-sm-6 col-12">
+    		<div class="">
+    			<div class="col-12 p-4">
+    				<h1 class="my-dark-font-primary">Autentificación de Usuario</h1>
+    				<span class="my-dark-font-secondary">Inicie Sesión</span>
+    				<br/>
+    				<br/>
+    				<img src="/SIA/resources/img/avatar_icon.svg" style="width: 200px">
+    			</div>
+    			<!-- 
+    			<div id="main_notice" class="notice_container e_hidden">
+	   				<input type="button" onclick="hideNotice()">
+	                <div id="notice" class="div_notice"></div>
+        		</div>
+        		 -->
+   				<form action="" class="col-12" id="logingForm" onsubmit="loging('logingForm'); return false;">
+   					<div class="form-group">
+   						<input type="text" name="use_email" class="form-control my-user-input-icon" placeholder="Correo Electrónico">
+   					</div>  
+    				<div class="form-group">
+   						<input type="password" name="use_password" class="form-control my-pass-input-icon" placeholder="Contraseña">
+   					</div>
+   					<input type="submit" class="btn btn-primary m-3" onclick="loging('logingForm')" value="Iniciar Sesión"/>
+    			</form>
+    		</div>
+    	</div>
+   	</div>
+    </section>
+</body>
+</html>
