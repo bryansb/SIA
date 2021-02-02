@@ -32,8 +32,9 @@ import ec.edu.ups.entities.registration.Inscription;
 public class EnrollmentController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
+	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController  > ";
 	private static final String URL = "/JSP/private/registration/student/studentEnrollment.jsp";
+	private static final Logger LOGGER = Logger.getLogger(EnrollmentController.class.getName());
 	private EnrollmentDAO enrollmentDAO;
 	private SubjectDAO subjectDAO;
 	private InscriptionDAO inscriptionDAO;
@@ -41,7 +42,7 @@ public class EnrollmentController extends HttpServlet {
 	private String output;
 	private String noticeClass;
 	private int level;
-	private Logger logger;
+	
 	private HttpSession session;
 	
     /**
@@ -82,7 +83,7 @@ public class EnrollmentController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			logger.log(Level.INFO, e.getMessage());
+			LOGGER.log(Level.INFO, e.getMessage());
 		}
 	}
 
@@ -98,7 +99,7 @@ public class EnrollmentController extends HttpServlet {
 			request.setAttribute("noticeClass", noticeClass);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException | IOException e) {
-			this.logger.log(Level.WARNING, e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 	}
 
@@ -189,7 +190,7 @@ public class EnrollmentController extends HttpServlet {
 			
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":createEnrollment > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 		}
 	}
 	
@@ -230,7 +231,7 @@ public class EnrollmentController extends HttpServlet {
 			request.setAttribute("subjectList", subjectList);
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":setSubjectListToRequest > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 		}
 	}
 

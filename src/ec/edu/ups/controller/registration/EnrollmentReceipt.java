@@ -21,9 +21,10 @@ import ec.edu.ups.entities.registration.Enrollment;
 @WebServlet("/EnrollmentReceipt")
 public class EnrollmentReceipt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String ERROR_ROOT = ">>> Error >> EnrollmentReceipt";
+	private static final String ERROR_ROOT = ">>> Error >> EnrollmentReceipt > ";
 	private static final String URL = "/JSP/private/registration/student/enrollmentReceipt.jsp";
-	private static final Logger logger = Logger.getLogger(EnrollmentReceipt.class.getName());
+	private static final String URL_PDF = "/JSP/private/utils/pdfPages/enrollmentReceiptPDF.jsp";
+	private static final Logger LOGGER = Logger.getLogger(EnrollmentReceipt.class.getName());
 	private static final String CHARACTER_ENCODING = "UTF-8";
 	private final EnrollmentDAO enrollmentDAO;
 	
@@ -40,21 +41,43 @@ public class EnrollmentReceipt extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     @Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	redirectProcess(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    	try {
+    		response.setCharacterEncoding(CHARACTER_ENCODING);
+    		request.setCharacterEncoding(CHARACTER_ENCODING);
+    		String option = request.getParameter("option");
+    		if (option != null && option.equals("download")) {
+    			downloadEnrollmentReceipt(request, response);
+    		}
+    		redirectProcess(request, response);
+    	} catch (Exception e) {
+    		String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
+		}
 	}
     
-    private void redirectProcess(HttpServletRequest request, HttpServletResponse response) {
+    private void downloadEnrollmentReceipt(HttpServletRequest request, 
+    		HttpServletResponse response) {
+    	try {
+    		int enrollmentId = Integer.parseInt(request.getParameter("enrollmentId"));
+    		Enrollment enrollment = enrollmentDAO.read(enrollmentId);
+    		request.setAttribute("enrollment", enrollment);
+			getServletContext().getRequestDispatcher(URL_PDF).forward(request, response);
+		} catch (ServletException | IOException e) {
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
+		}
+	}
+
+	private void redirectProcess(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			int studentId = 1;
-			response.setCharacterEncoding(CHARACTER_ENCODING);
-			request.setCharacterEncoding(CHARACTER_ENCODING);
 			List<Enrollment> enrollmentList = enrollmentDAO.getEnrollmentByStudentId(studentId);
 			request.setAttribute("enrollmentList", enrollmentList);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException | IOException e) {
 			String errorMessage = ERROR_ROOT + e.getMessage();
-			logger.log(Level.INFO, errorMessage);
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 

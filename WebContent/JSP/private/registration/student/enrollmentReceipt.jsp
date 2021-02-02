@@ -6,6 +6,7 @@
 <t:genericpage>
 	<jsp:attribute name="js">
 		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
@@ -24,6 +25,7 @@
 	
 	<jsp:body>
 		<script>
+			
 			$(document).ready(function() {
 			    var table = $('#enrollment-table').DataTable({
 			        columnDefs: [{
@@ -45,6 +47,16 @@
 			        }
 			    });
 			});
+			
+			function downloadEnrollment(enrollmentId){
+				var url = "/SIA/EnrollmentReceipt?option=download&enrollmentId=" +  enrollmentId;
+				$.get(url, function(data, status){
+					data = $(data).find('#pdf-content').html();
+					var doc = new jsPDF('p', 'mm', 'a4');
+					doc.fromHTML(data);
+				    doc.save('COM-' + new Date() + '.pdf');
+				});
+			}
 		</script>
 		<div class="row">
 			<div class="col my-4">
@@ -66,7 +78,7 @@
 							<tr>
 								<td>${enrollment.date.time}</td>
 								<td>${enrollment.academicPeriod}</td>
-								<td><button type="button" class="btn btn-info"><i class="fas fa-file-pdf"></i></button></td>
+								<td><button type="button" class="btn btn-info" onclick="downloadEnrollment(${enrollment.id});"><i class="fas fa-file-pdf"></i></button></td>
 							</tr>
 						</c:forEach>
 					</tbody>
