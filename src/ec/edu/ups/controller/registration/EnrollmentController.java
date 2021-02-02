@@ -60,6 +60,7 @@ public class EnrollmentController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
@@ -96,9 +97,7 @@ public class EnrollmentController extends HttpServlet {
 			request.setAttribute("output", output);
 			request.setAttribute("noticeClass", noticeClass);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
-		} catch (ServletException e) {
-			this.logger.log(Level.WARNING, e.getMessage());
-		} catch (IOException e) {
+		} catch (ServletException | IOException e) {
 			this.logger.log(Level.WARNING, e.getMessage());
 		}
 	}
@@ -197,8 +196,8 @@ public class EnrollmentController extends HttpServlet {
 	private boolean setInscriptionToRequest(HttpServletRequest request) {
 		int studentId = 1;
 		Inscription inscription;
-		session.setAttribute("inscription", null);
 		if(session != null) {
+			session.setAttribute("inscription", null);
 			inscription = inscriptionDAO.getInscriptionByStudentId(studentId);
 			if (enrollmentDAO.isEnrolledByInscriptionId(inscription.getId())) {
 				level = 4;
@@ -213,11 +212,11 @@ public class EnrollmentController extends HttpServlet {
 
 	private void setSubjectListToRequest(HttpServletRequest request) {
 		List<Subject>  subjectList = null;
-		session.setAttribute("subjectList", null);
-		session.setAttribute("subjectIdArray", null);
-		Inscription inscription = (Inscription) session.getAttribute("inscription");
 		try {
 			if (session != null) {
+				session.setAttribute("subjectList", null);
+				session.setAttribute("subjectIdArray", null);
+				Inscription inscription = (Inscription) session.getAttribute("inscription");
 				if (inscription != null) {
 					subjectList = subjectDAO.findByInscriptionIdToEnrollment(inscription.getId());
 					session.setAttribute("subjectList", subjectList);
@@ -287,7 +286,7 @@ public class EnrollmentController extends HttpServlet {
 	private boolean setGradeList(HttpServletRequest request, Enrollment enrollment) {
 		List<Integer> groupIdList;
 		groupIdList = getGroupIdListByRequest(request);
-		if (groupIdList == null || groupIdList.size() == 0) {
+		if (groupIdList == null || groupIdList.isEmpty()) {
 			return false;
 		}
 		List<Group> groupList = gradeController.getGroupListByIdList(groupIdList);
@@ -329,7 +328,7 @@ public class EnrollmentController extends HttpServlet {
 				String groupId = request.getParameter("groupId-" + subjectId);
 				groupIdList.add(Integer.parseInt(groupId));
 			} catch (Exception e) {
-				return null;
+				return groupIdList;
 			}
 		}
 		session.setAttribute("groupIdList", groupIdList);
@@ -349,7 +348,7 @@ public class EnrollmentController extends HttpServlet {
 		this.doGet(request, response);
 		enrollment = readEnrollment(request);
 		if (enrollment == null) {
-			response.getWriter().append(this.output);
+			response.getWriter().append(this.output + "Error");
 		} else {
 			response.getWriter().append(this.output);
 		}
