@@ -49,8 +49,9 @@ public class EnrollmentReceipt extends HttpServlet {
     		String option = request.getParameter("option");
     		if (option != null && option.equals("download")) {
     			downloadEnrollmentReceipt(request, response);
+    		} else {
+    			redirectProcess(request, response);
     		}
-    		redirectProcess(request, response);
     	} catch (Exception e) {
     		String errorMessage = ERROR_ROOT + e.getMessage();
 			LOGGER.log(Level.INFO, errorMessage);
