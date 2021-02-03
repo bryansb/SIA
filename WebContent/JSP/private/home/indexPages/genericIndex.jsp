@@ -5,6 +5,7 @@
 <main>
 	<section class="row">
 		<div class="col-12 text-right">
+			<span>Bienvenido/a ${fullName}</span>
 			<a href="/SIA/Logout"> Cerrar sesión</a>
 		</div>
 	</section>
