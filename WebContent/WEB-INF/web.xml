@@ -12,4 +12,10 @@ id="WebApp_ID" version="4.0">
 		    <welcome-file>default.htm</welcome-file>
 		    <welcome-file>default.jsp</welcome-file>
 	  	</welcome-file-list>
+	  	
+	  	<!-- ERROR PAGES -->
+		<error-page>
+			<error-code>404</error-code>
+		    <location>/JSP/public/error/error_404.jsp</location>
+		</error-page>
 </web-app>

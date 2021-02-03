@@ -23,7 +23,7 @@
 		       		<div class="container">
 			          	<h1 class="jumbotron-heading">Bienvenidos</h1>
 			          	<p class="lead text-muted">
-			          		Sistema de Institución Académica (SIA)
+			          		Sistema Institucional Académico (SIA)
 			          	</p>
 			          	<p>
 			          		<c:choose>

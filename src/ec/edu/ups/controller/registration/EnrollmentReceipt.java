@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
+import ec.edu.ups.entities.management.Student;
 import ec.edu.ups.entities.registration.Enrollment;
 
 /**
@@ -71,7 +72,7 @@ public class EnrollmentReceipt extends HttpServlet {
 
 	private void redirectProcess(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			int studentId = 1;
+			int studentId = ((Student) request.getSession().getAttribute("user")).getId();
 			List<Enrollment> enrollmentList = enrollmentDAO.getEnrollmentByStudentId(studentId);
 			request.setAttribute("enrollmentList", enrollmentList);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
