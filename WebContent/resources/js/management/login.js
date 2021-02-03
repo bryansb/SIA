@@ -1,8 +1,8 @@
 /**
  * 
  */
-function loging(f_id){
-    var form = $("#" + f_id);
+function loging(){
+    var form = $("#logingForm");
 	$.post("/SIA/Login", form.serialize(), function(res){
 		var msg = res.split("&", 2);
 		if(msg[1] == "e_notice_sucess"){
@@ -12,4 +12,16 @@ function loging(f_id){
 		}
 	});
 
+}
+
+function hideNotice(){
+	document.getElementById("main_notice").classList = '';
+	document.getElementById("main_notice").classList.add("col-10");
+    document.getElementById("main_notice").classList.add("e_hidden");
+}
+
+function showNotice(notice, notice_type){
+	document.getElementById("main_notice").classList.remove("e_hidden");
+    document.getElementById("main_notice").classList.add(notice_type);
+    document.getElementById("notice").innerHTML =  notice;
 }
