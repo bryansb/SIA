@@ -39,16 +39,5 @@
 				<input type="submit" class="btn btn-primary" value="Registrar"/>
 			</c:otherwise>
 		</c:choose>
-		
-		<!--
-		<c:choose>
-			<c:when test="${empty career.id}">
-				<input type="button" id="register" class="btn btn-primary" value="Registrar" onclick="createCareer('career-form')">
-			</c:when>
-			<c:otherwise>
-				<input type="button" id="accept"  class="btn btn-primary" value="Aceptar" onclick="updateCareer('career-form', ${currentPage})">
-			</c:otherwise>
-		</c:choose>
-		-->
 	</form>
 </div>

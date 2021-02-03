@@ -32,11 +32,7 @@
 				<div class="row justify-content-center" id="career-create-update">
 					<jsp:include page="careerPages/createCareer.jsp"/>
 				</div>
-				<!--  
-	   			<div class="row justify-content-center">
-					<jsp:include page="careerPages/searchCareer.jsp"/>
-				</div>
-				-->
+				
 				<div class="row justify-content-center">
 					<jsp:include page="careerPages/listCareer.jsp"/>
 				</div>

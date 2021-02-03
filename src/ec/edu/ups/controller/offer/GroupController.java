@@ -53,7 +53,7 @@ public class GroupController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("subjects", listSubject(request));
-//		request.setAttribute("teachers", listTeacher(request));
+		request.setAttribute("teachers", listTeacher(request));
 		request.setAttribute("groups", listGroup(request));
 		RequestDispatcher view;
 		view = request.getRequestDispatcher("/JSP/private/offer/group.jsp");

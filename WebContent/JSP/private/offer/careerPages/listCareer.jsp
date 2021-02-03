@@ -28,7 +28,6 @@
 					</tr>
 				</c:forEach>
 			</tbody>
-			
 		</table>
 		<script type="text/javascript">loadFunction();</script>
 	</div>

@@ -36,6 +36,7 @@ public class SubjectController extends HttpServlet {
      */
     public SubjectController() {
         super();
+        logger = Logger.getLogger(SubjectController.class.getName());
         subjectDAO = DAOFactory.getFactory().getSubjectDAO();
         careerDAO = DAOFactory.getFactory().getCareerDAO();
     }
@@ -43,40 +44,16 @@ public class SubjectController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("careers", listCareer(request));
-		request.setAttribute("subjects", listSubject(request));
-		RequestDispatcher view;
-		view = request.getRequestDispatcher("/JSP/private/offer/subject.jsp");
-		view.forward(request, response);
-//		String option;
-		
-//		try {
-//			option = request.getParameter("option");
-//			switch (option) {
-//			case "create":
-//				output = createSubject(request);
-//				break;
-//			case "read":
-//				request.setAttribute("subject", readSubject(request));
-//				break;
-//			case "update":
-//				updateSubject(request);
-//				break;
-//			default:
-//				break;
-//			}
-//		} catch (Exception e) {
-//			this.logger.log(Level.INFO, e.getMessage());
-//			this.output = "Error al buscar una opción";
-//		}
-//		request.setAttribute("output", output);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {		
 		String option;
 		try {
 			option = request.getParameter("option");
@@ -90,6 +67,9 @@ public class SubjectController extends HttpServlet {
 			case "update":
 				updateSubject(request);
 				break;
+			case "delete":
+				deleteSubject(request);
+				break;
 			default:
 				break;
 			}
@@ -98,6 +78,11 @@ public class SubjectController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
+		updateRequest(request, response);
+	}
+	
+	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		request.setAttribute("careers", listCareer(request));
 		request.setAttribute("subjects", listSubject(request));
 		RequestDispatcher view;
@@ -105,6 +90,13 @@ public class SubjectController extends HttpServlet {
 		view.forward(request, response);
 	}
 	
+	private void deleteSubject(HttpServletRequest request) {
+		int id;	
+		id = Integer.parseInt(request.getParameter("id"));
+		subjectDAO.deleteByID(id);
+		
+	}
+
 	public List<Career> listCareer(HttpServletRequest request) {
 		List<Career> careers;
 		try {
@@ -160,6 +152,7 @@ public class SubjectController extends HttpServlet {
 		try {
 			subjectId = Integer.parseInt(request.getParameter("subjectId"));
 			subject = subjectDAO.read(subjectId);
+			subject.setEditable(true);
 		} catch (Exception e) {
 			subject = null;
 		}
@@ -173,6 +166,8 @@ public class SubjectController extends HttpServlet {
 		double cost;
 		int hours;
 		int level;
+		int careerId;
+		Career career;
 		Subject subject;
 		
 		try {
@@ -181,12 +176,15 @@ public class SubjectController extends HttpServlet {
 			cost = Double.parseDouble(request.getParameter("cost"));
 			hours = Integer.parseInt(request.getParameter("hours"));
 			level = Integer.parseInt(request.getParameter("level"));
+			careerId = Integer.parseInt(request.getParameter("careerId"));
+			career = careerDAO.read(careerId);
 			subject = readSubject(request);
 			subject.setName(name);
 			subject.setCredits(credits);
 			subject.setCost(cost);
 			subject.setHours(hours);
 			subject.setLevel(level);
+			subject.setCareer(career);
 			subjectDAO.update(subject);
 			return "Success";
 		} catch (Exception e) {
@@ -196,7 +194,8 @@ public class SubjectController extends HttpServlet {
 		}
 	}
 	
-	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		Subject subject;
 		this.doGet(request, response);
 		subject = readSubject(request);

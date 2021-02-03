@@ -42,6 +42,9 @@ public class Subject implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subject", fetch = FetchType.LAZY)
 	private List<Group> groupList;
 	
+	@Transient
+	private boolean editable;
+	
 	public Subject() {
 		super();
 	}
@@ -118,6 +121,14 @@ public class Subject implements Serializable {
 
 	public void setGroupList(List<Group> groupList) {
 		this.groupList = groupList;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override

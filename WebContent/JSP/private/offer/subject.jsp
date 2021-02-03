@@ -6,7 +6,7 @@
 <t:genericpage>
 	
 	<jsp:attribute name="js">
-		<script src="/SIA/resources/js/offer/crud_career.js"></script>
+		<script src="/SIA/resources/js/offer/crud_subject.js"></script>
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
@@ -27,8 +27,8 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6">
-				<div class="row justify-content-center">
+			<div class="col-6" id="subjectForm">
+				<div class="row justify-content-center" id="subject-create-update">
 					<jsp:include page="subjectPages/createSubject.jsp"/>
 				</div>
 				

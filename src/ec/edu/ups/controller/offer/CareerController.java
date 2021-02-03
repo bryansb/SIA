@@ -25,9 +25,7 @@ public class CareerController extends HttpServlet {
 	private static String ERROR_ROOT = ">>> Error >> CareerController:";
 	private Logger logger;
 	private String output;
-	
-	private Career career;
-	
+		
 	private CareerDAO careerDAO;
        
     /**
@@ -73,6 +71,7 @@ public class CareerController extends HttpServlet {
 				break;
 			case "delete":
 				deleteCareer(request);
+				break;
 			default:
 				break;
 			}
