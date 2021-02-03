@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <div>
 	<div class="row">
-		<div class="col-8">
+		<div class="col-12">
 		    <div class="list-group" id="list-tab" role="tablist">
 		      <a class="list-group-item list-group-item-action"
 		      	 href="/SIA/EnrollStudent?option=enrollment">Matrículas</a>

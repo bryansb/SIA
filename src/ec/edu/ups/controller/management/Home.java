@@ -35,9 +35,13 @@ public class Home extends HttpServlet {
     	try {
     		request.setCharacterEncoding("UTF-8");
     		response.setCharacterEncoding("UTF-8");
-    		Object user = getUserFromSession(request, response);
-    		setGenericInformation(request, user);
-    		redirectUserToHome(request, response, user);
+    		Object user = getUserFromSession(request);
+    		if (user == null) {
+    			response.sendRedirect("/SIA/Logout");
+    		} else {
+	    		setGenericInformation(request, user);
+	    		redirectUserToHome(request, response, user);
+    		}
     	} catch (Exception e) {
     		LOGGER.log(Level.INFO, e.toString());
 		}
@@ -71,14 +75,9 @@ public class Home extends HttpServlet {
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 	
-	private Object getUserFromSession(HttpServletRequest request, 
-			HttpServletResponse response) {
+	private Object getUserFromSession(HttpServletRequest request) {
 		try {
-			Object user = request.getSession().getAttribute("user");
-			if (user == null) {
-				response.sendRedirect("/SIA/Logout");
-			}
-			return user;
+			return request.getSession().getAttribute("user");
 		} catch (Exception e) {
 			String errorMessage = " >> getUserFromSession > " + e.toString();
 			LOGGER.log(Level.INFO, errorMessage);
@@ -88,7 +87,7 @@ public class Home extends HttpServlet {
 	
 	private void setGenericInformation(HttpServletRequest request, Object user) {
 		User userLocal = (User) user;
-		request.setAttribute("fullName", userLocal.getFullName());
+		request.getSession().setAttribute("userLocal", userLocal);
 	}
-
+		
 }

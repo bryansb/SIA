@@ -5,12 +5,8 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:genericpage>
 	
-	<jsp:attribute name="js">
-		<script src="/SIA/resources/js/crud_matriculas.js"></script>
-	</jsp:attribute>
-	
 	<jsp:attribute name="title">
-	Record Académico
+	Inicio
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">
