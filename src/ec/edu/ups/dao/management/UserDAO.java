@@ -5,5 +5,5 @@ import ec.edu.ups.entities.management.User;
 
 public interface UserDAO extends GenericDAO<User, Integer>{
 
-	public User login(String key, String password);
+	public Object login(String key, String password);
 }

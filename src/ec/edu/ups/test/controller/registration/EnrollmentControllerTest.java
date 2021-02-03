@@ -33,6 +33,8 @@ import ec.edu.ups.entities.offer.Subject;
 
 class EnrollmentControllerTest {
 
+	private static final Logger LOGGER = Logger.getLogger(EnrollmentControllerTest.class.getName());
+	
 	private EnrollmentController enrollmentController;
 	private InscriptionController inscriptionController;
 	private ParameterBasicCreation parameterBasicCreation;
@@ -42,7 +44,6 @@ class EnrollmentControllerTest {
 	private HttpServletRequest request;
     private HttpServletResponse response;
     private String[] groupIds;
-    private Logger logger;
 	
 	@BeforeEach
 	void setUp() {
@@ -80,12 +81,11 @@ class EnrollmentControllerTest {
 			verify(request, atLeast(1)).getParameter("inscriptionId");
 	        writer.flush();
 	        output = stringWriter.toString();
-	        System.out.println(" >> Response: " + output);
+	        String mss = " >> Response: " + output;
+	        LOGGER.log(Level.INFO, mss);
 			assertTrue(output.contains("Success"));
-		} catch (IOException e) {
-			this.logger.log(Level.INFO, e.toString());
-		} catch (ServletException e) {
-			this.logger.log(Level.INFO, e.toString());
+		} catch (IOException | ServletException e) {
+			LOGGER.log(Level.INFO, e.toString());
 		}
 	}
 	
@@ -106,12 +106,11 @@ class EnrollmentControllerTest {
 	        verify(request, atLeast(1)).getParameter("inscriptionId");
 	        writer.flush();
 	        output = stringWriter.toString();
-	        System.out.println(" >> Response: " + output);
+	        String mss = " >> Response: " + output;
+	        LOGGER.log(Level.INFO, mss);
 	        assertTrue(output.contains("Success"));
 		} catch (IOException e) {
-			this.logger.log(Level.INFO, e.toString());
-		} catch (ServletException e) {
-			this.logger.log(Level.INFO, e.toString());
+			LOGGER.log(Level.INFO, e.toString());
 		}
 	}
 	
@@ -128,7 +127,7 @@ class EnrollmentControllerTest {
 				subject = subjectDAO.read(i + 1);
 				groupDAO.create(group);
 			} catch (Exception e) {
-				this.logger.log(Level.INFO, e.toString());
+				LOGGER.log(Level.INFO, e.toString());
 			}
 		}
 	}
@@ -141,7 +140,7 @@ class EnrollmentControllerTest {
 		try {
 			accountDAO.create(account);
 		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.toString());
+			LOGGER.log(Level.INFO, e.toString());
 		}
 	}
 	
@@ -155,7 +154,7 @@ class EnrollmentControllerTest {
 				groupIds[i] = groupList.get(i).getId() + "";
 			}
 		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.toString());
+			LOGGER.log(Level.INFO, e.toString());
 		}
 	}
 	

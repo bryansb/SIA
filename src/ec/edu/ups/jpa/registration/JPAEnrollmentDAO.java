@@ -23,6 +23,12 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 			+ " AND e.inscription.student.id = :studentId"
 			+ " ORDER BY e.date DESC ";
 	
+	private static final String ENROLLMENT_BY_STUDENT_ID_QRY = 
+			" SELECT e FROM Enrollment e "
+			+ " WHERE e.deleted = 0 "
+			+ " AND e.inscription.student.id = :studentId "
+			+ " ORDER BY e.date DESC ";
+	
 	private ParameterDAO parameterDAO;
 	
 	public JPAEnrollmentDAO() {
@@ -53,9 +59,17 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Enrollment> getAcademicRecordByStudentId(int studentId) {
-		return (List<Enrollment> ) super.em.createQuery(ACADEMIC_RECORD_BY_STUDENT_ID_QRY)
+		return super.em.createQuery(ACADEMIC_RECORD_BY_STUDENT_ID_QRY)
 			.setParameter("studentId", studentId)
 			.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Enrollment> getEnrollmentByStudentId(int studentId) {
+		return super.em.createQuery(ENROLLMENT_BY_STUDENT_ID_QRY)
+				.setParameter("studentId", studentId)
+				.getResultList();
 	}
 
 }

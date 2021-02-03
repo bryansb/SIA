@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.registration.GradeDAO;
+import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.registration.Grade;
 
 /**
@@ -23,11 +24,12 @@ public class GradeRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> GradeRegister";
 	private static final String URL = "/JSP/private/registration/teacher/gradeRegister.jsp";
-	private GradeDAO gradeDAO;
+	private static final Logger LOGGER = Logger.getLogger(GradeRegister.class.getName());
+	
+	private final GradeDAO gradeDAO;
 	private List<Grade> gradeList;
 	private String output;
 	private String noticeClass;
-	private Logger logger;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,37 +40,50 @@ public class GradeRegister extends HttpServlet {
         noticeClass = "none";
         output = "";
     }
+    
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	gradeList = null;
+    	noticeClass = "none";
+        output = "";
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		noticeClass = "none";
         output = "";
 		try {
 			String option = request.getParameter("option") == null ? "none" :request.getParameter("option");
-			switch (option) {
-			case "update":
+			if (option.equals("update")) {
 				updateGrade(request);
-			default:
-				setGradesToRequest(request, response);
-				break;
 			}
+			setGradesToRequest(request, response);
 		} catch (Exception e) {
-			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    	try {
+    		doGet(request, response);
+		} catch (Exception e) {
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
+		}
+		
 	}
 	
 	private void setGradesToRequest(HttpServletRequest request, HttpServletResponse response) {
-		int teacherId = 2;
+		int teacherId = ((Teacher) request.getSession().getAttribute("user")).getId();
 		gradeList = gradeDAO.findCurrentDregreListByTeacherId(teacherId);
 		request.setAttribute("gradeList", gradeList);
 		redirectProcess(request, response);
@@ -80,12 +95,13 @@ public class GradeRegister extends HttpServlet {
 			request.setAttribute("noticeClass", noticeClass);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException | IOException e) {
-			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 	
 	private void updateGrade(HttpServletRequest request) {
-		if(gradeList == null || gradeList.size() == 0) {
+		if(gradeList == null || gradeList.isEmpty()) {
 			noticeClass = "bg-danger";
 			output = "No se encontraron registros para guardar";
 			return;
