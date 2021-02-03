@@ -29,12 +29,13 @@ public class InscriptionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> InscriptionController";
 	private static final String URL = "/JSP/private/registration/secretary/studentInscription.jsp";
-	private InscriptionDAO inscriptionDAO;
-	private StudentDAO studentDAO;
-	private CareerDAO careerDAO;
-	private StudentController studentController;
+	private static final Logger LOGGER = Logger.getLogger(InscriptionController.class.getName());
 	
-	private Logger logger;
+	private final InscriptionDAO inscriptionDAO;
+	private final StudentDAO studentDAO;
+	private final CareerDAO careerDAO;
+	private final StudentController studentController;
+	
 	private String noticeClass;
 	private String output;
 	private String option;
@@ -50,17 +51,27 @@ public class InscriptionController extends HttpServlet {
         noticeClass = "none";
         output = "";
     }
+    
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	option = "none";
+    	noticeClass = "none";
+        output = "";
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
+    @Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		output = "";
 		noticeClass = "none";
 		option = "none";
-		request.setCharacterEncoding("UTF-8");
+		
 		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			option = request.getParameter("option") == null ? 
 					"none" : request.getParameter("option");
 			switch (option) {
@@ -76,8 +87,8 @@ public class InscriptionController extends HttpServlet {
 				break;
 			case "createStudent":
 				studentController.createStudent(request, response);
-				output = studentController.output;
-				noticeClass = studentController.noticeClass;
+				output = studentController.getOutput();
+				noticeClass = studentController.getNoticeClass();
 				option = "createStudentProcess";
 				redirectProcess(request, response);
 				break;
@@ -92,11 +103,12 @@ public class InscriptionController extends HttpServlet {
 			
 		} catch (Exception e) {
 			option = "none";
-			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
-		
 	}
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		doGet(request, response);
@@ -116,7 +128,8 @@ public class InscriptionController extends HttpServlet {
 			setCareerListToRequest(request);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException | IOException e) {
-			logger.log(Level.INFO, e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 	
@@ -125,8 +138,7 @@ public class InscriptionController extends HttpServlet {
 		String dni = request.getParameter("dni");
 		
 		if (dni != null) {
-			student = studentController.searchStudentByDni(request, 
-					noticeClass, output);
+			student = studentController.searchStudentByDni(request);
 			if (student == null) {
 				noticeClass = "bg-danger";
 				output = "No se encontró al Estudiente";
@@ -196,7 +208,8 @@ public class InscriptionController extends HttpServlet {
 				this.output = "No se encuentra la inscripción";
 			}
 		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 			this.noticeClass = "bg-danger";
 			this.output = "No se encuentra la inscripción";
 			inscription = null;
@@ -205,16 +218,21 @@ public class InscriptionController extends HttpServlet {
 	}
 	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
+			throws IOException {
 		Inscription inscription;
-		
-		this.doGet(request, response);
-		inscription = readInscription(request);
-		if (inscription == null) {
-			response.getWriter().append(output);
-		} else {
-			response.getWriter().append(output);
+		try {
+			this.doGet(request, response);
+			inscription = readInscription(request);
+			if (inscription == null) {
+				response.getWriter().append(output  + " Error ");
+			} else {
+				response.getWriter().append(output);
+			}
+		} catch (Exception e) {
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
+		
 	}
 	
 }

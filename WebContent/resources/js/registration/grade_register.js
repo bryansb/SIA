@@ -13,7 +13,13 @@ function loadFunction(){
 	            "info": "Página _PAGE_ de _PAGES_",
 	            "infoEmpty": "No hay registros",
 	            "infoFiltered": "(Filtrado de _MAX_ registros)",
-				"search": "Buscar:"
+				"search": "Buscar:",
+				"paginate": {
+			        "first":      "Primero",
+			        "last":       "Último",
+			        "next":       "Siguiente",
+			        "previous":   "Anterior"
+			    }
 	        }
 	    });
 	 

@@ -19,6 +19,7 @@ import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.registration.EnrollmentDAO;
 import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.accounting.BillHead;
+import ec.edu.ups.entities.management.Student;
 import ec.edu.ups.entities.offer.Group;
 import ec.edu.ups.entities.offer.Subject;
 import ec.edu.ups.entities.registration.Enrollment;
@@ -32,17 +33,25 @@ import ec.edu.ups.entities.registration.Inscription;
 public class EnrollmentController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController";
+	private static final String ERROR_ROOT = ">>> Error >> EnrollmentController  > ";
 	private static final String URL = "/JSP/private/registration/student/studentEnrollment.jsp";
-	private EnrollmentDAO enrollmentDAO;
-	private SubjectDAO subjectDAO;
-	private InscriptionDAO inscriptionDAO;
-	private GradeController gradeController;
+	private static final Logger LOGGER = Logger.getLogger(EnrollmentController.class.getName());
+	
+	private final EnrollmentDAO enrollmentDAO;
+	private final SubjectDAO subjectDAO;
+	private final InscriptionDAO inscriptionDAO;
+	private final GradeController gradeController;
+	
 	private String output;
 	private String noticeClass;
 	private int level;
-	private Logger logger;
 	private HttpSession session;
+	
+	private static final String GROUP_ID_LIST_ID = "groupIdList";
+	private static final String INSCRIPTION_ID = "inscription";
+	private static final String ENROLLMENT_ID = "enrollment";
+	private static final String SUBJECT_ID_ARRAY_ID = "subjectIdArray";
+	private static final String SUBJECT_LIST_ID = "subjectList";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -53,13 +62,21 @@ public class EnrollmentController extends HttpServlet {
         this.subjectDAO = DAOFactory.getFactory().getSubjectDAO();
         this.inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
         this.gradeController = new GradeController();
-        noticeClass = "none";
+    }
+    
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	noticeClass = "none";
         output = "";
+        level = 0;
+        session = null;
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String option;
@@ -71,9 +88,9 @@ public class EnrollmentController extends HttpServlet {
 				createEnrollment(request);
 				break;
 			case "read":
-				request.setAttribute("enrollment", readEnrollment(request));
+				request.setAttribute(ENROLLMENT_ID, readEnrollment(request));
 				break;
-			case "enrollment":
+			case ENROLLMENT_ID:
 				studentEnrollment(request, response);
 				break;
 			default:
@@ -81,7 +98,7 @@ public class EnrollmentController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			logger.log(Level.INFO, e.getMessage());
+			LOGGER.log(Level.INFO, e.getMessage());
 		}
 	}
 
@@ -96,10 +113,8 @@ public class EnrollmentController extends HttpServlet {
 			request.setAttribute("output", output);
 			request.setAttribute("noticeClass", noticeClass);
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
-		} catch (ServletException e) {
-			this.logger.log(Level.WARNING, e.getMessage());
-		} catch (IOException e) {
-			this.logger.log(Level.WARNING, e.getMessage());
+		} catch (ServletException | IOException e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 	}
 
@@ -135,12 +150,12 @@ public class EnrollmentController extends HttpServlet {
 	}
 	
 	private void groupSelection(HttpServletRequest request) {
-		session.setAttribute("groupIdList", null);
-		session.setAttribute("enrollment", null);
-		String[] subjectIdArray = (String[]) session.getAttribute("subjectIdArray");
+		session.setAttribute(GROUP_ID_LIST_ID, null);
+		session.setAttribute(ENROLLMENT_ID, null);
+		String[] subjectIdArray = (String[]) session.getAttribute(SUBJECT_ID_ARRAY_ID);
 		if (subjectIdArray == null || subjectIdArray.length == 0) {
 			subjectIdArray = request.getParameterValues("subjectId");
-			session.setAttribute("subjectIdArray", subjectIdArray);
+			session.setAttribute(SUBJECT_ID_ARRAY_ID, subjectIdArray);
 		}
 		if (subjectIdArray == null || subjectIdArray.length == 0) {
 			level = 0;
@@ -153,12 +168,12 @@ public class EnrollmentController extends HttpServlet {
 			Subject subject = subjectDAO.read(Integer.parseInt(subjectId));
 			subjectList.add(subject);
 		}
-		session.setAttribute("subjectList", subjectList);
+		session.setAttribute(SUBJECT_LIST_ID, subjectList);
 	}
 
 
 	private void enrollmentSummary(HttpServletRequest request) {
-		if (((Enrollment) session.getAttribute("enrollment")) == null) {
+		if (((Enrollment) session.getAttribute(ENROLLMENT_ID)) == null) {
 			createEnrollment(request);
 		}
 	}
@@ -169,7 +184,7 @@ public class EnrollmentController extends HttpServlet {
 	}
 
 	public void saveEnrollment() {
-		Enrollment enrollment = (Enrollment) session.getAttribute("enrollment");
+		Enrollment enrollment = (Enrollment) session.getAttribute(ENROLLMENT_ID);
 		level = 4;
 		if (enrollment == null) {
 			noticeClass = "bg-danger";
@@ -190,15 +205,15 @@ public class EnrollmentController extends HttpServlet {
 			
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":createEnrollment > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 		}
 	}
 	
 	private boolean setInscriptionToRequest(HttpServletRequest request) {
-		int studentId = 1;
+		int studentId = ((Student) request.getSession().getAttribute("user")).getId();
 		Inscription inscription;
-		session.setAttribute("inscription", null);
 		if(session != null) {
+			session.setAttribute(INSCRIPTION_ID, null);
 			inscription = inscriptionDAO.getInscriptionByStudentId(studentId);
 			if (enrollmentDAO.isEnrolledByInscriptionId(inscription.getId())) {
 				level = 4;
@@ -206,21 +221,21 @@ public class EnrollmentController extends HttpServlet {
 				noticeClass = "bg-info";
 				return false;
 			}
-			session.setAttribute("inscription", inscription);
+			session.setAttribute(INSCRIPTION_ID, inscription);
 		}
 		return true;
 	}
 
 	private void setSubjectListToRequest(HttpServletRequest request) {
 		List<Subject>  subjectList = null;
-		session.setAttribute("subjectList", null);
-		session.setAttribute("subjectIdArray", null);
-		Inscription inscription = (Inscription) session.getAttribute("inscription");
 		try {
 			if (session != null) {
+				session.setAttribute(SUBJECT_LIST_ID, null);
+				session.setAttribute(SUBJECT_ID_ARRAY_ID, null);
+				Inscription inscription = (Inscription) session.getAttribute(INSCRIPTION_ID);
 				if (inscription != null) {
 					subjectList = subjectDAO.findByInscriptionIdToEnrollment(inscription.getId());
-					session.setAttribute("subjectList", subjectList);
+					session.setAttribute(SUBJECT_LIST_ID, subjectList);
 				} else {
 					level = 0;
 					output = "Sesión caducada, vuelva a iniciar sesión";
@@ -228,18 +243,18 @@ public class EnrollmentController extends HttpServlet {
 					return;
 				}
 			}
-			request.setAttribute("subjectList", subjectList);
+			request.setAttribute(SUBJECT_LIST_ID, subjectList);
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":setSubjectListToRequest > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 		}
 	}
 
 	public void createEnrollment(HttpServletRequest request) {
 		Enrollment enrollment;
 		BillHead billHead;
-		session.setAttribute("groupIdList", null);
-		Inscription inscription = (Inscription) session.getAttribute("inscription");
+		session.setAttribute(GROUP_ID_LIST_ID, null);
+		Inscription inscription = (Inscription) session.getAttribute(INSCRIPTION_ID);
 		enrollment = new Enrollment(new GregorianCalendar(), 
 				enrollmentDAO.getCurrentAcademicPeriod(), 'C');
 		if (!setGradeList(request, enrollment)) {
@@ -265,7 +280,7 @@ public class EnrollmentController extends HttpServlet {
 			level = 2;
 			output = "";
 			noticeClass = "none";
-			session.setAttribute("enrollment", enrollment);
+			session.setAttribute(ENROLLMENT_ID, enrollment);
 		} else {
 			output = "No quedan suficientes cupos. ";
 		}
@@ -287,7 +302,7 @@ public class EnrollmentController extends HttpServlet {
 	private boolean setGradeList(HttpServletRequest request, Enrollment enrollment) {
 		List<Integer> groupIdList;
 		groupIdList = getGroupIdListByRequest(request);
-		if (groupIdList == null || groupIdList.size() == 0) {
+		if (groupIdList.isEmpty()) {
 			return false;
 		}
 		List<Group> groupList = gradeController.getGroupListByIdList(groupIdList);
@@ -315,13 +330,13 @@ public class EnrollmentController extends HttpServlet {
 	
 	@SuppressWarnings("unchecked")
 	private List<Integer> getGroupIdListByRequest(HttpServletRequest request) {
-		List<Integer> groupIdList = (List<Integer>) session.getAttribute("groupIdList");
-		if (groupIdList != null && groupIdList.size() > 0) {
+		List<Integer> groupIdList = (List<Integer>) session.getAttribute(GROUP_ID_LIST_ID);
+		if (groupIdList != null && !groupIdList.isEmpty()) {
 			return groupIdList;
 		}
-		String[] subjectIdArray = (String[]) session.getAttribute("subjectIdArray");
+		String[] subjectIdArray = (String[]) session.getAttribute(SUBJECT_ID_ARRAY_ID);
 		if (subjectIdArray == null || subjectIdArray.length == 0) {
-			return null;
+			return new ArrayList<>();
 		}
 		groupIdList = new ArrayList<>();
 		for (String subjectId : subjectIdArray) {
@@ -329,29 +344,33 @@ public class EnrollmentController extends HttpServlet {
 				String groupId = request.getParameter("groupId-" + subjectId);
 				groupIdList.add(Integer.parseInt(groupId));
 			} catch (Exception e) {
-				return null;
+				return groupIdList;
 			}
 		}
-		session.setAttribute("groupIdList", groupIdList);
+		session.setAttribute(GROUP_ID_LIST_ID, groupIdList);
 		return groupIdList;
 	}
 	
 	public void endProcess() {
-		session.setAttribute("subjectList", null);
-		session.setAttribute("groupIdList", null);
-		session.setAttribute("subjectIdArray", null);
-		session.setAttribute("enrollment", null);
+		session.setAttribute(SUBJECT_LIST_ID, null);
+		session.setAttribute(GROUP_ID_LIST_ID, null);
+		session.setAttribute(SUBJECT_ID_ARRAY_ID, null);
+		session.setAttribute(ENROLLMENT_ID, null);
 	}
 	
-	public void doTest(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
+	public void doTest(HttpServletRequest request, HttpServletResponse response) {
 		Enrollment enrollment;
-		this.doGet(request, response);
-		enrollment = readEnrollment(request);
-		if (enrollment == null) {
-			response.getWriter().append(this.output);
-		} else {
-			response.getWriter().append(this.output);
+		try {
+			this.doGet(request, response);
+			enrollment = readEnrollment(request);
+			if (enrollment == null) {
+				response.getWriter().append(this.output + "Error");
+			} else {
+				response.getWriter().append(this.output);
+			}
+		} catch (ServletException | IOException e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
+		
 	}
 }

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -80,8 +79,6 @@ class GradeControllerTest {
 	        System.out.println(" >> Response: " + output);
 			assertTrue(output.contains("95.0"));
 		} catch (IOException e) {
-			this.logger.log(Level.INFO, e.toString());
-		} catch (ServletException e) {
 			this.logger.log(Level.INFO, e.toString());
 		}
 	}

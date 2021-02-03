@@ -1,5 +1,8 @@
 package ec.edu.ups.controller.registration;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,11 +14,15 @@ import ec.edu.ups.entities.management.Student;
 
 public class StudentController {
 	
-	public String noticeClass;
-	public String output;
+	private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 	
-	private StudentDAO studentDAO;
-	private InscriptionDAO inscriptionDAO;
+	private final StudentDAO studentDAO;
+	private final InscriptionDAO inscriptionDAO;
+	
+	private String noticeClass;
+	private String output;
+	
+	
 	
 	public StudentController() {
 		studentDAO = DAOFactory.getFactory().getStudentDAO();
@@ -59,12 +66,11 @@ public class StudentController {
 		} catch (Exception e) {
 			output = "No se pudo crear al Estudiante";
 			noticeClass = "bg-danger";
-			System.out.println(e);
+			LOGGER.log(Level.INFO, e.toString());
 		}
 	}
 	
-	public Student searchStudentByDni(HttpServletRequest request, 
-			String noticeClass, String output) {
+	public Student searchStudentByDni(HttpServletRequest request) {
 		Student student;
 		try {
 			String dni = request.getParameter("dni");
@@ -90,5 +96,13 @@ public class StudentController {
 	
 	public boolean validEmail (String email) {
 		return inscriptionDAO.isEmailCreated(email);
+	}
+
+	public String getNoticeClass() {
+		return noticeClass;
+	}
+
+	public String getOutput() {
+		return output;
 	}
 }

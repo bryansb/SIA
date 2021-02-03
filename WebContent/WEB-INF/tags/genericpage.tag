@@ -5,6 +5,7 @@
 <%@attribute name="left" fragment="true" %>
 <%@attribute name="css" fragment="true" %>
 <%@attribute name="js" fragment="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,10 +30,12 @@
 <body>
 	<jsp:invoke fragment="header"/>
 	<div class="container-fluid">
-		<div class="row justify-content-center" id="content">
-			<div class="col-3 m-2">
-				<jsp:invoke fragment="left"/>
-			</div>
+		<div class="row justify-content-center my-4" id="content">
+			<c:if test="${isLogged and not isOnIndex}">
+				<div class="col-3 m-2">
+					<jsp:invoke fragment="left"/>
+				</div>
+			</c:if>
 			<div class="col-8 m-2">
 				<jsp:doBody/>
 			</div>

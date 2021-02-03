@@ -5,6 +5,6 @@
 
 <div class="col-12">
 	<div class="row justify-content-between">
-	<a href="#" class="btn btn-link"> Ver Facturas </a>
+	<a href="/SIA/EnrollmentReceipt" class="btn btn-link"> Ver Comprobantes </a>
 	</div>
 </div>

@@ -9,7 +9,6 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -65,8 +64,6 @@ class InscriptionControllerTest {
 	        assertTrue(output.contains("Success"));
 		} catch (IOException e) {
 			this.logger.log(Level.INFO, e.toString());
-		} catch (ServletException e) {
-			this.logger.log(Level.INFO, e.toString());
 		}
 	}
 	
@@ -81,7 +78,7 @@ class InscriptionControllerTest {
 	
 	void createCareer() {
 		Career career = new Career();
-		career.setName("Computación");
+		career.setName("Computaciï¿½n");
 		try {
 			careerDAO.create(career);
 		} catch (Exception e) {
