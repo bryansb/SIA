@@ -19,8 +19,8 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			+ " AND i.student.id = :studentId";
 	
 	private static final String IS_DNI_CREATED_QRY = 
-			" SELECT COUNT(s.id) FROM Student s "
-			+ " WHERE s.dni = :dni";
+			" SELECT COUNT(u.id) FROM User u "
+			+ " WHERE u.dni = :dni";
 	
 	private static final String IS_EMAIL_CREATED_QRY = 
 			" SELECT COUNT(s.id) FROM Student s "

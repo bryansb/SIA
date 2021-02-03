@@ -86,7 +86,7 @@ public class StudentController {
 			output = "Cédula es incorrecta";
 			return true;
 		}
-		
+		System.out.println(inscriptionDAO.isStudentCreated(dni));
 		if (inscriptionDAO.isStudentCreated(dni)) {
 			output = "Cédula ya existe";
 			return true;
