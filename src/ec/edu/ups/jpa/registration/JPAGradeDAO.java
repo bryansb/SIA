@@ -13,8 +13,8 @@ public class JPAGradeDAO extends JPAGenericDAO<Grade, Integer> implements GradeD
 
 	private static final String CURRENT_DEGREE_QRY = 
 			" SELECT DISTINCT gr FROM Grade gr "
-			+ "	INNER JOIN gr.group.teacherList t"
-			+ " INNER JOIN t.groupList g"
+			+ " INNER JOIN gr.group.teacherList t "
+			+ " INNER JOIN t.groupList g "
 			+ " WHERE t.id = :teacherId "
 			+ " AND g.academicPeriod = :academicPeriod";
 	private ParameterDAO parameterDAO;
@@ -37,7 +37,7 @@ public class JPAGradeDAO extends JPAGenericDAO<Grade, Integer> implements GradeD
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Grade> findCurrentDregreListByTeacherId(int teacherId) {
-		return (List<Grade>  ) super.em.createQuery(CURRENT_DEGREE_QRY)
+		return super.em.createQuery(CURRENT_DEGREE_QRY)
 				.setParameter("teacherId", teacherId)
 				.setParameter("academicPeriod", getCurrentAcademicPeriod())
 				.getResultList();

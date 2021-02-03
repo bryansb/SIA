@@ -36,6 +36,12 @@ public class Enrollment implements Serializable {
 	@Column(name = "enr_academic_period")
 	private String academicPeriod;
 	
+	/* 
+	 * Default Values: 
+	 * C: Current
+	 * E: End
+	 * 
+	 * */
 	@Column(name = "enr_status", nullable = false,  
 			columnDefinition = "VARCHAR(1) DEFAULT 'C'")
 	private char status;

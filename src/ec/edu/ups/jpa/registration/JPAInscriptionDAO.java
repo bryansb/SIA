@@ -51,10 +51,9 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 	@Override
 	public Inscription getCurrentInscrited(int studentId) {
 		try {
-			Inscription inscription = (Inscription) super.em.createQuery(IS_CURRENT_INSCRITED_QRY)
+			return (Inscription) super.em.createQuery(IS_CURRENT_INSCRITED_QRY)
 					.setParameter("studentId", studentId)
 					.getSingleResult();
-			return inscription;
 		} catch (Exception e) {
 			return null;
 		}

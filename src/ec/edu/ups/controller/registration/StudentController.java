@@ -49,7 +49,7 @@ public class StudentController {
 			String birthdate = request.getParameter("birthdate");
 			String phone = request.getParameter("phone");
 			char gender = request.getParameter("gender").charAt(0);
-			String password = SiaTool.getMd5(dni);
+			String password = SiaTool.getSha256(dni);
 			Student student = new Student();
 			student.setDni(dni);
 			student.setEmail(email);
