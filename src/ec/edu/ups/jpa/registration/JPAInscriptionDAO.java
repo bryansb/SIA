@@ -44,6 +44,7 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 
 	@Override
 	public Student getStudentByDni(String dni) {
+		em.clear();
 		return (Student) super.em.createQuery(GET_STUDENT_BY_DNI_QRY)
 				.setParameter("dni", dni).getSingleResult();
 	}
@@ -51,6 +52,7 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 	@Override
 	public Inscription getCurrentInscrited(int studentId) {
 		try {
+			em.clear();
 			return (Inscription) super.em.createQuery(IS_CURRENT_INSCRITED_QRY)
 					.setParameter("studentId", studentId)
 					.getSingleResult();
@@ -62,6 +64,7 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 	@Override
 	public boolean isStudentCreated(String dni) {
 		try {
+			em.clear();
 			Long count = (Long) super.em.createQuery(IS_DNI_CREATED_QRY)
 					.setParameter("dni", dni)
 					.getSingleResult();
@@ -74,6 +77,7 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 	@Override
 	public boolean isEmailCreated(String email) {
 		try {
+			em.clear();
 			Long count = (Long) super.em.createQuery(IS_EMAIL_CREATED_QRY)
 					.setParameter("email", email)
 					.getSingleResult();

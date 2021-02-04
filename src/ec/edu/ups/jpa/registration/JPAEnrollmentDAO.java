@@ -39,6 +39,7 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 	@Override
 	public boolean isEnrolledByInscriptionId(int inscritionId) {
 		try {
+			em.clear();
 			Long count = (Long) super.em.createQuery(IS_ENROLLED_BY_INSCRIPTION_ID_QRY)
 					.setParameter("academicPeriod", getCurrentAcademicPeriod())
 					.setParameter("inscritionId", inscritionId)
@@ -59,6 +60,7 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Enrollment> getAcademicRecordByStudentId(int studentId) {
+		em.clear();
 		return super.em.createQuery(ACADEMIC_RECORD_BY_STUDENT_ID_QRY)
 			.setParameter("studentId", studentId)
 			.getResultList();
@@ -67,6 +69,7 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Enrollment> getEnrollmentByStudentId(int studentId) {
+		em.clear();
 		return super.em.createQuery(ENROLLMENT_BY_STUDENT_ID_QRY)
 				.setParameter("studentId", studentId)
 				.getResultList();

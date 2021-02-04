@@ -37,6 +37,7 @@ public class JPAGradeDAO extends JPAGenericDAO<Grade, Integer> implements GradeD
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Grade> findCurrentDregreListByTeacherId(int teacherId) {
+		em.clear();
 		return super.em.createQuery(CURRENT_DEGREE_QRY)
 				.setParameter("teacherId", teacherId)
 				.setParameter("academicPeriod", getCurrentAcademicPeriod())
