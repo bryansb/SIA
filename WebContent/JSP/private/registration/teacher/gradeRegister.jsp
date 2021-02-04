@@ -21,8 +21,7 @@
 		<jsp:include page="/WEB-INF/templates/header.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="left">
-		<!-- Editar al menú que corresponda -->
-		<jsp:include page="/WEB-INF/templates/student_menu.jsp"/>
+		<jsp:include page="/WEB-INF/templates/teacher_menu.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="footer">
 		<jsp:include page="/WEB-INF/templates/footer.jsp"/>
@@ -61,7 +60,7 @@
 								<thead>
 									<tr>
 										<th>Estudiante</th>
-										<th>Carrera</th>
+										<th>Asignatura</th>
 										<th>Calificación</th>
 										<th>Descripción</th>
 										<th>Estado</th>

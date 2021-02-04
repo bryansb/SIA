@@ -26,10 +26,12 @@ public class GradeController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> GradeController";
-	private GradeDAO gradeDAO;
-	private GroupDAO groupDAO;
+	private static final Logger LOGGER = Logger.getLogger(GradeController.class.getName());
+	
+	private final GradeDAO gradeDAO;
+	private final GroupDAO groupDAO;
+	
 	private String output;
-	private Logger logger;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,12 +40,18 @@ public class GradeController extends HttpServlet {
         super();
         gradeDAO = DAOFactory.getFactory().getGradeDAO();
         groupDAO = DAOFactory.getFactory().getGroupDAO();
-        output = "";
+    }
+    
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	output = "";
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option;
 		
@@ -60,8 +68,8 @@ public class GradeController extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.getMessage());
-			this.output = "Error al buscar una opción";
+			LOGGER.log(Level.INFO, e.getMessage());
+			output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
 	}
@@ -69,8 +77,14 @@ public class GradeController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			doGet(request, response);
+		} catch (ServletException | IOException e) {
+			String message = ERROR_ROOT + ":doPost > " + e.toString();
+			LOGGER.log(Level.INFO, message);
+		}
 	}
 	
 	public Grade readGrade(HttpServletRequest request) {
@@ -83,7 +97,7 @@ public class GradeController extends HttpServlet {
 		} catch (Exception e) {
 			grade = null;
 			String message = ERROR_ROOT + ":readGrade > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 			output = "Error"; 
 		}
 		return grade;
@@ -104,7 +118,7 @@ public class GradeController extends HttpServlet {
 			return "Success";
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":updateGrade > " + e.toString();
-			this.logger.log(Level.INFO, message);
+			LOGGER.log(Level.INFO, message);
 		}
 		return "Error";
 	}
@@ -112,7 +126,7 @@ public class GradeController extends HttpServlet {
 	public List<Group> getGroupListByIdList(List<Integer> idList) {
 		Group group;
 		
-		List<Group> groupList = new ArrayList<Group>();
+		List<Group> groupList = new ArrayList<>();
 		for (Integer groupId : idList) {
 			group = groupDAO.read(groupId);
 			groupList.add(group);
@@ -120,17 +134,20 @@ public class GradeController extends HttpServlet {
 		return groupList;
 	}
 	
-	public void doTest(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
+	public void doTest(HttpServletRequest request, HttpServletResponse response) {
 		Grade grade;
-		
-		this.doGet(request, response);
-		grade = readGrade(request);
-		if (grade == null) {
-			response.getWriter().append(output);
-		} else {
-			response.getWriter().append(output + grade.getGradeValue());
+		try {
+			this.doGet(request, response);
+			grade = readGrade(request);
+			if (grade == null) {
+				response.getWriter().append(output);
+			} else {
+				response.getWriter().append(output + grade.getGradeValue());
+			}
+		} catch (Exception e) {
+			LOGGER.log(Level.INFO, e.toString());
 		}
+		
 	}
 
 }

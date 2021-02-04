@@ -25,11 +25,11 @@ public class AcademicRecord extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_ROOT = ">>> Error >> AcademicRecord";
 	private static final String URL = "/JSP/private/registration/student/studentAcademicRecord.jsp";
-	private EnrollmentDAO enrollmentDAO;
-	private StudentDAO studentDAO;
+	private static final Logger LOGGER = Logger.getLogger(AcademicRecord.class.getName());
+	private final EnrollmentDAO enrollmentDAO;
+	private final StudentDAO studentDAO;
 	private List<Enrollment> enrollmentList;
 	private Student student;
-	private Logger logger;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,14 +39,22 @@ public class AcademicRecord extends HttpServlet {
         enrollmentDAO = DAOFactory.getFactory().getEnrollmentDAO();
         studentDAO = DAOFactory.getFactory().getStudentDAO();
     }
+    
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	enrollmentList = null;
+    	student = null;
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get id from session;
+		
 		try {
-			int studentId = 1;
+			int studentId = ((Student) request.getSession().getAttribute("user")).getId();
 			request.setCharacterEncoding("UTF-8");
 			student = studentDAO.read(studentId);
 			enrollmentList = enrollmentDAO.getAcademicRecordByStudentId(studentId);
@@ -54,7 +62,8 @@ public class AcademicRecord extends HttpServlet {
 			request.setAttribute("enrollmentList", enrollmentList);
 			redirectProcess(request, response);
 		} catch (Exception e) {
-			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 	
@@ -63,7 +72,8 @@ public class AcademicRecord extends HttpServlet {
 			
 			getServletContext().getRequestDispatcher(URL).forward(request, response);
 		} catch (ServletException | IOException e) {
-			logger.log(Level.INFO, ERROR_ROOT + e.getMessage());
+			String errorMessage = ERROR_ROOT + e.getMessage();
+			LOGGER.log(Level.INFO, errorMessage);
 		}
 	}
 

@@ -3,16 +3,18 @@
     pageEncoding="UTF-8"%>
 <div>
 	<div class="row">
-		<div class="col-8">
+		<div class="col-12">
 		    <div class="list-group" id="list-tab" role="tablist">
-		      <a class="list-group-item list-group-item-action active" 
-		      	 id="list-matricula-list" data-toggle="list" href="#list-matricula" role="tab" aria-controls="matricula">Matrículas</a>
+		      <a class="list-group-item list-group-item-action"
+		      	 href="/SIA/EnrollStudent?option=enrollment">Matrículas</a>
 		      <a class="list-group-item list-group-item-action" 
-		      	 id="list-planes-list" data-toggle="list" href="#list-planes" role="tab" aria-controls="planes">Planes de Estudio</a>
+		      	 id="list-comprobantes-list" data-toggle="list" role="tab" aria-controls="comprobantes" href="#list-planes">Planes de Estudio</a>
 		      <a class="list-group-item list-group-item-action" 
-		      	 id="list-comprobantes-list" data-toggle="list" href="#list-comprobantes" role="tab" aria-controls="comprobantes">Emisión de Comprobantes</a>
+		      	 href="/SIA/EnrollmentReceipt">Emisión de Comprobantes</a>
 		      <a class="list-group-item list-group-item-action" 
 		      	 id="list-horario-list" data-toggle="list" href="#list-horario" role="tab" aria-controls="horario">Consultar Horario</a>
+		      <a class="list-group-item list-group-item-action" 
+		      	 href="/SIA/AcademicRecord">Consultar Calificaciones</a>
 		    </div>
   		</div>
 	</div>

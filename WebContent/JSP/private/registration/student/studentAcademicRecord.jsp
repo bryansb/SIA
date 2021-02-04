@@ -13,7 +13,6 @@
 		<jsp:include page="/WEB-INF/templates/header.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="left">
-		<!-- Editar al menú que corresponda -->
 		<jsp:include page="/WEB-INF/templates/student_menu.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="footer">
@@ -29,6 +28,9 @@
 		</div>
 		<div class="row mt-4">
 			<div class="col-12">
+				<c:if test="${empty enrollmentList}">
+					<span>No se encontraron registros</span>
+				</c:if>
 				<c:forEach var="enrollment" items="${enrollmentList}">
 						<div class="row mt-4 page-header">
 							<div class="col-12 ">
