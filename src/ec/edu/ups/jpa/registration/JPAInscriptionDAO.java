@@ -31,6 +31,14 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			+ " WHERE i.student.dni = :dni "
 			+ " AND i.deleted = '0' ";
 	
+	private static final String ACADEMIC_RECORD_BY_INSCRIPTION_ID = 
+			" SELECT i FROM Inscription i "
+			+ " LEFT JOIN FETCH i.enrollmentList e "
+			+ " WHERE i.id = :inscriptionId "
+			+ " AND i.deleted = '0' "
+			+ " AND e.deleted = '0' "
+			+ " AND e.status = 'E' ";
+	
 	public JPAInscriptionDAO() {
 		super(Inscription.class);
 	}
@@ -98,6 +106,19 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 		return super.em.createQuery(INSCRIPTION_BY_STUDENT_DNI_QRY)
 				.setParameter("dni", dni)
 				.getResultList();
+	}
+
+	@Override
+	public Inscription getAcademicRecordByInscriptionId(int inscriptionId) {
+		try {
+			em.clear();
+			return (Inscription) super.em.createQuery(ACADEMIC_RECORD_BY_INSCRIPTION_ID)
+					.setParameter("inscriptionId", inscriptionId)
+					.getSingleResult();
+		} catch (Exception e) {
+			System.out.println("ENRTA " + e.toString());
+			return null;
+		}
 	}
 
 }

@@ -14,4 +14,6 @@ public interface InscriptionDAO extends GenericDAO<Inscription, Integer> {
 	public boolean isEmailCreated(String email);
 	
 	public List<Inscription> getInscriptionByStudentDni(String dni);
+	
+	public Inscription getAcademicRecordByInscriptionId(int inscriptionId);
 }
