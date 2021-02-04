@@ -32,6 +32,9 @@ public class Amount implements Serializable {
 	@Column(name = "amo_total")
 	private double total;
 	
+	@Column(name = "amo_balance")
+	private double balance;
+	
 	// i: income |  e: egress
 	@Column(name = "amo_type")
 	private char type;
@@ -90,6 +93,14 @@ public class Amount implements Serializable {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public char getType() {

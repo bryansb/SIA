@@ -24,6 +24,11 @@
 	</jsp:attribute>
 	
 	<jsp:body>
+		<div class="row my-4">
+			<div class="col-12">
+				<h2>Gestión de Cuentas</h2>
+			</div>
+		</div>
 		<div id="master">
 		<div id="slave">
 		<div class="row justify-content-center">
@@ -78,7 +83,7 @@
 			<div class="col-6">
 				<div class="table-responsive">
 	  				<table class="table" >
-	  					<thead>
+	  					<thead class="thead-dark">
 	  						<tr>
 	  							<th>Nombre</th>
 	  							<th>Balance</th>

@@ -10,4 +10,8 @@ public interface AmountDAO extends GenericDAO<Amount, Integer>{
 
 	public List<Amount> findByDateAndType(Date start, Date end, int accountId);
 	
+	public List<Amount> findByDateForAccountingBox(Date start, Date end);
+	
+	public double getAmountValueFromAccountingBoxDate(Date start);
+	
 }

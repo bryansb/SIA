@@ -40,7 +40,7 @@ public class Configuration {
 				
 		};
 	
-	private static final String[] LOGIN_ADMIN = {""};
+	private static final String[] LOGIN_ADMIN = {"/AccountController", "/DiaryBook"};
 	
 	private List<String> loginServlet;
 	

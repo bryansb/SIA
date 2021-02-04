@@ -33,6 +33,7 @@ public class DiaryBook extends HttpServlet {
 	
 	private final AmountDAO amountDAO;
 	private final AccountDAO accountDAO;
+	private final Account accountant;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,6 +42,7 @@ public class DiaryBook extends HttpServlet {
         super();
         amountDAO = DAOFactory.getFactory().getAmountDAO();
         accountDAO = DAOFactory.getFactory().getAccountDAO();
+        accountant = accountDAO.findByName("CAJA CONTABLE");
     }
 
 	/**
@@ -65,9 +67,9 @@ public class DiaryBook extends HttpServlet {
 			int accountId = Integer.parseInt(request.getParameter("accountId"));
 			Date start = formatter.parse(request.getParameter("start"));
 			Date end = formatter.parse(request.getParameter("end"));
-			List<Amount> amountList = amountDAO.findByDateAndType(start, end, accountId);
+			
 			Account account = accountDAO.read(accountId);
-			account.setAmountList(amountList);
+			evaluateAccount(account, start, end);
 			account.calculateTotal();
 			request.setAttribute("account", account);
 		} catch (Exception e) {
@@ -75,6 +77,18 @@ public class DiaryBook extends HttpServlet {
 		}
 		
 	}
+	
+    private Account evaluateAccount(Account account, Date start, Date end) {
+    	if (account.getId() == accountant.getId()) {
+    		List<Amount> amountList = amountDAO.findByDateForAccountingBox(start, end);
+	    	account.setAmountList(amountList);
+	    	account.setBalance(account.getBalance() - amountDAO.getAmountValueFromAccountingBoxDate(start));
+    	} else {
+	    	List<Amount> amountList = amountDAO.findByDateAndType(start, end, account.getId());
+	    	account.setAmountList(amountList);
+    	}
+    	return account;
+    }
 	
 	private void setAccountList(HttpServletRequest request) {
 		request.setAttribute("accountList", accountDAO.find("name", 0, 0));
