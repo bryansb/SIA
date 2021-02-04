@@ -46,6 +46,9 @@ public class Group implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "groupList")
 	private List<Teacher> teacherList;
 	
+	@Transient
+	private boolean editable;
+	
 	public Group() {
 		super();
 	}
@@ -139,6 +142,14 @@ public class Group implements Serializable {
 
 	public void setTeacherList(List<Teacher> teacherList) {
 		this.teacherList = teacherList;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override

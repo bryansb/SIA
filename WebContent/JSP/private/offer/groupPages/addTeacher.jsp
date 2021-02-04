@@ -4,25 +4,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="form-group ">
-	<label for="teacherId">Profesor:</label>
-	 <select name="teacherId" class="form-control">
-	 	<option value="NaN" selected>Seleccione</option>
-    	<c:forEach var="teacher" items="${teachers}">
-   			<option value="${teacher.id}">${teacher.name}</option>
-		</c:forEach>
-	</select>
+<div class="col-12">
+	<h4>Profesores</h4>
+	<form class="text-left form col-12" id="teacher-form" action="/SIA/GroupController" method="post">
+		<div class="form-teacher">
+			<input type="hidden" value="addTeacher" name="option"/>
+			<label for="teacherId">Profesor:</label>
+			 <select name="teacherId" class="form-control">
+			 	<option value="NaN" selected>Seleccione</option>
+		    	<c:forEach var="teacher" items="${teachers}">
+		   			<option value="${teacher.id}">${teacher.name}</option>
+				</c:forEach>
+			</select>
+		</div>
+	</form>
+	<div id="table-career">
+		<H2>Lista de Profesores Asignados a este grupo</H2>
+		<table class="table display" id="table-content">
+			<thead>
+				<tr>
+					<th scope="col">Nombre</th>
+					<th scope="col">Cédula</th>
+					<th scope="col">Correo</th>
+					<th scope="col">Gestionar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:set var="tableTeacher" scope="request" value="${teachers}" />
+		    	<c:forEach var="tea" items="${tableTeacher}">
+					<tr>
+						<td>${tea.name}</td>
+						<td>${tea.time}</td>
+						<td>
+							<button class="btn btn-secondary" onclick="readCareer(${car.id});">Editar</button>
+							<button type="button" class="btn btn-danger" onclick="deleteCareer(${car.id});">Eliminar</button>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<script type="text/javascript">loadFunction();</script>
+	</div>
 </div>
-<h4>Agregar Horario</h4>
-<div class="form-group ">
-	<label for="day">Día:</label>
-	<input type="text" id="day" name="day" class="form-control" placeholder="Día" required>
-</div>
-<div class="form-group ">
-	<label for=startTime>Hora de Inicio:</label>
-	<input type="text" id="startTime" name="startTime" class="form-control" placeholder="Hora Inicio" required>
-</div>
-<div class="form-group ">
-	<label for=endTime>Hora Fin:</label>
-	<input type="text" id="endTime" name="endTime" class="form-control" placeholder="Hora Fin" required>
-</div>
+

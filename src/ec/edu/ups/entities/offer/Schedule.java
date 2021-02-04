@@ -31,6 +31,9 @@ public class Schedule implements Serializable {
 	@JoinColumn(nullable = false)
 	private Group group;
 	
+	@Transient
+	private boolean editable;
+	
 	public Schedule() {
 		super();
 	}
@@ -81,6 +84,14 @@ public class Schedule implements Serializable {
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override

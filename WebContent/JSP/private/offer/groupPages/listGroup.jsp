@@ -4,16 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
-	<H2>Lista de Grupos</H2>
-	<div id="tableCareer">
-		<table class="table table-striped">
+<div class="col-12" id="tableGroup">
+	<div id="table-group">
+		<H2>Lista de Grupos</H2>
+		<table class="table display" id="table-content-group">
 			<thead>
 				<tr>
 					<th scope="col">Periodo Academico</th>
 					<th scope="col">Espacio Físico</th>
 					<th scope="col">Cuota</th>
-					<th scope="col">Editar</th>
+					<th scope="col">Materia</th>
+					<th scope="col">Profesores</th>
+					<th scope="col">Horario</th>
+					<th scope="col">Gestionar Grupo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,11 +26,21 @@
 						<td>${gro.academicPeriod}</td>
 						<td>${gro.physicalSpace}</td>
 						<td>${gro.quota}</td>
-						<td><button class="btn btn-secondary">Editar</button></td>
+						<td>${gro.subject.name}</td>
+						<td><button class="btn btn-secondary">Revisar</button></td>
+						<td>
+							<a href="/SIA/ScheduleController?groupId=${gro.id}">
+								<button class="btn btn-secondary" onclick="addSchedule(${gro.id});">Revisar</button>
+							</a>
+						</td>
+						<td>
+							<button class="btn btn-secondary" onclick="readGroup(${gro.id});">Editar</button>
+							<button class="btn btn-danger" onclick="deleteGroup(${gro.id});">Eliminar</button>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
-			
 		</table>
+		<script type="text/javascript">loadFunction();</script>
 	</div>
 </div>

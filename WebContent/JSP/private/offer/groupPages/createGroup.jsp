@@ -5,20 +5,35 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <div class="col-12">
-	<H2>Crear Grupo</H2>
-	<form class="text-left form col-12" id="subject-form" action="/SIA/GroupController" method="post">
-		<input type="hidden" value="create" name="option"/>
+	<c:choose>
+		<c:when test="${group.editable}">
+			<h2>Editar Grupo</h2>
+		</c:when>
+		<c:otherwise>
+			<h2>Crear Grupo</h2>
+		</c:otherwise>
+	</c:choose>
+	<form class="text-left form col-12" id="group-form" action="/SIA/GroupController" method="post">
+		<c:choose>
+			<c:when test="${group.editable}">
+				<input type="hidden" value="${group.id}" name="groupId"/>
+				<input type="hidden" value="update" name="option"/>
+			</c:when>
+			<c:otherwise>
+				<input type="hidden" value="create" name="option"/>
+			</c:otherwise>
+		</c:choose>
 		<div class="form-group ">
 			<label for="academicPeriod">Periodo Academico:</label>
-			<input type="text" id="academicPeriod" name="academicPeriod" class="form-control" placeholder="Periodo Academico" required>
+			<input type="text" id="academicPeriod" name="academicPeriod" class="form-control" placeholder="Periodo Academico" value="${group.academicPeriod}" required>
 		</div>
 		<div class="form-group ">
 			<label for="physicalSpace">Espacio Físico:</label>
-			<input type="text" id="physicalSpace" name="physicalSpace" class="form-control" placeholder="Espacio Físico" required>
+			<input type="text" id="physicalSpace" name="physicalSpace" class="form-control" placeholder="Espacio Físico" value="${group.physicalSpace}" required>
 		</div>
 		<div class="form-group ">
 			<label for="quota">Cuota:</label>
-			<input type="number" id="quota" name="quota" class="form-control" placeholder="0" min="0" step="1" >	
+			<input type="number" id="quota" name="quota" class="form-control" placeholder="0" min="0" step="1" value="${group.quota}" required>	
 		</div>
 		<div class="form-group ">
 			<label for="subjectId">Materias:</label>
@@ -29,8 +44,13 @@
 				</c:forEach>
 			</select>
 		</div>
-		
-		<input type="submit" class="btn btn-primary" value="Registrar"/>
-
+		<c:choose>
+			<c:when test="${group.editable}">
+				<input type="submit" class="btn btn-success" value="Aceptar"/>
+			</c:when>
+			<c:otherwise>
+				<input type="submit" class="btn btn-primary" value="Registrar"/>
+			</c:otherwise>
+		</c:choose>
 	</form>
 </div>

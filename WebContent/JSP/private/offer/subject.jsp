@@ -6,6 +6,7 @@
 <t:genericpage>
 	
 	<jsp:attribute name="js">
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
 		<script src="/SIA/resources/js/offer/crud_subject.js"></script>
 	</jsp:attribute>
 	
