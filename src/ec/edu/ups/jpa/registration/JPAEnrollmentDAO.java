@@ -29,6 +29,21 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 			+ " AND e.inscription.student.id = :studentId "
 			+ " ORDER BY e.date DESC ";
 	
+	private static final String ENROLLMENT_APPROVED_BY_INSCRIPTION_ID_QRY = 
+			" SELECT DISTINCT e FROM Enrollment e "
+			+ " LEFT JOIN FETCH e.gradeList gr "
+			+ " WHERE e.deleted = 0 "
+			+ " AND e.inscription.id = :inscriptionId "
+			+ " AND gr.status = 'A' "
+			+ " ORDER BY gr.group.subject.name ASC "
+			;
+	private static final String ENROLLMENT_BY_STUDENT_DNI_QRY = 
+			" SELECT e FROM Enrollment e "
+			+ " WHERE e.deleted = 0 "
+			+ " AND e.inscription.student.dni = :dni "
+			+ " ORDER BY e.date DESC ";
+	
+	
 	private ParameterDAO parameterDAO;
 	
 	public JPAEnrollmentDAO() {
@@ -73,6 +88,24 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 		return super.em.createQuery(ENROLLMENT_BY_STUDENT_ID_QRY)
 				.setParameter("studentId", studentId)
 				.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Enrollment> getEnrollmentApprovedLevelByInscriptionId(int inscriptionId) {
+		em.clear();
+		return super.em.createQuery(ENROLLMENT_APPROVED_BY_INSCRIPTION_ID_QRY)
+				.setParameter("inscriptionId", inscriptionId)
+				.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Enrollment> getEnrollmentByStudentDni(String dni) {
+		em.clear();
+		return super.em.createQuery(ENROLLMENT_BY_STUDENT_DNI_QRY)
+			.setParameter("dni", dni)
+			.getResultList();
 	}
 
 }

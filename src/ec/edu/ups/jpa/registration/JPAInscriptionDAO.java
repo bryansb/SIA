@@ -26,6 +26,11 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 			" SELECT COUNT(s.id) FROM Student s "
 			+ " WHERE s.email = :email";
 	
+	private static final String INSCRIPTION_BY_STUDENT_DNI_QRY = 
+			" SELECT i FROM Inscription i "
+			+ " WHERE i.student.dni = :dni "
+			+ " AND i.deleted = '0' ";
+	
 	public JPAInscriptionDAO() {
 		super(Inscription.class);
 	}
@@ -85,6 +90,14 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 		} catch (Exception e) {
 			return true;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Inscription> getInscriptionByStudentDni(String dni) {
+		return super.em.createQuery(INSCRIPTION_BY_STUDENT_DNI_QRY)
+				.setParameter("dni", dni)
+				.getResultList();
 	}
 
 }
