@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import ec.edu.ups.controller.utils.SiaTool;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.entities.registration.Enrollment;
@@ -58,7 +59,7 @@ public class BillHead implements Serializable {
 
 	public void createBillDetail(String description, int quantity, double unitPrice) {
 		if (this.billDetailList == null) {
-			this.billDetailList = new ArrayList<BillDetail>();
+			this.billDetailList = new ArrayList<>();
 		}
 		BillDetail billDetail = new BillDetail(description, quantity, unitPrice);
 		billDetail.setBillHead(this);
@@ -81,6 +82,10 @@ public class BillHead implements Serializable {
 			this.taxes = this.subtotal * basicTax.getDoubleValue();
 			this.vat = this.subtotal * vatValue.getDoubleValue();
 			this.total = this.subtotal + this.taxes + this.vat;
+			
+			this.taxes = SiaTool.getTrunkDecimal(this.taxes);
+			this.vat = SiaTool.getTrunkDecimal(this.vat);
+			this.total = SiaTool.getTrunkDecimal(this.total);
 			return true;
 		} catch (Exception e) {
 			return false;

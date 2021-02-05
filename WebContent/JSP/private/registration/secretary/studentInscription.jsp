@@ -64,7 +64,10 @@
 								    	<button class="btn btn-primary" id="basic-addon">
 								    		<i class="fas fa-search"></i>
 								    	</button>
-								    	<button type="button" class="btn btn-success" onclick="createStudentPage();"> <i class="far fa-user"></i> Crear Estudiante </button>
+								    	&ensp;&ensp;&ensp;&ensp;
+								    	<button type="button" class="btn btn-success" onclick="createStudentPage();">
+								    		<i class="far fa-user"></i>&ensp;Crear Estudiante
+								    	</button>
 								 	</div>
 							 	
 								</div>
@@ -109,10 +112,10 @@
 					<br/>
 					<div class="row justify-content-between">
 						<button type="button" class="btn btn-danger"> 
-							<i class="fas fa-window-close"></i> Cancelar
+							<i class="fas fa-window-close"></i>&ensp;Cancelar
 						</button>
 						<button type="button" class="btn btn-primary" onclick="createInscription();"> 
-							<i class="fas fa-check-square"></i> Crear
+							<i class="fas fa-check-square"></i>&ensp;Crear
 						</button>
 					</div>
 				</c:otherwise>

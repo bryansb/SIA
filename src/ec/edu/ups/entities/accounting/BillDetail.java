@@ -3,6 +3,8 @@ package ec.edu.ups.entities.accounting;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import ec.edu.ups.controller.utils.SiaTool;
+
 /**
  * Entity implementation class for Entity: BillDetail
  *
@@ -48,6 +50,7 @@ public class BillDetail implements Serializable {
 
 	public void calculateTotal() {
 		this.total = this.quantity * this.unitPrice;
+		this.total = SiaTool.getTrunkDecimal(this.total);
 	}
 	
 	public int getId() {

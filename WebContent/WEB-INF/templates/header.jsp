@@ -14,10 +14,10 @@
 			      	<li class="nav-item">
 			      		<c:choose>
 			      			<c:when test="${empty  userLocal.fullName}">
-			      				<a class="nav-link" href="/SIA/HTML/login.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+			      				<a class="nav-link" href="/SIA/HTML/login.html"><i class="fas fa-sign-in-alt"></i>&ensp;Iniciar Sesión</a>
 			      			</c:when>
 			      			<c:otherwise>
-			      				<a class="nav-link" href="/SIA/Logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+			      				<a class="nav-link" href="/SIA/Logout"><i class="fas fa-sign-out-alt"></i>&ensp;Cerrar Sesión</a>
 			      			</c:otherwise>
 			      		</c:choose>
 			      	</li>

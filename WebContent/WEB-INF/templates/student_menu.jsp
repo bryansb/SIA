@@ -5,17 +5,26 @@
 	<div class="row">
 		<div class="col-12">
 		    <div class="list-group" id="list-tab" role="tablist">
-		      <a class="list-group-item list-group-item-action"
-		      	 href="/SIA/EnrollStudent?option=enrollment">Matrículas</a>
-		      <a class="list-group-item list-group-item-action" 
-		      	 id="list-comprobantes-list" data-toggle="list" role="tab" aria-controls="comprobantes" href="#list-planes">Planes de Estudio</a>
-		      <a class="list-group-item list-group-item-action" 
-		      	 href="/SIA/EnrollmentReceipt">Emisión de Comprobantes</a>
-		      <a class="list-group-item list-group-item-action" 
-		      	 id="list-horario-list" data-toggle="list" href="#list-horario" role="tab" aria-controls="horario">Consultar Horario</a>
-		      <a class="list-group-item list-group-item-action" 
-		      	 href="/SIA/AcademicRecord">Consultar Calificaciones</a>
-		    </div>
+		    	<a class="list-group-item list-group-item-action"
+		      	href="/SIA/EnrollStudent?option=enrollment">
+		      	 	<i class="fas fa-file-signature"></i>&ensp;Matrículas
+		      	</a>
+		      	<a class="list-group-item list-group-item-action" 
+	      	 	id="list-comprobantes-list" data-toggle="list" role="tab" aria-controls="comprobantes" href="#list-planes">
+		      	 	<i class="fas fa-graduation-cap"></i>&ensp;Planes de Estudio
+      	 		</a>
+		      	<a class="list-group-item list-group-item-action" 
+	      		href="/SIA/EnrollmentReceipt">
+		      	 	<i class="fas fa-file-invoice"></i>&ensp;Emisión de Comprobantes</a>
+		      	<a class="list-group-item list-group-item-action" 
+	      	 	id="list-horario-list" data-toggle="list" href="#list-horario" role="tab" aria-controls="horario">
+	      	 		<i class="fas fa-calendar"></i>&ensp;Consultar Horario
+      	 		</a>
+		      	<a class="list-group-item list-group-item-action" 
+		      		href="/SIA/AcademicRecord">
+		      	 	<i class="fas fa-chalkboard-teacher"></i>&ensp;Consultar Calificaciones
+		      	</a>
+			</div>
   		</div>
 	</div>
 </div>

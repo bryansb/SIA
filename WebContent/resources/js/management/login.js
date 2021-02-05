@@ -3,12 +3,17 @@
  */
 function loging(){
     var form = $("#logingForm");
-	$.post("/SIA/Login", form.serialize(), function(res){
-		var msg = res.split("&", 2);
-		if(msg[1] == "e_notice_sucess"){
-			location.href = "/SIA/home";
-		}else {
-			showNotice(msg[0], msg[1]);
+	$.post("/SIA/Login", form.serialize(), function(res, est){
+		if (est == 'success') {
+			var msg = res.split("&", 2);
+			if(msg[1] == "e_notice_sucess"){
+				location.href = "/SIA/home";
+			}else {
+				showNotice(msg[0], msg[1]);
+			}
+		} else {
+			showNotice("Error interno en el servidor", 
+					"e_notice_error");
 		}
 	});
 

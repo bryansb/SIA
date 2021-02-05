@@ -10,11 +10,6 @@ function previousLevel(level) {
 function subjectSelected() {
 	var subjectId = $('input[name="subjectId"]:checked');
 	var url = "/SIA/EnrollStudent?option=enrollment" + "&level=1&" + subjectId.serialize();
-	//console.log(url);
-	//$.get(url, function(data, status){
-		//alert("Data: " + data + "\nStatus: " + status);
-	//});
-	
 	jQuery('#master').load(`${url} #slave`);
 }
 

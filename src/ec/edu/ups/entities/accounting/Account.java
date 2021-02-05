@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import ec.edu.ups.controller.utils.SiaTool;
+
 /**
  * Entity implementation class for Entity: Account
  *
@@ -34,8 +36,26 @@ public class Account implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private AccountType accountType;
 	
+	@Transient
+	private double total;
+	
 	public Account() {
 		super();
+	}
+	
+	public void calculateTotal() {
+		if (amountList == null) {
+			return;
+		}
+		total = 0.0;
+		for (Amount amount : amountList) {
+			if (amount.getType() == 'I') {
+				total += amount.getTotal();
+			} else if (amount.getType() == 'E') {
+				total -= amount.getTotal();
+			}
+		}
+		total = SiaTool.getTrunkDecimal(total);
 	}
 
 	public int getId() {
@@ -76,6 +96,14 @@ public class Account implements Serializable {
 
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 	@Override

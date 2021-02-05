@@ -13,6 +13,10 @@ public interface EnrollmentDAO extends GenericDAO<Enrollment, Integer> {
 	
 	public List<Enrollment> getAcademicRecordByStudentId(int studentId);
 	
+	public List<Enrollment> getEnrollmentByStudentDni(String dni);
+	
 	public List<Enrollment> getEnrollmentByStudentId(int studentId);
+	
+	public List<Enrollment> getEnrollmentApprovedLevelByInscriptionId(int inscriptionId);
 	
 }
