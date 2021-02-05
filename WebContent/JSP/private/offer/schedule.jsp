@@ -15,7 +15,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
-		Grupo
+		Horario
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">
@@ -31,13 +31,13 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-12" id="groupForm">
-				<div class="row justify-content-center" id="group-create-update">
-					<jsp:include page="groupPages/createGroup.jsp"/>
+			<div class="col-8" id="scheduleForm">
+				<div class="row justify-content-center" id="schedule-create-update">
+					<jsp:include page="schedulePages/createSchedule.jsp"/>
 				</div>
-				
-	   			<div class="row justify-content-center">
-					<jsp:include page="groupPages/listGroup.jsp"/>
+			
+				<div class="row justify-content-center">
+					<jsp:include page="schedulePages/listSchedule.jsp"/>
 				</div>
 			</div>
 		</div>

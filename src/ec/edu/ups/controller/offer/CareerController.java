@@ -25,7 +25,7 @@ public class CareerController extends HttpServlet {
 	private static String ERROR_ROOT = ">>> Error >> CareerController:";
 	private Logger logger;
 	private String output;
-	
+		
 	private CareerDAO careerDAO;
        
     /**
@@ -33,55 +33,23 @@ public class CareerController extends HttpServlet {
      */
     public CareerController() {
         super();
+        logger = Logger.getLogger(CareerController.class.getName());
         careerDAO =  DAOFactory.getFactory().getCareerDAO();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("careers", listCareer(request));
-		RequestDispatcher view;
-		view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
-		view.forward(request, response);
-//		String option;
-//
-//		try {
-//			RequestDispatcher view;
-//			option = request.getParameter("option");
-//			switch (option) {
-//			case "create":
-//				output = createCareer(request);
-//				view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
-//				view.forward(request, response);
-//				break;
-//			case "read":
-//				request.setAttribute("career", readCareer(request));
-//				view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
-//				view.forward(request, response);
-//				break;
-//			case "search":
-//				request.setAttribute("careers", readCareer(request));
-//				view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
-//				view.forward(request, response);
-//				break;
-//			case "update":
-//				updateCareer(request);
-//				break;
-//			default:
-//				break;
-//			}
-//		} catch (Exception e) {
-//			this.logger.log(Level.INFO, e.getMessage());
-//			this.output = "Error al buscar una opción";
-//		}
-//		request.setAttribute("output", output);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		String option;
 
 		try {
@@ -89,16 +57,15 @@ public class CareerController extends HttpServlet {
 			switch (option) {
 			case "create":
 				output = createCareer(request);
-				
 				break;
 			case "read":
 				request.setAttribute("career", readCareer(request));
 				break;
-			case "search":
-				request.setAttribute("career", searchCareer(request));
-				break;
 			case "update":
 				updateCareer(request);
+				break;
+			case "delete":
+				deleteCareer(request);
 				break;
 			default:
 				break;
@@ -108,6 +75,15 @@ public class CareerController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
+		updateRequest(request, response);
+	}
+	
+	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		request.setAttribute("careers", listCareer(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/career.jsp");
+		view.forward(request, response);
 	}
 	
 	public String createCareer(HttpServletRequest request) {
@@ -135,6 +111,7 @@ public class CareerController extends HttpServlet {
 		try {
 			careerId = Integer.parseInt(request.getParameter("careerId"));
 			career = careerDAO.read(careerId);
+			career.setEditable(true);
 		} catch (Exception e) {
 			career = null;
 		}
@@ -149,20 +126,6 @@ public class CareerController extends HttpServlet {
 			careers = null;
 		}
 		return careers;
-	}
-	
-	public Career searchCareer(HttpServletRequest request) {
-		Career career;
-		String careerName;
-		try {
-			careerName = request.getParameter("careerName");
-			career = careerDAO.findByCareerName(careerName);
-			System.out.println(careerName + "\n" + career);
-		} catch (Exception e) {
-			career = null;
-			System.out.println("error buscar");
-		}
-		return career;
 	}
 
 	public String updateCareer(HttpServletRequest request) {
@@ -186,7 +149,16 @@ public class CareerController extends HttpServlet {
 		}		
 	}
 	
-	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String deleteCareer(HttpServletRequest request) {
+		
+		int id;	
+		id = Integer.parseInt(request.getParameter("id"));
+		careerDAO.deleteByID(id);
+		return "Success";
+	}
+	
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		Career career;
 		this.doGet(request, response);
 		career = readCareer(request);
