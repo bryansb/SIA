@@ -33,6 +33,10 @@ public class Group implements Serializable {
 	@Column(name = "gro_quota")
 	private int quota;
 	
+	@Column(name = "gro_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
 	private List<Schedule> scheduleList;
 	
@@ -43,8 +47,12 @@ public class Group implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
 	private List<Grade> gradeList;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "groupList")
+	@ManyToMany
+	@JoinColumn
 	private List<Teacher> teacherList;
+	
+	@Transient
+	private boolean editable;
 	
 	public Group() {
 		super();
@@ -55,6 +63,17 @@ public class Group implements Serializable {
 		this.academicPeriod = academicPeriod;
 		this.physicalSpace = physicalSpace;
 		this.quota = quota;
+	}
+	
+	public String getScheduleToString() {
+		String schedule = "";
+		
+		for (Schedule s : scheduleList) {
+			schedule += " " + s.getDay() + " " + s.getStartTime() + "-" + s.getEndTime() 
+			+ " |";
+		}
+		schedule = schedule.substring(0,schedule.length()-2);
+		return schedule;
 	}
 	
 	public void createSchedule(String day, String startTime, String endTime, Group group) {
@@ -75,6 +94,18 @@ public class Group implements Serializable {
 		}
 		
 		teacherList.add(teacher);
+	}
+	
+	public void removeTeacher(Teacher teacher) {
+		if (this.teacherList == null) {
+			return;
+		}
+		
+		for (int i = 0; i < teacherList.size(); i++) {
+			if (teacherList.get(i).getId() == teacher.getId()) {
+				teacherList.remove(i);
+			}
+		}
 	}
 
 	public int getId() {
@@ -139,6 +170,22 @@ public class Group implements Serializable {
 
 	public void setTeacherList(List<Teacher> teacherList) {
 		this.teacherList = teacherList;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

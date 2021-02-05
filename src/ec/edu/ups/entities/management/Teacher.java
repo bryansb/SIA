@@ -19,20 +19,24 @@ public class Teacher extends Employee implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToMany( 
-			mappedBy = "teacherList", 
-			fetch = FetchType.EAGER)
+	@ManyToMany
+	@JoinColumn
 	private List<Degree> degreeList;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "REL_GRO_TEA", 
-			joinColumns = @JoinColumn(name = "tea_id", nullable = false),
-			inverseJoinColumns = @JoinColumn(name = "gro_id", nullable = false))
+	@ManyToMany(mappedBy = "teacherList")
+	@JoinColumn
 	private List<Group> groupList;
-
+	
 	public Teacher() {
 		super();
+	}
+	
+	public void addGroup(Group group) {
+
+		if (this.groupList == null) {
+			this.groupList = new ArrayList<>();
+		}
+		groupList.add(group);
 	}
 
 	public List<Degree> getDegreeList() {
@@ -61,5 +65,18 @@ public class Teacher extends Employee implements Serializable {
 			this.degreeList = new ArrayList<>();
 		}
 		degreeList.add(degree);
+	}
+	
+	public void removeDegree(Degree degree) {
+		if (this.degreeList == null) {
+			System.out.println("peligro");
+			return;
+		}
+		
+		for (int i = 0; i < degreeList.size(); i++) {
+			if (degreeList.get(i).getId() == degree.getId()) {
+				degreeList.remove(i);
+			}
+		}
 	}
 }

@@ -4,28 +4,39 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
-	<H2>Lista de Carreras</H2>
-	<div id="tableCareer">
-		<TABLE class="table table-striped">
-			<THEAD>
-				<TR>
-					<TH scope="col">Nombre</TH>
-					<TH scope="col">Tiempo</TH>
-					<TH scope="col">Editar</TH>
-				</TR>
-			</THEAD>
-			<TBODY>
+<div class="col-12" id="tableCareer">
+	<div id="table-career">
+		<H2>Lista de Carreras</H2>
+		<table class="table display" id="table-content">
+			<thead>
+				<tr>
+					<th scope="col">Nombre</th>
+					<th scope="col">Tiempo</th>
+					<th scope="col">Gestionar</th>
+				</tr>
+			</thead>
+			<tbody>
 				<c:set var="tableCareer" scope="request" value="${careers}" />
 		    	<c:forEach var="car" items="${tableCareer}">
-					<TR>
-						<TD>${car.name}</TD>
-						<TD>${car.time}</TD>
-						<TD><BUTTON class="btn btn-secondary">editar</BUTTON></TD>
-					</TR>
+					<tr>
+						<td>${car.name}</td>
+						<td>${car.time}</td>
+						<td>
+							<button class="btn btn-secondary" onclick="readCareer(${car.id});">Editar</button>
+							<c:choose>
+								<c:when test="${car.deleted}">
+									<button type="button" class="btn btn-success" onclick="deleteCareer(${car.id});">Restaurar</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-danger" onclick="deleteCareer(${car.id});">Eliminar</button>
+								</c:otherwise>
+							</c:choose>
+							
+						</td>
+					</tr>
 				</c:forEach>
-			</TBODY>
-			
-		</TABLE>
+			</tbody>
+		</table>
+		<script type="text/javascript">loadFunction();</script>
 	</div>
 </div>

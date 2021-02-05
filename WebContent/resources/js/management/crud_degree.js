@@ -1,11 +1,11 @@
-function readCareer(careerId){
-	var url = '/SIA/CareerController?option=read&careerId=' + careerId
-	jQuery('#careerForm').load(`${url} #career-create-update`);
+function readDegree(degreeId) {
+	var url = '/SIA/DegreeController?option=read&degreeId=' + degreeId
+	jQuery('#degreeForm').load(`${url} #degree-create-update`);
 }
 
-function deleteCareer(id){
-	var url = '/SIA/CareerController?option=delete&id=' + id
-	jQuery('#tableCareer').load(`${url} #table-career`, function(response, status){
+function deleteDegree(id){
+	var url = '/SIA/DegreeController?option=delete&degreeId=' + id
+	jQuery('#tableDegree').load(`${url} #table-degree`, function(response, status){
 		loadFunction();
 	});
 }
@@ -25,4 +25,3 @@ function loadFunction(){
         }
     });
 }
-

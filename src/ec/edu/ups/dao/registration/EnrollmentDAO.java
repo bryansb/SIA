@@ -19,4 +19,6 @@ public interface EnrollmentDAO extends GenericDAO<Enrollment, Integer> {
 	
 	public List<Enrollment> getEnrollmentApprovedLevelByInscriptionId(int inscriptionId);
 	
+	public Enrollment getEnrollmentCurrentSchedule(int studentId);
+	
 }

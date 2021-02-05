@@ -1,11 +1,11 @@
-function readCareer(careerId){
-	var url = '/SIA/CareerController?option=read&careerId=' + careerId
-	jQuery('#careerForm').load(`${url} #career-create-update`);
+function readSubject(subjectId){
+	var url = '/SIA/SubjectController?option=read&subjectId=' + subjectId
+	jQuery('#subjectForm').load(`${url} #subject-create-update`);
 }
 
-function deleteCareer(id){
-	var url = '/SIA/CareerController?option=delete&id=' + id
-	jQuery('#tableCareer').load(`${url} #table-career`, function(response, status){
+function deleteSubject(id){
+	var url = '/SIA/SubjectController?option=delete&id=' + id
+	jQuery('#tableSubject').load(`${url} #table-subject`, function(response, status){
 		loadFunction();
 	});
 }

@@ -3,11 +3,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
 <t:genericpage>
 	
 	<jsp:attribute name="js">
 		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
-		<script src="/SIA/resources/js/offer/crud_group.js"></script>
+		<script src="/SIA/resources/js/management/crud_degree.js"></script>
 	</jsp:attribute>
 	
 	<jsp:attribute name="css">
@@ -15,7 +16,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
-		Grupo
+		Titulo
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">
@@ -31,13 +32,13 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-12" id="groupForm">
-				<div class="row justify-content-center" id="group-create-update">
-					<jsp:include page="groupPages/createGroup.jsp"/>
+			<div class="col-6" id="careerForm">
+				<div class="row justify-content-center" id="degree-create-update">
+					<jsp:include page="degreePages/createDegree.jsp"/>
 				</div>
 				
-	   			<div class="row justify-content-center">
-					<jsp:include page="groupPages/listGroup.jsp"/>
+				<div class="row justify-content-center">
+					<jsp:include page="degreePages/listDegree.jsp"/>
 				</div>
 			</div>
 		</div>

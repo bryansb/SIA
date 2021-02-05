@@ -10,14 +10,14 @@
 		      	 	<i class="fas fa-file-signature"></i>&ensp;Matrículas
 		      	</a>
 		      	<a class="list-group-item list-group-item-action" 
-	      	 	id="list-comprobantes-list" data-toggle="list" role="tab" aria-controls="comprobantes" href="#list-planes">
+	      	 	href="/SIA/StudyPlan">
 		      	 	<i class="fas fa-graduation-cap"></i>&ensp;Planes de Estudio
       	 		</a>
 		      	<a class="list-group-item list-group-item-action" 
 	      		href="/SIA/EnrollmentReceipt">
 		      	 	<i class="fas fa-file-invoice"></i>&ensp;Emisión de Comprobantes</a>
 		      	<a class="list-group-item list-group-item-action" 
-	      	 	id="list-horario-list" data-toggle="list" href="#list-horario" role="tab" aria-controls="horario">
+	      	 	href="/SIA/StudentSchedule">
 	      	 		<i class="fas fa-calendar"></i>&ensp;Consultar Horario
       	 		</a>
 		      	<a class="list-group-item list-group-item-action" 

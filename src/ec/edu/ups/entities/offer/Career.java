@@ -28,11 +28,18 @@ public class Career implements Serializable {
 	@Column(name = "car_time", nullable = true)
 	private int time;
 	
+	@Column(name = "car_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "career", fetch = FetchType.LAZY)
 	private List<Subject> subjectList;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "career", fetch = FetchType.LAZY)
 	private List<Inscription> inscriptionList;
+	
+	@Transient
+	private boolean editable;
 	
 	public Career() {
 		super();
@@ -82,6 +89,22 @@ public class Career implements Serializable {
 
 	public void setInscriptionList(List<Inscription> inscriptionList) {
 		this.inscriptionList = inscriptionList;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

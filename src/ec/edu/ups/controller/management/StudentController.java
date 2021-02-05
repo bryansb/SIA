@@ -11,46 +11,66 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ec.edu.ups.controller.utils.SiaTool;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.StudentDAO;
 import ec.edu.ups.dao.registration.InscriptionDAO;
 import ec.edu.ups.entities.management.Student;
-import ec.edu.ups.entities.registration.Inscription;
 
 @WebServlet("/StudentController")
 public class StudentController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static String ERROR_ROOT = ">>> Error >> GroupController:";
-	private Logger logger;
-	private StudentDAO studentDAO;
-	private InscriptionDAO inscriptionDAO;
+	private static String ERROR_ROOT = ">>> Error >> StudentController:";
+	private Logger logger = Logger.getLogger(StudentController.class.getName());
+	private final StudentDAO studentDAO;
+	private final InscriptionDAO inscriptionDAO;
+	private static final String URL = "/JSP/private/management/student.jsp";
+	private String noticeClass;
+	private String output;
 	
 	public StudentController() {
 		super();
 		studentDAO = DAOFactory.getFactory().getStudentDAO();
 		inscriptionDAO = DAOFactory.getFactory().getInscriptionDAO();
 	}
-	private String createStudent(HttpServletRequest request) {
+	
+	public String getOutput() {
+		return output;
+	}
+
+
+	public String getNoticeClass() {
+		return noticeClass;
+	}
+	
+	private void createStudent(HttpServletRequest request) {
 		Student student;
 		try {
+			String dni = request.getParameter("dni");
+			String email = request.getParameter("email");
 			student = new Student();
-			student.setAddress(request.getParameter("use_address"));
-			student.setDni(request.getParameter("use_dni"));
-			student.setEmail(request.getParameter("use_email"));
-			student.setFullName(request.getParameter("use_full_name"));
-			student.setPassword(request.getParameter("use_password"));
-			student.setPhone(request.getParameter("use_phone"));
-			student.setType(request.getParameter("use_type").charAt(0));
-			student.setBirthdate(request.getParameter("use_birthdate"));
-			student.setGender(request.getParameter("use_gender").charAt(0));
+			String fullName = request.getParameter("fullName");
+			String address = request.getParameter("address");
+			String birthdate = request.getParameter("birthdate");
+			String phone = request.getParameter("phone");
+			char gender = request.getParameter("gender").charAt(0);
+			String password = SiaTool.getSha256(dni);
+			student.setDni(dni);
+			student.setEmail(email);
+			student.setFullName(fullName);
+			student.setAddress(address);
+			student.setBirthdate(birthdate);
+			student.setPhone(phone);
+			student.setGender(gender);
+			student.setPassword(password);
+			student.setType('S');
 			studentDAO.create(student);
-			return "Success";
 		}catch(Exception e) {
+			System.out.println("ERROR");
 			String message = ERROR_ROOT + ":createStudent > " +e.toString();
 			this.logger.log(Level.INFO, message);
-			return "Error "+e.getMessage();
 		}
 	}
 	
@@ -58,17 +78,16 @@ public class StudentController extends HttpServlet {
 		int studentId;
 		Student student;
 		try {
-			studentId = Integer.parseInt(request.getParameter("use_id"));
+			studentId = Integer.parseInt(request.getParameter("id"));
 			student = studentDAO.read(studentId);
-			student.setAddress(request.getParameter("use_address"));
-			student.setDni(request.getParameter("use_dni"));
-			student.setEmail(request.getParameter("use_email"));
-			student.setFullName(request.getParameter("use_full_name"));
-			student.setPassword(request.getParameter("use_password"));
-			student.setPhone(request.getParameter("use_phone"));
-			student.setType(request.getParameter("use_type").charAt(0));
-			student.setBirthdate(request.getParameter("use_birthdate"));
-			student.setGender(request.getParameter("use_gender").charAt(0));
+			student.setAddress(request.getParameter("address"));
+			student.setDni(request.getParameter("dni"));
+			student.setEmail(request.getParameter("email"));
+			student.setFullName(request.getParameter("fullName"));
+			student.setPhone(request.getParameter("phone"));
+			student.setType(request.getParameter("type").charAt(0));
+			student.setBirthdate(request.getParameter("birthdate"));
+			student.setGender(request.getParameter("gender").charAt(0));
 			studentDAO.update(student);
 			return "Success";
 		} catch (Exception e) {
@@ -82,31 +101,77 @@ public class StudentController extends HttpServlet {
 		int studentId;
 		Student student;
 		try {
-			studentId = Integer.parseInt(request.getParameter("use_id"));
+			studentId = Integer.parseInt(request.getParameter("studentId"));
 			student = studentDAO.read(studentId);
-			return student;
 		} catch (Exception e) {
 			return null;
 		}
+		return student;
 	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String option;
-		String output = "";
+	
+	private List<Student> listStudent(HttpServletRequest request) {
+		List<Student> students;
 		try {
+			students = studentDAO.find(null, 0, 0);
+		}catch(Exception e) {
+			students = null;
+		}	
+		return students;
+	}
+	
+	private String deleteStudent(HttpServletRequest request) {
+		int studentId;
+		Student student;
+		try {
+			studentId = Integer.parseInt(request.getParameter("studentId"));
+			student = studentDAO.read(studentId);
+			if (student.isDeleted()) {
+				student.setDeleted(false);
+				studentDAO.update(student);
+				return "No eliminado";
+			}else {
+				student.setDeleted(true);
+				studentDAO.update(student);
+				return "Eliminado";
+			}
+		}catch(Exception e) {
+			String message = ERROR_ROOT + ":deleteStudent > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
+		}
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String option;
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
 			option = request.getParameter("option");
+			if (option == null) {
+				option = "none";
+			}
 			switch (option) {
 			case "create":
-				output = createStudent(request);
+				createStudent(request);
+				updateRequest(request, response);
 				break;
 			case "update":
 				output = updateStudent(request);
+				updateRequest(request, response);
 				break;
 			case "read":
 				request.setAttribute("student", readStudent(request));
 				break;
+			case "list":
+				request.setAttribute("students", listStudent(request));
+				updateRequest(request, response);
+				break;
+			case "delete":
+				output = deleteStudent(request);
+				updateRequest(request, response);
+				break;
 			default:
+				updateRequest(request, response);
 				break;
 			}
 		} catch (Exception e) {
@@ -114,7 +179,21 @@ public class StudentController extends HttpServlet {
 		}
 		request.setAttribute("output", output);
 	}
+	
+	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		request.setAttribute("output", output);
+		request.setAttribute("noticeClass", noticeClass);
+		request.setAttribute("students", listStudent(request));
+		request.setAttribute("readStudent", null);
+		getServletContext().getRequestDispatcher(URL).forward(request, response);
+	}
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		doPost(request, response);
+	}
+	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Student student;
 		this.doGet(request, response);
@@ -125,4 +204,22 @@ public class StudentController extends HttpServlet {
 			response.getWriter().append("Success");
 		}
 	}
+	
+	public boolean validDni(String dni) {
+		if (!SiaTool.validateDNI(dni)) {
+			output = "Cedula es incorrecta";
+			return true;
+		}
+		
+		if (inscriptionDAO.isStudentCreated(dni)) {
+			output = "Cedula ya existe";
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean validEmail (String email) {
+		return inscriptionDAO.isEmailCreated(email);
+	}
+	
 }
