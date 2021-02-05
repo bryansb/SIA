@@ -18,6 +18,7 @@ import ec.edu.ups.dao.offer.GroupDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.entities.management.Teacher;
+import ec.edu.ups.entities.offer.Career;
 import ec.edu.ups.entities.offer.Group;
 import ec.edu.ups.entities.offer.Subject;
 
@@ -120,7 +121,15 @@ public class GroupController extends HttpServlet {
 	}
 
 	private void deleteGroup(HttpServletRequest request) {
-		groupDAO.deleteByID(Integer.parseInt(request.getParameter("id")));
+		int id;	
+		id = Integer.parseInt(request.getParameter("id"));
+		Group group = groupDAO.read(id);
+		if (group.isDeleted()) {
+			group.setDeleted(false);
+		}else {
+			group.setDeleted(true);
+		}
+		groupDAO.update(group);
 	}
 
 	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 

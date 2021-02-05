@@ -153,7 +153,13 @@ public class CareerController extends HttpServlet {
 		
 		int id;	
 		id = Integer.parseInt(request.getParameter("id"));
-		careerDAO.deleteByID(id);
+		Career career = careerDAO.read(id);
+		if (career.isDeleted()) {
+			career.setDeleted(false);
+		}else {
+			career.setDeleted(true);
+		}
+		careerDAO.update(career);
 		return "Success";
 	}
 	

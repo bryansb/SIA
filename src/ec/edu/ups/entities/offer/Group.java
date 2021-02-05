@@ -33,6 +33,10 @@ public class Group implements Serializable {
 	@Column(name = "gro_quota")
 	private int quota;
 	
+	@Column(name = "gro_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
 	private List<Schedule> scheduleList;
 	
@@ -174,6 +178,14 @@ public class Group implements Serializable {
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override
