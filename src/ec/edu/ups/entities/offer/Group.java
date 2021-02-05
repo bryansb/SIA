@@ -61,6 +61,17 @@ public class Group implements Serializable {
 		this.quota = quota;
 	}
 	
+	public String getScheduleToString() {
+		String schedule = "";
+		
+		for (Schedule s : scheduleList) {
+			schedule += " " + s.getDay() + " " + s.getStartTime() + "-" + s.getEndTime() 
+			+ " |";
+		}
+		schedule = schedule.substring(0,schedule.length()-2);
+		return schedule;
+	}
+	
 	public void createSchedule(String day, String startTime, String endTime, Group group) {
 		Schedule schedule;
 		
@@ -83,7 +94,6 @@ public class Group implements Serializable {
 	
 	public void removeTeacher(Teacher teacher) {
 		if (this.teacherList == null) {
-			System.out.println("peligro");
 			return;
 		}
 		
