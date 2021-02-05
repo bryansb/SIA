@@ -11,6 +11,10 @@
 		<script src="/SIA/resources/js/accounting/diary_book.js"></script>
 	</jsp:attribute>
 	
+	<jsp:attribute name="css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css"/>
+	</jsp:attribute>
+	
 	<jsp:attribute name="title">
 	Ingresos y Egresos
 	</jsp:attribute>
