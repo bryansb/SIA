@@ -27,6 +27,10 @@ public class Schedule implements Serializable {
 	@Column(name = "sch_end_time")
 	private String endTime;
 	
+	@Column(name = "sch_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Group group;
@@ -92,6 +96,14 @@ public class Schedule implements Serializable {
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override
