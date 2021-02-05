@@ -47,7 +47,14 @@
 		<div class="form-group ">
 			<label for="careerId">Carreras:</label>
 			 <select name="careerId" class="form-control" required>
-			 	<option value="NaN" selected>Seleccione</option>
+			 	<c:choose>
+			 		<c:when test="${!subject.editable}">
+			 			<option value="NaN" selected>Seleccione</option>
+			 		</c:when>
+			 		<c:otherwise>
+			 			<option value="${subject.career.id}">${subject.career.name}</option>
+			 		</c:otherwise>
+			 	</c:choose>
 		    	<c:forEach var="career" items="${careers}">
 	    			<option value="${career.id}">${career.name}</option>
 				</c:forEach>

@@ -95,10 +95,6 @@ public class ScheduleController extends HttpServlet {
 		
 		scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
 		scheduleDAO.deleteByID(scheduleId);
-//		Group group = groupDAO.read(groupId);
-//		group.getScheduleList().remove(group.getScheduleList().get(scheduleId));
-//		System.out.println("tama "+group.getScheduleList().size());
-//		groupDAO.update(group);
 	}
 
 	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
@@ -129,15 +125,12 @@ public class ScheduleController extends HttpServlet {
 		String startTime;
 		String endTime;
 		Group group;
-//		Schedule schedule;
 		
 		try {
 			day = request.getParameter("day");
 			startTime = request.getParameter("startTime");
 			endTime = request.getParameter("endTime");
 			group = groupDAO.read(groupId);
-//			schedule = new Schedule(day, startTime, endTime, group);
-//			scheduleDAO.create(new Schedule(day, startTime, endTime, group));
 			group.createSchedule(day, startTime, endTime, group);
 			groupDAO.update(group);
 			return "Success";
@@ -153,7 +146,6 @@ public class ScheduleController extends HttpServlet {
 		try {
 			schedule = scheduleDAO.read(Integer.parseInt(request.getParameter("scheduleId")));
 			schedule.setEditable(true);
-			
 		} catch (Exception e) {
 			schedule = null;
 		}

@@ -10,6 +10,10 @@
 		<script src="/SIA/resources/js/offer/crud_group.js"></script>
 	</jsp:attribute>
 	
+	<jsp:attribute name="css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css"/>
+	</jsp:attribute>
+	
 	<jsp:attribute name="title">
 		Horario
 	</jsp:attribute>
@@ -18,8 +22,7 @@
 		<jsp:include page="/WEB-INF/templates/header.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="left">
-		<!-- Editar al menú que corresponda -->
-		<jsp:include page="/WEB-INF/templates/student_menu.jsp"/>
+		<jsp:include page="/WEB-INF/templates/secretary_menu.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="footer">
 		<jsp:include page="/WEB-INF/templates/footer.jsp"/>

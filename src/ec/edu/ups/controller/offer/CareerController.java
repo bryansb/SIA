@@ -43,7 +43,6 @@ public class CareerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		doPost(request, response);
-//		updateRequest(request, response);
 	}
 
 	/**
@@ -58,13 +57,9 @@ public class CareerController extends HttpServlet {
 			switch (option) {
 			case "create":
 				output = createCareer(request);
-				
 				break;
 			case "read":
 				request.setAttribute("career", readCareer(request));
-				break;
-			case "search":
-				request.setAttribute("career", searchCareer(request));
 				break;
 			case "update":
 				updateCareer(request);
@@ -131,18 +126,6 @@ public class CareerController extends HttpServlet {
 			careers = null;
 		}
 		return careers;
-	}
-	
-	public Career searchCareer(HttpServletRequest request) {
-		Career career;
-		String careerName;
-		try {
-			careerName = request.getParameter("careerName");
-			career = careerDAO.findByCareerName(careerName);
-		} catch (Exception e) {
-			career = null;
-		}
-		return career;
 	}
 
 	public String updateCareer(HttpServletRequest request) {
