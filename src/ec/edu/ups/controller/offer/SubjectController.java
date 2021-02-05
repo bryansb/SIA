@@ -94,7 +94,6 @@ public class SubjectController extends HttpServlet {
 		int id;	
 		id = Integer.parseInt(request.getParameter("id"));
 		subjectDAO.deleteByID(id);
-		
 	}
 
 	public List<Career> listCareer(HttpServletRequest request) {

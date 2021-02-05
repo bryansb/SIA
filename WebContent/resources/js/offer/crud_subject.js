@@ -1,12 +1,6 @@
 function readSubject(subjectId){
 	var url = '/SIA/SubjectController?option=read&subjectId=' + subjectId
-	jQuery('#subjectForm').load(`${url} #subject-create-update`, function(response, status){
-//		location.reload(true);
-	});
-}
-
-function updateSubject(){
-	
+	jQuery('#subjectForm').load(`${url} #subject-create-update`);
 }
 
 function deleteSubject(id){
