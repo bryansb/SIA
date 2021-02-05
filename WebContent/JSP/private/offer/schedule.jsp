@@ -28,7 +28,7 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div id="scheduleForm">
+			<div class="col-8" id="scheduleForm">
 				<div class="row justify-content-center" id="schedule-create-update">
 					<jsp:include page="schedulePages/createSchedule.jsp"/>
 				</div>

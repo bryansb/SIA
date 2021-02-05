@@ -28,7 +28,7 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6" id="subjectForm">
+			<div class="col-10" id="subjectForm">
 				<div class="row justify-content-center" id="subject-create-update">
 					<jsp:include page="subjectPages/createSubject.jsp"/>
 				</div>

@@ -11,7 +11,7 @@ function deleteGroup(id){
 }
 
 function loadFunction(){
-    var table = $('#table-content-group').DataTable({
+    $('#table-content-group').DataTable({
         columnDefs: [{
             orderable: false
         }], 
@@ -29,9 +29,6 @@ function loadFunction(){
 function addSchedule(groupId){
 	var url = '/SIA/ScheduleController?groupId=' + groupId;
 	jQuery('#groupForm').load(`${url} #scheduleForm`);
-	
-//	$.post("/SIA/ScheduleController?groupId=" + groupId);
-//	jQuery('#groupForm').load('/SIA/ScheduleController #scheduleForm');
 }
 
 function readSchedule(scheduleId, groupId){
@@ -48,7 +45,7 @@ function deleteSchedule(scheduleId, groupId){
 }
 
 function loadFunctionSchedule(){
-    var table = $('#table-content-schedule').DataTable({
+    $('#table-content-schedule').DataTable({
         columnDefs: [{
             orderable: false
         }], 

@@ -30,7 +30,7 @@
 						<td><button class="btn btn-secondary">Revisar</button></td>
 						<td>
 							<a href="/SIA/ScheduleController?groupId=${gro.id}">
-								<button class="btn btn-secondary" onclick="addSchedule(${gro.id});">Revisar</button>
+								<button class="btn btn-secondary">Revisar</button>
 							</a>
 						</td>
 						<td>

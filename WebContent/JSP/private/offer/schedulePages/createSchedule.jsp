@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
+<div class="col-6" style="text-aling:center;">
 	<a href="/SIA/GroupController">
 		<button class="btn btn-secondary">Regresar</button>
 	</a>

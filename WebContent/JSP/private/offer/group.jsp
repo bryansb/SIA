@@ -28,7 +28,7 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6" id="groupForm">
+			<div class="col-12" id="groupForm">
 				<div class="row justify-content-center" id="group-create-update">
 					<jsp:include page="groupPages/createGroup.jsp"/>
 				</div>

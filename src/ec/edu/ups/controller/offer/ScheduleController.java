@@ -51,8 +51,8 @@ public class ScheduleController extends HttpServlet {
 		try {
 			groupId = Integer.parseInt(request.getParameter("groupId"));
 			request.setAttribute("groupId", groupId);
-			System.out.println(groupId);
 		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.getMessage());
 		}
 
 		doPost(request, response);
@@ -92,12 +92,13 @@ public class ScheduleController extends HttpServlet {
 	
 	private void deleteSchedule(HttpServletRequest request) {
 		int scheduleId;
-		Group group = groupDAO.read(groupId);
+		
 		scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
-//		scheduleDAO.deleteByID(scheduleId);
+		scheduleDAO.deleteByID(scheduleId);
+//		Group group = groupDAO.read(groupId);
 //		group.getScheduleList().remove(group.getScheduleList().get(scheduleId));
-		System.out.println("tama "+group.getScheduleList().size());
-		groupDAO.update(group);
+//		System.out.println("tama "+group.getScheduleList().size());
+//		groupDAO.update(group);
 	}
 
 	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
@@ -111,13 +112,11 @@ public class ScheduleController extends HttpServlet {
 	
 	public List<Schedule> listScheduleByGroup(HttpServletRequest request) {
 		List<Schedule> schedules;
-		int  groupId;
 		Group group;
 		try {
-			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
+			groupDAO.refresh(group);
 			schedules = group.getScheduleList();
-			System.out.println(schedules.size());
 		} catch (Exception e) {
 			schedules = null;
 		}
@@ -129,15 +128,13 @@ public class ScheduleController extends HttpServlet {
 		String day;
 		String startTime;
 		String endTime;
-		int groupId;
 		Group group;
-		Schedule schedule;
+//		Schedule schedule;
 		
 		try {
 			day = request.getParameter("day");
 			startTime = request.getParameter("startTime");
 			endTime = request.getParameter("endTime");
-			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
 //			schedule = new Schedule(day, startTime, endTime, group);
 //			scheduleDAO.create(new Schedule(day, startTime, endTime, group));
@@ -153,11 +150,10 @@ public class ScheduleController extends HttpServlet {
 	
 	public Schedule readSchedule(HttpServletRequest request) {
 		Schedule schedule;
-		int scheduleId;
 		try {
-			scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
-			schedule = scheduleDAO.read(scheduleId);
+			schedule = scheduleDAO.read(Integer.parseInt(request.getParameter("scheduleId")));
 			schedule.setEditable(true);
+			
 		} catch (Exception e) {
 			schedule = null;
 		}

@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
+<div class="col-6">
 	<c:choose>
 		<c:when test="${career.editable}">
 			<H2>Editar Carrera</H2>

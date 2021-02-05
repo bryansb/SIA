@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
+<div class="col-5">
 	<c:choose>
 		<c:when test="${group.editable}">
 			<h2>Editar Grupo</h2>
@@ -37,7 +37,7 @@
 		</div>
 		<div class="form-group ">
 			<label for="subjectId">Materias:</label>
-			 <select name="subjectId" class="form-control">
+			 <select name="subjectId" class="form-control" required>
 			 	<option value="NaN" selected>Seleccione</option>
 		    	<c:forEach var="subject" items="${subjects}">
 	    			<option value="${subject.id}">${subject.name}</option>
