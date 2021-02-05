@@ -6,11 +6,15 @@
 <t:genericpage>
 	
 	<jsp:attribute name="js">
-		<script src="/SIA/resources/js/crud_matriculas.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
+		<script src="/SIA/resources/js/management/crud_student.js"></script>
+	</jsp:attribute>
+	<jsp:attribute name="css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css"/>
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
-	Página de Ejemplo
+		Estudiante
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">
@@ -26,10 +30,14 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6">
-				<p>Este es el contenido principal.</p>
+			<div class="col-6" id="studentForm">
+				<div class="row justify-content-center" id="student-create-update">
+					<jsp:include page="studentPages/createStudent.jsp"/>
+				</div>
+				<div class="row justify-content-center">
+					<jsp:include page="studentPages/listStudent.jsp"/>
+				</div>
 			</div>
 		</div>
 	</jsp:body>
-	
 </t:genericpage>

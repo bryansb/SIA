@@ -15,6 +15,7 @@ import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.DegreeDAO;
 import ec.edu.ups.dao.management.TeacherDAO;
 import ec.edu.ups.entities.management.Degree;
+import ec.edu.ups.entities.management.Student;
 import ec.edu.ups.entities.management.Teacher;
 
 @WebServlet("/DegreeController")
@@ -85,6 +86,28 @@ public class DegreeController extends HttpServlet{
 		}
 	}
 	
+	private String deleteDegree(HttpServletRequest request) {
+		int degreeId;
+		Degree degree;
+		try {
+			degreeId = Integer.parseInt(request.getParameter("deg_id"));
+			degree = degreeDAO.read(degreeId);
+			if (degreeId == 0) {
+				degree.setDeleted(false);
+				degreeDAO.update(degree);
+				return "No eliminado";
+			}else {
+				degree.setDeleted(true);
+				degreeDAO.update(degree);
+				return "Eliminado";
+			}
+		}catch(Exception e) {
+			String message = ERROR_ROOT + ":createStudent > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
+		}
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String option;
 		String output = "";
@@ -99,6 +122,9 @@ public class DegreeController extends HttpServlet{
 				break;
 			case "read":
 				request.setAttribute("degree", readDegree(request));
+				break;
+			case "delete":
+				output = deleteDegree(request);
 				break;
 			default:
 				break;

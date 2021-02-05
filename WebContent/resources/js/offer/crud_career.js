@@ -15,3 +15,50 @@ function createCareer(f_id){
 		showNotice("Complete los campos resaltados en rojo", "e_notice_warning")
 	}
 }
+
+function readCareer(careerId){
+	var url = '/SIA/CareerController?option=read&careerId=' + careerId
+	jQuery('#careerForm').load(`${url} #career-create-update`, function(response, status){
+//		location.reload(true);
+	});
+}
+
+function updateCareer(){
+	
+}
+
+function deleteCareer(id){
+	var url = '/SIA/CareerController?option=delete&id=' + id
+	jQuery('#tableCareer').load(`${url} #table-career`, function(response, status){
+		loadFunction();
+	});
+}
+
+function loadFunction(){
+    var table = $('#table-content').DataTable({
+        columnDefs: [{
+            orderable: false
+        }], 
+		"language": {
+            "lengthMenu": "Mostrando _MENU_ por página",
+            "zeroRecords": "No se encontraron registros",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros",
+            "infoFiltered": "(Filtrado de _MAX_ registros)",
+			"search": "Buscar:"
+        }
+    });
+	 
+//	    $('#save-btn').click( function() {
+//	        var data = table.$('input').serialize();
+//			var url = "/SIA/GradeRegister?option=update&" + data;
+//			console.log(url);
+//			jQuery('#master').load(`${url} #slave`, function(data, status){
+//				if (status == 'success') {
+//					loadFunction();
+//				}
+//			});
+//	        return false;
+//	    } );
+//	} );
+}

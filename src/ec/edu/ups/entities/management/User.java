@@ -40,12 +40,16 @@ public abstract class User implements Serializable {
 	@Column(name = "use_type")
 	private char type;
 	
+	@Column(name = "use_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	public User() {
 		super();
 	}
 
 	public User(int id, String fullName, String email, String password, String dni, String phone, String address,
-			char type) {
+			char type, boolean deleted) {
 		super();
 		this.id = id;
 		this.fullName = fullName;
@@ -55,6 +59,7 @@ public abstract class User implements Serializable {
 		this.phone = phone;
 		this.address = address;
 		this.type = type;
+		this.deleted = deleted;
 	}
 
 	public int getId() {
@@ -121,9 +126,17 @@ public abstract class User implements Serializable {
 		this.type = type;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ", dni="
-				+ dni + ", phone=" + phone + ", address=" + address + ", type=" + type + "]";
+				+ dni + ", phone=" + phone + ", address=" + address + ", type=" + type + ", deleted=" + deleted + "]";
 	}
 }

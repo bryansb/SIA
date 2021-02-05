@@ -6,6 +6,7 @@
 <t:genericpage>
 	
 	<jsp:attribute name="js">
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
 		<script src="/SIA/resources/js/offer/crud_career.js"></script>
 	</jsp:attribute>
 	
@@ -27,13 +28,9 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6">
-				<div class="row justify-content-center">
+			<div class="col-6" id="careerForm">
+				<div class="row justify-content-center" id="career-create-update">
 					<jsp:include page="careerPages/createCareer.jsp"/>
-				</div>
-				
-	   			<div class="row justify-content-center">
-					<jsp:include page="careerPages/searchCareer.jsp"/>
 				</div>
 				
 				<div class="row justify-content-center">

@@ -30,15 +30,30 @@ public class Degree implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "tea_id", nullable = false))
 	private List<Teacher> teacherList;
 	
+	@Column(name = "deg_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	public Degree() {
 		super();
 	}
 
-	public Degree(int id, String name, List<Teacher> teacherList) {
+	
+	
+	public Degree(int id, String name, List<Teacher> teacherList, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.teacherList = teacherList;
+		this.deleted = deleted;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public int getId() {
@@ -65,9 +80,11 @@ public class Degree implements Serializable {
 		this.teacherList = teacherList;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Degree [id=" + id + ", name=" + name + ", teacherList=" + teacherList + "]";
+		return "Degree [id=" + id + ", name=" + name + ", teacherList=" + teacherList + ", deleted=" + deleted + "]";
 	}
    
 }

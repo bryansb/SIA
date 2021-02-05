@@ -90,6 +90,28 @@ public class TeacherController extends HttpServlet {
 		}
 	}
 
+	private String deleteTeacher(HttpServletRequest request) {
+		int teacherId;
+		Teacher teacher;
+		try {
+			teacherId = Integer.parseInt(request.getParameter("use_id"));
+			teacher = teacherDAO.read(teacherId);
+			if (teacherId == 0) {
+				teacher.setDeleted(false);
+				teacherDAO.update(teacher);
+				return "No eliminado";
+			}else {
+				teacher.setDeleted(true);
+				teacherDAO.update(teacher);
+				return "Eliminado";
+			}
+		}catch(Exception e) {
+			String message = ERROR_ROOT + ":createStudent > " +e.toString();
+			this.logger.log(Level.INFO, message);
+			return "Error "+e.getMessage();
+		}
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String option;
@@ -105,6 +127,9 @@ public class TeacherController extends HttpServlet {
 				break;
 			case "read":
 				request.setAttribute("teacher", readTeacher(request));
+				break;
+			case "delete":
+				output = deleteTeacher(request);
 				break;
 			default:
 				break;

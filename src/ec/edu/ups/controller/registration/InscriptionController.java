@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ec.edu.ups.controller.registration.StudentController;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.StudentDAO;
 import ec.edu.ups.dao.offer.CareerDAO;

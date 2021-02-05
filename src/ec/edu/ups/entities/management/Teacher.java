@@ -30,7 +30,7 @@ public class Teacher extends Employee implements Serializable {
 			joinColumns = @JoinColumn(name = "tea_id", nullable = false),
 			inverseJoinColumns = @JoinColumn(name = "gro_id", nullable = false))
 	private List<Group> groupList;
-
+	
 	public Teacher() {
 		super();
 	}
