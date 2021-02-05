@@ -265,11 +265,8 @@ public class GroupController extends HttpServlet {
 		try {
 			group = readGroup(request);
 			teacher = teacherDAO.read(Integer.parseInt(request.getParameter("teacherId")));
-			teacher.getGroupList().remove(group);
 			group.removeTeacher(teacher);
 			groupDAO.update(group);
-			teacherDAO.update(teacher);
-
 		} catch (Exception e) {
 			this.logger.log(Level.INFO, e.getMessage());
 		}
