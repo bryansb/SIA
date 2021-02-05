@@ -2,10 +2,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="col-12">
-	<H2>Crear Estudiante</H2>
+<div class="col-6">
+	<c:choose>
+		<c:when test="${deg.editable}">
+			<H2>Editar Titulo</H2>
+		</c:when>
+		<c:otherwise>
+			<H2>Crear Titulo</H2>
+		</c:otherwise>
+	</c:choose>
 	<form class="text-left col-12" id="student-form" action="/SIA/StudentController" method="post">
-		<input type="hidden" value="create" name="option"/>
+		<c:choose>
+			<c:when test="${deg.editable}">
+				<input type="hidden" value="${deg.id}" name="degreeId"/>
+				<input type="hidden" value="update" name="option"/>
+			</c:when>
+			<c:otherwise>
+				<input type="hidden" value="create" name="option"/>
+			</c:otherwise>
+		</c:choose>
 		<div class="form-group ">
 			<label for="fullName">Nombre:</label>
 			<input type="text" id="fullName" name="fullName" class="form-control" placeholder="Nombre" value="${studentRead.fullName}" required/>	
@@ -13,10 +28,6 @@
 		<div class="form-group ">
 			<label for="email">Email:</label>
 			<input type="email" id="email" name="email" class="form-control" placeholder="Email" value="${studentRead.email}"required/>	
-		</div>
-		<div class="form-group ">
-			<label for="password">Contraseña:</label>
-			<input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" value="${studentRead.password}" required/>	
 		</div>
 		<div class="form-group ">
 			<label for="dni">Cedula:</label>

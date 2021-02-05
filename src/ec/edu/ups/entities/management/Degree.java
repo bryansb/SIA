@@ -1,6 +1,7 @@
 package ec.edu.ups.entities.management;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -23,11 +24,8 @@ public class Degree implements Serializable {
 	@Column(name = "deg_name", nullable = false)
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "rel_tea_deg", 
-			joinColumns = @JoinColumn(name = "deg_id", nullable = false),
-			inverseJoinColumns = @JoinColumn(name = "tea_id", nullable = false))
+	@ManyToMany(mappedBy = "degreeList")
+	@JoinColumn
 	private List<Teacher> teacherList;
 	
 	@Column(name = "deg_deleted", nullable = false,  
@@ -38,6 +36,12 @@ public class Degree implements Serializable {
 		super();
 	}
 
+	public void addTeacher(Teacher teacher) {
+		if (this.teacherList == null) {
+			this.teacherList = new ArrayList<>();
+		}
+		teacherList.add(teacher);
+	}
 	
 	
 	public Degree(int id, String name, List<Teacher> teacherList, boolean deleted) {
@@ -79,8 +83,6 @@ public class Degree implements Serializable {
 	public void setTeacherList(List<Teacher> teacherList) {
 		this.teacherList = teacherList;
 	}
-
-
 
 	@Override
 	public String toString() {

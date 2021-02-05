@@ -19,9 +19,8 @@ public class Teacher extends Employee implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToMany( 
-			mappedBy = "teacherList", 
-			fetch = FetchType.EAGER)
+	@ManyToMany
+	@JoinColumn
 	private List<Degree> degreeList;
 	
 	@ManyToMany(mappedBy = "teacherList")
@@ -66,5 +65,18 @@ public class Teacher extends Employee implements Serializable {
 			this.degreeList = new ArrayList<>();
 		}
 		degreeList.add(degree);
+	}
+	
+	public void removeDegree(Degree degree) {
+		if (this.degreeList == null) {
+			System.out.println("peligro");
+			return;
+		}
+		
+		for (int i = 0; i < degreeList.size(); i++) {
+			if (degreeList.get(i).getId() == degree.getId()) {
+				degreeList.remove(i);
+			}
+		}
 	}
 }
