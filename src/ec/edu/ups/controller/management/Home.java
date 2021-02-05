@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ec.edu.ups.entities.management.Employee;
 import ec.edu.ups.entities.management.User;
 
 /**
@@ -58,7 +59,12 @@ public class Home extends HttpServlet {
 			url = "/JSP/private/home/teacherHome.jsp";
 			break;
 		case "Employee":
-			url = "/JSP/private/home/secretaryHome.jsp";
+			Employee employee = (Employee) user;
+			if (employee.getType() == 'C') {
+				url = "/JSP/private/home/secretaryHome.jsp";
+			} else if (employee.getType() == 'A') {
+				url = "/JSP/private/home/adminHome.jsp";
+			}
 			break;
 		case "Admin":
 			url = "/JSP/private/home/adminHome.jsp";

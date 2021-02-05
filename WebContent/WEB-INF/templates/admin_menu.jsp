@@ -6,27 +6,27 @@
 		<div class="col-12">
 		    <div class="list-group" id="list-tab" role="tablist">
 				<a class="list-group-item list-group-item-action" 
-					 id="list-docentes-list" data-toggle="list" href="#list-docentes" role="tab" aria-controls="docentes">
+					  href="/SIA/TeacherController">
 					 <i class="fas fa-chalkboard-teacher"></i>&ensp;Gestión de Docentes
 				</a>
 				<a class="list-group-item list-group-item-action" 
-					 id="list-estudiantes-list" data-toggle="list" href="#list-estudiantes" role="tab" aria-controls="estudiantes">
+					 href="/SIA/StudentController">
 					 <i class="fas fa-chalkboard-teacher"></i>&ensp;Gestión de Estudiantes
 				</a>
-				<a class="list-group-item list-group-item-action" 
-					 id="list-secretaria-list" data-toggle="list" href="#list-secretaria" role="tab" aria-controls="secretaria">
+				<!-- <a class="list-group-item list-group-item-action" 
+					 href="/SIA/TeacherController">
 					 <i class="fas fa-user-tie"></i>&ensp;Gestión de Secretaría
-				</a>
+				</a> -->
 				<a class="list-group-item list-group-item-action" 
-					 id="list-titulos-list" data-toggle="list" href="#list-titulos" role="tab" aria-controls="titulos">
+					 href="/SIA/DegreeController">
 					 <i class="fas fa-graduation-cap"></i>&ensp;Gestión de Títulos
 				</a>
 				<a class="list-group-item list-group-item-action" 
-					 id="list-cuentas-list" data-toggle="list" href="#list-cuentas" role="tab" aria-controls="cuentas">
+					 href="/SIA/AccountController">
 					 <i class="fas fa-file-invoice-dollar"></i>&ensp;Gestión de Cuentas
 				</a>
 				<a class="list-group-item list-group-item-action" 
-					 id="list-importes-list" data-toggle="list" href="#list-importes" role="tab" aria-controls="importes">
+					 href="/SIA/DiaryBook">
 					 <i class="fas fa-balance-scale-left"></i>&ensp;Consultar Ingresos/Egresos
 				</a>
 		    </div>

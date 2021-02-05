@@ -31,7 +31,7 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6" id="careerForm">
+			<div class="col-12" id="careerForm">
 				<div class="row justify-content-center" id="career-create-update">
 					<jsp:include page="careerPages/createCareer.jsp"/>
 				</div>

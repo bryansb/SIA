@@ -26,21 +26,22 @@
 				<h2>Plan de Estudio</h2>
 			</div>
 		</div>
-		<div class="row ">
-			<div class="col-12">
+		<div class="row justify-content-center">
+			<div class="col-8">
 				<h5>Seleccione Carrera</h5>
 				<form action="/SIA/StudyPlan" method="post">
 					<input type="hidden" name="option" value="find"/>
-					<div class="from from-grouo">
-						<select name="careerId" class="form-control" required>
+					<div class="from from-grouo col-9">
+						<select name="careerId" class="form-control " required>
 				 			<option value="NaN">Seleccione</option>
 					    	<c:forEach var="car" items="${careers}">
 				    			<option value="${car.id}">${car.name}</option>
 							</c:forEach>
 						</select>
-						<div class="from from-grouo">
-							<input type="submit" value="Listar" class="btn btn-primary"/>
-						</div>
+						
+					</div>
+					<div class="from from-grouo col-9 my-2 text-right">
+						<input type="submit" value="Listar" class="btn btn-primary"/>
 					</div>
 				</form>
 			</div>
@@ -48,7 +49,7 @@
 		<div class="row justify-content-center">
 			<div class="col-12">
 				<div>
-					
+					<h3>Asignaturas</h3>
 					<table class="table display" id="table-content">
 						<thead>
 							<tr>

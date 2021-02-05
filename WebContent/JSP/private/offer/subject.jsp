@@ -15,7 +15,7 @@
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
-		Materia
+		Asignaturas
 	</jsp:attribute>
 	
 	<jsp:attribute name="header">

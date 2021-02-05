@@ -43,7 +43,7 @@
 									${grade.group.subject.hours}
 								</td>
 								<td>
-									Hacer un método para el horario
+									${grade.group.getScheduleToString()}
 								</td>
 					  		</tr>
 						</c:forEach>

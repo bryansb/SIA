@@ -23,7 +23,7 @@
 		<jsp:include page="/WEB-INF/templates/header.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="left">
-		<jsp:include page="/WEB-INF/templates/secretary_menu.jsp"/>
+		<jsp:include page="/WEB-INF/templates/admin_menu.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="footer">
 		<jsp:include page="/WEB-INF/templates/footer.jsp"/>
