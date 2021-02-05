@@ -116,7 +116,6 @@ public class JPAInscriptionDAO extends JPAGenericDAO<Inscription, Integer>
 					.setParameter("inscriptionId", inscriptionId)
 					.getSingleResult();
 		} catch (Exception e) {
-			System.out.println("ENRTA " + e.toString());
 			return null;
 		}
 	}
