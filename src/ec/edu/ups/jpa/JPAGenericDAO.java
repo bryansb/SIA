@@ -292,5 +292,10 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID>{
 			return (List<T>) query.getResultList();
 		}
 	}
+
+	@Override
+	public void refresh(T entity) {
+		em.refresh(entity);
+	}
 	
 }
