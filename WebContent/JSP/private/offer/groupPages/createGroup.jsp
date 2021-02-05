@@ -42,12 +42,12 @@
 			 			<option value="NaN" selected>Seleccione</option>
 			 		</c:when>
 			 		<c:otherwise>
-			 			<option value="${group.subject.id}">${group.subject.name}</option>
+			 			<option value="${group.subject.id}">${group.subject.name} - ${group.subject.career.name}</option>
 			 		</c:otherwise>
 			 	</c:choose>
 			 	
 		    	<c:forEach var="subject" items="${subjects}">
-	    			<option value="${subject.id}">${subject.name}</option>
+	    			<option value="${subject.id}">${subject.name} - ${subject.career.name}</option>
 				</c:forEach>
 			</select>
 		</div>

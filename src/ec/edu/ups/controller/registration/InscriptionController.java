@@ -123,6 +123,7 @@ public class InscriptionController extends HttpServlet {
 	private void redirectProcess(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			request.setAttribute("option", option);
 			request.setAttribute("output", output);
 			request.setAttribute("noticeClass", noticeClass);

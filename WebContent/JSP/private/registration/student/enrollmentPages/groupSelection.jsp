@@ -46,7 +46,7 @@
 							 		${group.quota}
 							 	</td>
 							 	<td>
-									Horario Pendiente, hacer un método
+									${group.getScheduleToString()}
 								</td>
 					  		</tr>
 						</c:forEach>

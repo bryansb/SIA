@@ -7,10 +7,10 @@
 <div class="col-6">
 	<c:choose>
 		<c:when test="${subject.editable}">
-			<H2>Editar Materia</H2>
+			<H2>Editar Asignatura</H2>
 		</c:when>
 		<c:otherwise>
-			<H2>Crear Materia</H2>
+			<H2>Crear Asignatura</H2>
 		</c:otherwise>
 	</c:choose>
 	<form class="text-left form col-12" id="subject-form" action="/SIA/SubjectController" method="post">

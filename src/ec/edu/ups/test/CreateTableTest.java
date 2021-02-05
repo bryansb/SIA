@@ -7,6 +7,8 @@ import javax.persistence.Persistence;
 
 import org.junit.jupiter.api.Test;
 
+import ec.edu.ups.controller.utils.SiaTool;
+
 
 class CreateTableTest {
 	
@@ -20,5 +22,4 @@ class CreateTableTest {
             fail("No se puede crear las tablas");
         }
 	}
-
 }
