@@ -60,4 +60,32 @@ function loadFunctionSchedule(){
     });
 }
 
+function addTeacher(groupId){
+	var url = '/SIA/GroupController?option=selectTeacher&groupId=' + groupId;
+	document.location.href = url;
+}
 
+function deleteTeacher(teacherId, groupId){
+	var url = '/SIA/GroupController?option=deleteTeacher&groupId=' + groupId +'&teacherId=' + teacherId
+	jQuery('#tableTeacher').load(`${url} #table-teacher`, function(response, status){
+		if (status == "success") {
+			loadFunctionTeacher();
+		}
+	});
+}
+
+function loadFunctionTeacher(){
+    $('#table-content-teacher').DataTable({
+        columnDefs: [{
+            orderable: false
+        }], 
+		"language": {
+            "lengthMenu": "Mostrando _MENU_ por página",
+            "zeroRecords": "No se encontraron registros",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros",
+            "infoFiltered": "(Filtrado de _MAX_ registros)",
+			"search": "Buscar:"
+        }
+    });
+}

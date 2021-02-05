@@ -12,7 +12,7 @@
 				<tr>
 					<th scope="col">Periodo Academico</th>
 					<th scope="col">Espacio Físico</th>
-					<th scope="col">Cuota</th>
+					<th scope="col">Cupos</th>
 					<th scope="col">Materia</th>
 					<th scope="col">Profesores</th>
 					<th scope="col">Horario</th>
@@ -27,7 +27,7 @@
 						<td>${gro.physicalSpace}</td>
 						<td>${gro.quota}</td>
 						<td>${gro.subject.name}</td>
-						<td><button class="btn btn-secondary">Revisar</button></td>
+						<td><button class="btn btn-secondary" onclick="addTeacher(${gro.id});">Revisar</button></td>
 						<td>
 							<a href="/SIA/ScheduleController?groupId=${gro.id}">
 								<button class="btn btn-secondary">Revisar</button>

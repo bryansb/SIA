@@ -24,21 +24,28 @@
 			</c:otherwise>
 		</c:choose>
 		<div class="form-group ">
-			<label for="academicPeriod">Periodo Academico:</label>
-			<input type="text" id="academicPeriod" name="academicPeriod" class="form-control" placeholder="Periodo Academico" value="${group.academicPeriod}" required>
+			<label for="academicPeriod">Periodo Academico: ${period}</label>
 		</div>
 		<div class="form-group ">
 			<label for="physicalSpace">Espacio Físico:</label>
 			<input type="text" id="physicalSpace" name="physicalSpace" class="form-control" placeholder="Espacio Físico" value="${group.physicalSpace}" required>
 		</div>
 		<div class="form-group ">
-			<label for="quota">Cuota:</label>
+			<label for="quota">Cupos:</label>
 			<input type="number" id="quota" name="quota" class="form-control" placeholder="0" min="0" step="1" value="${group.quota}" required>	
 		</div>
 		<div class="form-group ">
 			<label for="subjectId">Materias:</label>
 			 <select name="subjectId" class="form-control" required>
-			 	<option value="NaN" selected>Seleccione</option>
+			 	<c:choose>
+			 		<c:when test="${!group.editable}">
+			 			<option value="NaN" selected>Seleccione</option>
+			 		</c:when>
+			 		<c:otherwise>
+			 			<option value="${group.subject.id}">${group.subject.name}</option>
+			 		</c:otherwise>
+			 	</c:choose>
+			 	
 		    	<c:forEach var="subject" items="${subjects}">
 	    			<option value="${subject.id}">${subject.name}</option>
 				</c:forEach>

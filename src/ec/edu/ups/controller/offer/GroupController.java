@@ -17,6 +17,7 @@ import ec.edu.ups.dao.management.TeacherDAO;
 import ec.edu.ups.dao.offer.GroupDAO;
 import ec.edu.ups.dao.offer.ScheduleDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
+import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.offer.Group;
 import ec.edu.ups.entities.offer.Schedule;
@@ -35,6 +36,9 @@ public class GroupController extends HttpServlet {
 	private GroupDAO groupDAO;
 	private SubjectDAO subjectDAO;
 	private TeacherDAO teacherDAO;
+	private ParameterDAO  parameterDAO;
+	
+	private String academicPeriod;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -45,6 +49,7 @@ public class GroupController extends HttpServlet {
         groupDAO = DAOFactory.getFactory().getGroupDAO();
         subjectDAO = DAOFactory.getFactory().getSubjectDAO();
         teacherDAO = DAOFactory.getFactory().getTeacherDAO();
+        parameterDAO = DAOFactory.getFactory().getParameterDAO();
     }
 
 	/**
@@ -63,23 +68,39 @@ public class GroupController extends HttpServlet {
 		String option;
 		try {
 			option = request.getParameter("option");
+			if (option == null) {
+				option = "none";
+			}
 			switch (option) {
 			case "create":
 				output = createGroup(request);
+				updateRequest(request, response);
 				break;
 			case "read":
 				request.setAttribute("group", readGroup(request));
+				updateRequest(request, response);
 				break;
 			case "update":
 				updateGroup(request);
+				updateRequest(request, response);
 				break;
 			case "delete":
 				deleteGroup(request);
+				updateRequest(request, response);
+				break;
+			case "selectTeacher":
+				selectTeacher(request, response);
 				break;
 			case "addTeacher":
 				addTeacher(request);
+				selectTeacher(request, response);
+				break;
+			case "deleteTeacher":
+				deleteTeacher(request);
+				selectTeacher(request, response);
 				break;
 			default:
+				updateRequest(request, response);
 				break;
 			}
 		} catch (Exception e) {
@@ -87,16 +108,29 @@ public class GroupController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
-		updateRequest(request, response);
+		
 	}
-	
+
+	private void selectTeacher(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("groupId", Integer.parseInt(request.getParameter("groupId")));
+		request.setAttribute("teachers", listTeacher(request));
+		request.setAttribute("teacherList", listTeacherByGroup(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/groupPages/addTeacher.jsp");
+		view.forward(request, response);
+	}
+
 	private void deleteGroup(HttpServletRequest request) {
 		groupDAO.deleteByID(Integer.parseInt(request.getParameter("id")));
 	}
 
 	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		academicPeriod = parameterDAO.findByKey("CURRENT_ACADEMIC_PERIOD").getValue();
+		request.setAttribute("period", academicPeriod);
 		request.setAttribute("subjects", listSubject(request));
+		request.setAttribute("teachers", listTeacher(request));
 		request.setAttribute("groups", listGroup(request));
 		RequestDispatcher view;
 		view = request.getRequestDispatcher("/JSP/private/offer/group.jsp");
@@ -112,18 +146,17 @@ public class GroupController extends HttpServlet {
 		}
 		return subjects;
 	}
-	//borrar
+
 	public List<Teacher> listTeacher(HttpServletRequest request) {
 		List<Teacher> teachers;
 		try {
 			teachers = teacherDAO.find("fullName", 0, 0);
-			System.out.println(teachers.get(0).getFullName());
 		} catch (Exception e) {
 			teachers = null;
 		}
 		return teachers;
 	}
-	//borrar
+	
 	public List<Teacher> listTeacherByGroup(HttpServletRequest request) {
 		List<Teacher> teachers;
 		Group group;
@@ -147,7 +180,6 @@ public class GroupController extends HttpServlet {
 	}
 	
 	public String createGroup(HttpServletRequest request) {
-		String academicPeriod;
 		String physicalSpace;
 		int quota;
 		int subjectId;
@@ -155,10 +187,11 @@ public class GroupController extends HttpServlet {
 		Group group;
 		
 		try {
-			academicPeriod = request.getParameter("academicPeriod");
+			
 			physicalSpace = request.getParameter("physicalSpace");
 			quota = Integer.parseInt(request.getParameter("quota"));
-			group = new Group(academicPeriod, physicalSpace, quota);
+			group = new Group(parameterDAO.findByKey("CURRENT_ACADEMIC_PERIOD")
+					.getValue(), physicalSpace, quota);
 			subjectId = Integer.parseInt(request.getParameter("subjectId"));
 			subject = subjectDAO.read(subjectId);
 			group.setSubject(subject);
@@ -183,7 +216,6 @@ public class GroupController extends HttpServlet {
 	}
 	
 	public String updateGroup(HttpServletRequest request) {
-		String academicPeriod;
 		String physicalSpace;
 		int quota;
 		int subjectId;
@@ -191,7 +223,6 @@ public class GroupController extends HttpServlet {
 		Subject subject;
 		
 		try {
-			academicPeriod = request.getParameter("academicPeriod");
 			physicalSpace = request.getParameter("physicalSpace");
 			quota = Integer.parseInt(request.getParameter("quota"));
 			subjectId = Integer.parseInt(request.getParameter("subjectId"));
@@ -209,7 +240,41 @@ public class GroupController extends HttpServlet {
 			return "Error " + e.getMessage();
 		}
 	}
+	
+	public void addTeacher(HttpServletRequest request) {
+		Group group;
+		Teacher teacher;
+		
+		try {
+			group = readGroup(request);
+			teacher = teacherDAO.read(Integer.parseInt(request.getParameter("teacherId")));
+			teacher.addGroup(group);
+			group.addTeacher(teacher);
+			groupDAO.update(group);
 
+		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.getMessage());
+		}
+		
+	}
+	
+	private void deleteTeacher(HttpServletRequest request) {
+		Group group;
+		Teacher teacher;
+		
+		try {
+			group = readGroup(request);
+			teacher = teacherDAO.read(Integer.parseInt(request.getParameter("teacherId")));
+			teacher.getGroupList().remove(group);
+			group.removeTeacher(teacher);
+			groupDAO.update(group);
+			teacherDAO.update(teacher);
+
+		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.getMessage());
+		}
+	}
+	
 	public void doTest(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		Group group;
@@ -220,62 +285,6 @@ public class GroupController extends HttpServlet {
 		} else {
 			response.getWriter().append(this.output);
 		}
-	}
-	
-	public void createSchedule(HttpServletRequest request) {
-		String[] days;
-		String[] startTimes;
-		String[] endTimes;
-		int parameterSize;
-		
-		String day;
-		String startTime;
-		String endTime;
-		Group group;
-		
-		try {
-			
-			days = request.getParameterValues("day");
-			startTimes = request.getParameterValues("startTime");
-			endTimes = request.getParameterValues("endTime");
-			
-			if (days.length == startTimes.length && days.length == endTimes.length) {
-				parameterSize = days.length;
-				
-				for (int i = 0; i < parameterSize; i++) {
-//					group.createSchedule(days[i], startTimes[i], endTimes[i], group);
-				}
-			}
-		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.getMessage());
-		}
-		
-	}
-	
-	public void addTeacher(HttpServletRequest request) {
-//		String[] teacherIds;
-		Group group;
-		Teacher teacher;
-		int teacherId;
-		
-		try {
-//			teacherDAO.create(new Teacher());
-//			teacherIds = request.getParameterValues("teacherId");
-//			
-//			for (String teacherId : teacherIds) {
-//				teacher = teacherDAO.read(Integer.parseInt(teacherId));
-//				group.addTeacher(teacher);
-//			}
-			teacherId =Integer.parseInt(request.getParameter("teacherId"));
-			group = readGroup(request);
-			teacher = teacherDAO.read(teacherId);
-			group.addTeacher(teacher);
-			groupDAO.update(group);
-			
-		} catch (Exception e) {
-			this.logger.log(Level.INFO, e.getMessage());
-		}
-		
 	}
 	
 }

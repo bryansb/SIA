@@ -43,7 +43,8 @@ public class Group implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
 	private List<Grade> gradeList;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "groupList")
+	@ManyToMany
+	@JoinColumn
 	private List<Teacher> teacherList;
 	
 	@Transient
@@ -78,6 +79,19 @@ public class Group implements Serializable {
 		}
 		
 		teacherList.add(teacher);
+	}
+	
+	public void removeTeacher(Teacher teacher) {
+		if (this.teacherList == null) {
+			System.out.println("peligro");
+			return;
+		}
+		
+		for (int i = 0; i < teacherList.size(); i++) {
+			if (teacherList.get(i).getId() == teacher.getId()) {
+				teacherList.remove(i);
+			}
+		}
 	}
 
 	public int getId() {
