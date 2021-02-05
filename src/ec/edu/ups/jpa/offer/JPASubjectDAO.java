@@ -6,6 +6,7 @@ import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.entities.offer.Subject;
+import ec.edu.ups.entities.registration.Enrollment;
 import ec.edu.ups.entities.utils.Parameter;
 import ec.edu.ups.jpa.JPAGenericDAO;
 
@@ -49,6 +50,12 @@ public class JPASubjectDAO extends JPAGenericDAO<Subject, Integer> implements Su
 			" SELECT MAX(g.group.subject.level) FROM Grade g "
 			+ " WHERE g.enrollment.inscription.id = :inscritionId ";
 	
+	private static final String SUBJECT_CAREERID_QRY =
+			" SELECT s FROM Subject s "
+			+ " WHERE s.career.id = :id "
+			+ " ORDER BY s.level ASC, s.name ASC";
+	
+	
 	private ParameterDAO parameterDAO;
 	
 	public JPASubjectDAO() {
@@ -89,6 +96,19 @@ public class JPASubjectDAO extends JPAGenericDAO<Subject, Integer> implements Su
 	private String getCurrentAcademicPeriod() {
 		Parameter parameter = parameterDAO.findByKey("CURRENT_ACADEMIC_PERIOD");
 		return parameter.getValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Subject> findByCareerID(int careerId) {
+		try {
+			em.clear();
+			return super.em.createQuery(SUBJECT_CAREERID_QRY)
+				.setParameter("id", careerId)
+				.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }
