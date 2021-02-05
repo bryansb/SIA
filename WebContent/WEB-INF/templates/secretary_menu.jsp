@@ -14,8 +14,16 @@
 					 <i class="fas fa-user-cog"></i>&ensp;Gestión de Grupos
 				</a>
 				<a class="list-group-item list-group-item-action" 
+					 id="list-horarios-list" data-toggle="list" href="#list-horarios" role="tab" aria-controls="horarios">
+					 <i class="far fa-calendar-alt"></i>&ensp;Gestión de Horarios
+				</a>
+				<a class="list-group-item list-group-item-action" 
 					 href="/SIA/InscriptionController">
 					 <i class="fas fa-address-card"></i>&ensp;Inscripciones
+				</a>
+				<a class="list-group-item list-group-item-action" 
+					 href="/SIA/InscriptionController">
+					 <i class="far fa-file-pdf"></i>&ensp;Emisión de Certificados
 				</a>
 		    </div>
   		</div>
