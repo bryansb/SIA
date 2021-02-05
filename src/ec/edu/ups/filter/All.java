@@ -49,6 +49,5 @@ public class All implements Filter {
 		EXCEPT_SERVLET.add("/Login");
 		EXCEPT_SERVLET.add("/Logout");
 		EXCEPT_SERVLET.add("/");
-		System.out.println("INIT FILTER");
 	}
 }

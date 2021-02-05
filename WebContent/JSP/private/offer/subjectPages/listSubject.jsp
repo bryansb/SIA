@@ -4,10 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
-	<H2>Lista de Carreras</H2>
-	<div id="tableCareer">
-		<table class="table table-striped">
+<div class="col-12" id="tableSubject">
+	<div id="table-subject">
+		<H2>Lista de Materias</H2>
+		<table class="table display" id="table-content">
 			<thead>
 				<tr>
 					<th scope="col">Nombre</th>
@@ -15,7 +15,8 @@
 					<th scope="col">Precio</th>
 					<th scope="col">Horas</th>
 					<th scope="col">Nivel</th>
-					<th scope="col">Editar</th>
+					<th scope="col">Carrera</th>
+					<th scope="col">Gestionar</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,11 +28,15 @@
 						<td>${sub.cost}</td>
 						<td>${sub.hours}</td>
 						<td>${sub.level}</td>
-						<td><button class="btn btn-secondary">Editar</button></td>
+						<td>${sub.career.name}</td>
+						<td>
+							<button class="btn btn-secondary" onclick="readSubject(${sub.id});">Editar</button>
+							<button type="button" class="btn btn-danger" onclick="deleteSubject(${sub.id});">Eliminar</button>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
-			
 		</table>
+		<script type="text/javascript">loadFunction();</script>
 	</div>
 </div>

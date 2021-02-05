@@ -87,5 +87,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <scope>test</scope>
     </dependency>
     
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>20.0</version>
+	</dependency>
+    
   </dependencies>
 </project>

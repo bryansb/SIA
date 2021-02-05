@@ -40,19 +40,19 @@
 					<div class="form-group col-sm-6">
 						<label for="gen">Género:</label><br/>
 						<div class="form-check form-check-inline mt-1">
-							<input class="form-check-input" type="radio" name="gender" id="genderH" value="M" checked>
+							<input class="form-check-input" type="radio" name="gender" id="genderH" value="M" checked/>
 						  	<label class="form-check-label" for="genderH">
 						    	Hombre
 						  	</label>
 						</div>
 						<div class="form-check form-check-inline">
-						  	<input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
+						  	<input class="form-check-input" type="radio" name="gender" id="genderF" value="F"/>
 						  	<label class="form-check-label" for="genderF">
 						   		Mujer
 						  	</label>
 						</div>
 						<div class="form-check form-check-inline">
-						  	<input class="form-check-input" type="radio" name="gender" id="genderO" value="O">
+						  	<input class="form-check-input" type="radio" name="gender" id="genderO" value="O"/>
 						  	<label class="form-check-label" for="genderO">
 						   		Otro
 						  	</label>

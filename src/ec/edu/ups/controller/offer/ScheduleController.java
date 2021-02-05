@@ -1,9 +1,11 @@
 package ec.edu.ups.controller.offer;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +30,15 @@ public class ScheduleController extends HttpServlet {
 	
 	private ScheduleDAO scheduleDAO;
 	private GroupDAO groupDAO;
+	
+	private int groupId;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ScheduleController() {
         super();
+        logger = Logger.getLogger(GroupController.class.getName());
         scheduleDAO = DAOFactory.getFactory().getScheduleDAO();
         groupDAO = DAOFactory.getFactory().getGroupDAO();
     }
@@ -41,7 +46,23 @@ public class ScheduleController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		try {
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			request.setAttribute("groupId", groupId);
+		} catch (Exception e) {
+			this.logger.log(Level.INFO, e.getMessage());
+		}
+
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		String option;
 		try {
 			option = request.getParameter("option");
@@ -55,6 +76,9 @@ public class ScheduleController extends HttpServlet {
 			case "update":
 				updateSchedule(request);
 				break;
+			case "delete":
+				deleteSchedule(request);
+				break;
 			default:
 				break;
 			}
@@ -63,32 +87,52 @@ public class ScheduleController extends HttpServlet {
 			this.output = "Error al buscar una opción";
 		}
 		request.setAttribute("output", output);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		updateRequest(request, response);
 	}
 	
+	private void deleteSchedule(HttpServletRequest request) {
+		int scheduleId;
+		
+		scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
+		scheduleDAO.deleteByID(scheduleId);
+	}
+
+	private void updateRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		request.setAttribute("groupId", groupId);
+		request.setAttribute("scheduleList", listScheduleByGroup(request));
+		RequestDispatcher view;
+		view = request.getRequestDispatcher("/JSP/private/offer/schedule.jsp");
+		view.forward(request, response);
+	}
+	
+	public List<Schedule> listScheduleByGroup(HttpServletRequest request) {
+		List<Schedule> schedules;
+		Group group;
+		try {
+			group = groupDAO.read(groupId);
+			groupDAO.refresh(group);
+			schedules = group.getScheduleList();
+		} catch (Exception e) {
+			schedules = null;
+		}
+		return schedules;
+	}
+
 	public String createSchedule(HttpServletRequest request) {
 		
 		String day;
 		String startTime;
 		String endTime;
-		int groupId;
 		Group group;
-		Schedule schedule;
 		
 		try {
 			day = request.getParameter("day");
 			startTime = request.getParameter("startTime");
 			endTime = request.getParameter("endTime");
-			groupId = Integer.parseInt(request.getParameter("groupId"));
 			group = groupDAO.read(groupId);
-			schedule = new Schedule(day, startTime, endTime, group);
-			scheduleDAO.create(schedule);
+			group.createSchedule(day, startTime, endTime, group);
+			groupDAO.update(group);
 			return "Success";
 		} catch (Exception e) {
 			String message = ERROR_ROOT + ":createSchedule > " + e.toString();
@@ -99,10 +143,9 @@ public class ScheduleController extends HttpServlet {
 	
 	public Schedule readSchedule(HttpServletRequest request) {
 		Schedule schedule;
-		int scheduleId;
 		try {
-			scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
-			schedule = scheduleDAO.read(scheduleId);
+			schedule = scheduleDAO.read(Integer.parseInt(request.getParameter("scheduleId")));
+			schedule.setEditable(true);
 		} catch (Exception e) {
 			schedule = null;
 		}
@@ -132,7 +175,8 @@ public class ScheduleController extends HttpServlet {
 		}
 	}
 
-	public void doTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doTest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		Schedule schedule;
 		this.doGet(request, response);
 		schedule = readSchedule(request);

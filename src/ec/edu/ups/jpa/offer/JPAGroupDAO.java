@@ -10,4 +10,9 @@ public class JPAGroupDAO extends JPAGenericDAO<Group, Integer> implements GroupD
 		super(Group.class);
 	}
 
+	@Override
+	public void refresh(Group group) {
+		em.refresh(group);
+	}
+
 }

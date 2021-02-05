@@ -36,6 +36,12 @@ public class Enrollment implements Serializable {
 	@Column(name = "enr_academic_period")
 	private String academicPeriod;
 	
+	/* 
+	 * Default Values: 
+	 * C: Current
+	 * E: End
+	 * 
+	 * */
 	@Column(name = "enr_status", nullable = false,  
 			columnDefinition = "VARCHAR(1) DEFAULT 'C'")
 	private char status;
@@ -113,8 +119,8 @@ public class Enrollment implements Serializable {
 	
 	@PostPersist
 	private void createIncomeAmount() {
-		Account account = this.accountDAO.findByName("CAJA CONTABLE");
-		this.amountController.createIncomeAmount("Enrollment", this.billHead.getSubtotal(), 
+		Account account = this.accountDAO.findByName("MATRICULAS");
+		this.amountController.createIncomeAmount("MATRICULA", this.billHead.getTotal(), 
 				this.billHead.getTotal(), account);
 		updateGroupQuota();
 	}

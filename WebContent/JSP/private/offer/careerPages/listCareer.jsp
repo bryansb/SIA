@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<div class="col-12">
+<div class="col-12" id="tableCareer">
 	<div id="table-career">
 		<H2>Lista de Carreras</H2>
 		<table class="table display" id="table-content">

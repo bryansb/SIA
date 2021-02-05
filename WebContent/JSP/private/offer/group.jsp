@@ -6,7 +6,12 @@
 <t:genericpage>
 	
 	<jsp:attribute name="js">
-		<script src="/SIA/resources/js/offer/group.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
+		<script src="/SIA/resources/js/offer/crud_group.js"></script>
+	</jsp:attribute>
+	
+	<jsp:attribute name="css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css"/>
 	</jsp:attribute>
 	
 	<jsp:attribute name="title">
@@ -17,8 +22,7 @@
 		<jsp:include page="/WEB-INF/templates/header.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="left">
-		<!-- Editar al menú que corresponda -->
-		<jsp:include page="/WEB-INF/templates/student_menu.jsp"/>
+		<jsp:include page="/WEB-INF/templates/secretary_menu.jsp"/>
 	</jsp:attribute>
 	<jsp:attribute name="footer">
 		<jsp:include page="/WEB-INF/templates/footer.jsp"/>
@@ -27,12 +31,10 @@
 	
 	<jsp:body>
 		<div class="row justify-content-center">
-			<div class="col-6">
-				<div class="row justify-content-center">
+			<div class="col-12" id="groupForm">
+				<div class="row justify-content-center" id="group-create-update">
 					<jsp:include page="groupPages/createGroup.jsp"/>
 				</div>
-				
-				
 				
 	   			<div class="row justify-content-center">
 					<jsp:include page="groupPages/listGroup.jsp"/>

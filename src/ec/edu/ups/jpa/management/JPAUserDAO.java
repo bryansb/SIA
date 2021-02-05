@@ -15,7 +15,7 @@ public class JPAUserDAO extends JPAGenericDAO<User, Integer> implements UserDAO 
 
 	@Override
 	public Object login(String key, String password) {
-		password = SiaTool.getMd5(password);
+		password = SiaTool.getSha256(password);
 		String jpql = "SELECT u FROM User u "
 				+ " WHERE u.email LIKE '" + key + "'"
 				+ " AND u.password LIKE '" + password + "'";
