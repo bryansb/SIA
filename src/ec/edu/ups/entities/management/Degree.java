@@ -1,6 +1,7 @@
 package ec.edu.ups.entities.management;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -23,22 +24,40 @@ public class Degree implements Serializable {
 	@Column(name = "deg_name", nullable = false)
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "rel_tea_deg", 
-			joinColumns = @JoinColumn(name = "deg_id", nullable = false),
-			inverseJoinColumns = @JoinColumn(name = "tea_id", nullable = false))
+	@ManyToMany(mappedBy = "degreeList")
+	@JoinColumn
 	private List<Teacher> teacherList;
+	
+	@Column(name = "deg_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
 	
 	public Degree() {
 		super();
 	}
 
-	public Degree(int id, String name, List<Teacher> teacherList) {
+	public void addTeacher(Teacher teacher) {
+		if (this.teacherList == null) {
+			this.teacherList = new ArrayList<>();
+		}
+		teacherList.add(teacher);
+	}
+	
+	
+	public Degree(int id, String name, List<Teacher> teacherList, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.teacherList = teacherList;
+		this.deleted = deleted;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public int getId() {
@@ -67,7 +86,7 @@ public class Degree implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Degree [id=" + id + ", name=" + name + ", teacherList=" + teacherList + "]";
+		return "Degree [id=" + id + ", name=" + name + ", teacherList=" + teacherList + ", deleted=" + deleted + "]";
 	}
    
 }
