@@ -15,12 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.management.TeacherDAO;
 import ec.edu.ups.dao.offer.GroupDAO;
-import ec.edu.ups.dao.offer.ScheduleDAO;
 import ec.edu.ups.dao.offer.SubjectDAO;
 import ec.edu.ups.dao.utils.ParameterDAO;
 import ec.edu.ups.entities.management.Teacher;
 import ec.edu.ups.entities.offer.Group;
-import ec.edu.ups.entities.offer.Schedule;
 import ec.edu.ups.entities.offer.Subject;
 
 /**
