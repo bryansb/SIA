@@ -31,7 +31,15 @@
 						<td>${sub.career.name}</td>
 						<td>
 							<button class="btn btn-secondary" onclick="readSubject(${sub.id});">Editar</button>
-							<button type="button" class="btn btn-danger" onclick="deleteSubject(${sub.id});">Eliminar</button>
+							<c:choose>
+								<c:when test="${sub.deleted}">
+									<button type="button" class="btn btn-success" onclick="deleteSubject(${sub.id});">Restaurar</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-danger" onclick="deleteSubject(${sub.id});">Eliminar</button>
+								</c:otherwise>
+							</c:choose>
+							
 						</td>
 					</tr>
 				</c:forEach>

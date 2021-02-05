@@ -28,6 +28,10 @@ public class Career implements Serializable {
 	@Column(name = "car_time", nullable = true)
 	private int time;
 	
+	@Column(name = "car_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "career", fetch = FetchType.LAZY)
 	private List<Subject> subjectList;
 	
@@ -93,6 +97,14 @@ public class Career implements Serializable {
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

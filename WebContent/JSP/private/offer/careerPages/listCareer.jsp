@@ -23,7 +23,15 @@
 						<td>${car.time}</td>
 						<td>
 							<button class="btn btn-secondary" onclick="readCareer(${car.id});">Editar</button>
-							<button type="button" class="btn btn-danger" onclick="deleteCareer(${car.id});">Eliminar</button>
+							<c:choose>
+								<c:when test="${car.deleted}">
+									<button type="button" class="btn btn-success" onclick="deleteCareer(${car.id});">Restaurar</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-danger" onclick="deleteCareer(${car.id});">Eliminar</button>
+								</c:otherwise>
+							</c:choose>
+							
 						</td>
 					</tr>
 				</c:forEach>

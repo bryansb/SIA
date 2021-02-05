@@ -43,6 +43,13 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 			+ " AND e.inscription.student.dni = :dni "
 			+ " ORDER BY e.date DESC ";
 	
+	private static final String ENROLLMENT_SCHEDULE_QRY =
+			" SELECT e FROM Enrollment e "
+			+ " WHERE e.deleted = 0 "
+			+ " AND e.inscription.student.id = :id "
+			+ " AND e.status = 'C' "
+			+ " ORDER BY e.date DESC ";
+	
 	
 	private ParameterDAO parameterDAO;
 	
@@ -106,6 +113,18 @@ public class JPAEnrollmentDAO extends JPAGenericDAO<Enrollment, Integer> impleme
 		return super.em.createQuery(ENROLLMENT_BY_STUDENT_DNI_QRY)
 			.setParameter("dni", dni)
 			.getResultList();
+	}
+
+	@Override
+	public Enrollment getEnrollmentCurrentSchedule(int studentId) {
+		try {
+			em.clear();
+			return (Enrollment) super.em.createQuery(ENROLLMENT_SCHEDULE_QRY)
+				.setParameter("id", studentId)
+				.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

@@ -35,7 +35,15 @@
 						</td>
 						<td>
 							<button class="btn btn-secondary" onclick="readGroup(${gro.id});">Editar</button>
-							<button class="btn btn-danger" onclick="deleteGroup(${gro.id});">Eliminar</button>
+							<c:choose>
+								<c:when test="${gro.deleted}">
+									<button class="btn btn-success" onclick="deleteGroup(${gro.id});">Restaurar</button>
+								</c:when>
+								<c:otherwise>
+									<button class="btn btn-danger" onclick="deleteGroup(${gro.id});">Eliminar</button>
+								</c:otherwise>
+							</c:choose>
+							
 						</td>
 					</tr>
 				</c:forEach>

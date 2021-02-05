@@ -35,6 +35,10 @@ public class Subject implements Serializable {
 	@Column(name = "sub_level")
 	private int level;
 	
+	@Column(name = "sub_deleted", nullable = false,  
+			columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean deleted;
+	
 	@JoinColumn
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Career career;
@@ -129,6 +133,14 @@ public class Subject implements Serializable {
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

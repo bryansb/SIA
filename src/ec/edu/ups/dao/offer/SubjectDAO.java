@@ -7,4 +7,6 @@ import ec.edu.ups.entities.offer.Subject;
 
 public interface SubjectDAO extends GenericDAO<Subject, Integer> {
 	public List<Subject> findByInscriptionIdToEnrollment(int inscritionId);
+	
+	public List<Subject> findByCareerID(int careerId);
 }
